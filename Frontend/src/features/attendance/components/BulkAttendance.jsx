@@ -1,0 +1,76 @@
+import { memo } from 'react';
+import { ArrowLeft, Save, Search } from 'lucide-react';
+import Button from '../../../components/common/Button';
+import InputField from '../../../components/common/InputField';
+import SelectField from '../../../components/common/SelectField';
+import DataTable from '../../../components/table/DataTable';
+import { ATTENDANCE_STATUSES } from '../utils/constants';
+import { getEmployeeCode } from '../utils/attendanceHelpers';
+
+function BulkAttendance({ criteria, departmentOptions, designationOptions, employees, isSaving, showRows, onCriteriaChange, onSearch, onClose, onSave, onSetAllStatus, getRow, onRowChange }) {
+  return (
+    <div className="p-4 sm:p-6 mt-18 lg:p-10">
+      <div className="rounded-none bg-white shadow-[0_16px_28px_rgba(15,23,42,0.18)]"><div className="flex items-center justify-between border-b border-slate-200 px-5 py-4"><h2 className="m-0 text-xl font-semibold text-slate-800">Select Criteria</h2><Button type="button" onClick={onClose} variant="secondary" icon={ArrowLeft} className="rounded-lg">Back</Button>
+      </div>
+        <form onSubmit={onSearch} className="grid gap-5 px-5 py-5 md:grid-cols-3"><SelectField label="Department" value={criteria.department} onChange={(event) => onCriteriaChange('department', event.target.value)} options={departmentOptions} inputClassName="rounded-lg" />
+          <SelectField label="Designation" value={criteria.designation} onChange={(event) => onCriteriaChange('designation', event.target.value)} options={designationOptions} inputClassName="rounded-lg" />
+          <InputField type="date" label="Attendance Date" required value={criteria.date} onChange={(event) => onCriteriaChange('date', event.target.value)} inputClassName="rounded-lg" />
+          <div className="flex justify-end md:col-span-3"><Button type="submit" icon={Search} className="rounded-lg bg-purple-600 hover:bg-purple-700">Search</Button>
+          </div>
+        </form>
+      </div>
+      {
+        showRows &&
+        <div className="mt-6 rounded-none bg-white shadow-[0_16px_28px_rgba(15,23,42,0.18)]">
+          <div className="flex flex-col gap-4 border-b border-slate-200 px-5 py-4 lg:flex-row lg:items-center lg:justify-between">
+            <div>
+              <h3 className="m-0 text-lg font-semibold text-slate-800">Employee List</h3>
+              <p className="mt-1 text-sm text-slate-500">{employees.length} employee{employees.length !== 1 ? 's' : ''} found for {criteria.date}</p>
+            </div>
+            <Button type="button" icon={Save} disabled={isSaving || employees.length === 0} onClick={onSave} className="self-start rounded-lg bg-purple-600 hover:bg-purple-700 lg:self-auto">{isSaving ? 'Saving...' : 'Save Attendance'}</Button>
+          </div>
+          <div className="flex flex-wrap items-center gap-3 px-5 py-4 text-sm text-slate-700"><span className="font-semibold">Set attendance for all employees as</span>{ATTENDANCE_STATUSES.map((status) => <label key={status} className="inline-flex items-center gap-1.5">
+            <input type="radio" name="bulk-status" onChange={() => onSetAllStatus(status)} className="accent-purple-600" /><span>{status}
+
+            </span>
+          </label>)}
+          </div>
+          <div className="px-5 pb-5">
+            <DataTable headers={['#', 'Employee Code', 'Name', 'Department', 'Designation', 'Attendance', 'Source', 'Entry Time', 'Exit Time', 'Note']} className="rounded-none border-0" tableClassName="w-full min-w-230 border-collapse" headerRowClassName="border-y border-slate-200 text-left text-xs font-semibold text-slate-600" headerCellClassName="px-3 py-3">
+              {employees.map((employee, index) => {
+                const row = getRow(employee); return <tr key={employee.id} className="border-b border-slate-100 align-top">
+                  <td className="px-3 py-4 text-sm text-slate-700">{index + 1}</td>
+                  <td className="px-3 py-4 text-sm text-slate-700">{getEmployeeCode(employee)}</td>
+                  <td className="px-3 py-4 text-sm font-semibold text-slate-800">{employee.name}</td>
+                  <td className="px-3 py-4 text-sm text-slate-700">{employee.department || '-'}</td>
+                  <td className="px-3 py-4 text-sm text-slate-700">{employee.designation || '-'}</td>
+                  <td className="px-3 py-4">
+                    <div className="grid gap-1.5 text-sm text-slate-700">{ATTENDANCE_STATUSES.map((status) => <label key={status} className="inline-flex items-center gap-1.5">
+                      <input type="radio" name={`attendance-${employee.id}`} checked={row.status === status} onChange={() => onRowChange(employee.id, 'status', status)} className="accent-purple-600" />
+                      <span>{status}</span>
+                    </label>)}
+                    </div>
+                  </td>
+                  <td className="px-3 py-4 text-sm text-slate-700">N/A</td>
+                  <td className="px-3 py-4">
+                    <input type="time" value={row.check_in} onChange={(event) => onRowChange(employee.id, 'check_in', event.target.value)} className="w-32 rounded-md border border-slate-200 px-3 py-2 text-sm outline-none focus:border-purple-500" />
+                  </td>
+                  <td className="px-3 py-4">
+                    <input type="time" value={row.check_out} onChange={(event) => onRowChange(employee.id, 'check_out', event.target.value)} className="w-32 rounded-md border border-slate-200 px-3 py-2 text-sm outline-none focus:border-purple-500" />
+                  </td>
+                  <td className="px-3 py-4">
+                    <input value={row.notes} onChange={(event) => onRowChange(employee.id, 'notes', event.target.value)} className="w-40 rounded-md border border-slate-200 px-3 py-2 text-sm outline-none focus:border-purple-500" />
+                  </td>
+                </tr>;
+              })}
+              {employees.length === 0 && <tr>
+                <td colSpan={10} className="px-3 py-10 text-center text-slate-500">No employees found for selected criteria.</td>
+              </tr>
+              }
+            </DataTable>
+          </div>
+        </div>}
+    </div>
+  )
+}
+export default memo(BulkAttendance);

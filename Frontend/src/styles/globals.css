@@ -1,0 +1,93 @@
+@import "tailwindcss";
+@import "./theme.css";
+
+/* Attendance calendar (FullCalendar) — matches the app's slate/blue theme */
+.attendance-calendar .fc {
+  --fc-border-color: #e2e8f0;
+  --fc-today-bg-color: #eff6ff;
+  --fc-page-bg-color: transparent;
+  font-family: inherit;
+}
+
+.attendance-calendar .fc .fc-toolbar {
+  margin-bottom: 1rem;
+}
+
+.attendance-calendar .fc .fc-toolbar-title {
+  font-size: 1.125rem;
+  font-weight: 700;
+  color: #0f172a;
+}
+
+.attendance-calendar .fc .fc-button-primary {
+  background-color: #fff;
+  border-color: #cbd5e1;
+  color: #334155;
+  font-weight: 500;
+  text-transform: capitalize;
+  box-shadow: none;
+}
+
+.attendance-calendar .fc .fc-button-primary:hover {
+  background-color: #f1f5f9;
+  border-color: #cbd5e1;
+  color: #0f172a;
+}
+
+.attendance-calendar .fc .fc-button-primary:not(:disabled).fc-button-active,
+.attendance-calendar .fc .fc-button-primary:not(:disabled):active {
+  background-color: #2563eb;
+  border-color: #2563eb;
+  color: #fff;
+}
+
+.attendance-calendar .fc .fc-button:focus,
+.attendance-calendar .fc .fc-button-primary:focus {
+  box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.25);
+}
+
+.attendance-calendar .fc .fc-col-header-cell {
+  background-color: #f8fafc;
+  padding: 0.5rem 0;
+}
+
+.attendance-calendar .fc .fc-col-header-cell-cushion {
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #64748b;
+}
+
+.attendance-calendar .fc .fc-daygrid-day-number {
+  padding: 6px 8px;
+  font-size: 0.8125rem;
+  color: #334155;
+}
+
+.attendance-calendar .fc .fc-day-today .fc-daygrid-day-number {
+  font-weight: 700;
+  color: #2563eb;
+}
+
+.attendance-calendar .fc .fc-daygrid-day-frame {
+  transition: background-color 0.15s ease;
+}
+
+.attendance-calendar .fc .fc-daygrid-day:hover .fc-daygrid-day-frame {
+  background-color: #f8fafc;
+}
+
+.attendance-calendar .fc .fc-daygrid-event {
+  border-radius: 6px;
+  border: none;
+  padding: 2px 6px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  margin-top: 2px;
+}
+
+.attendance-calendar .fc .fc-scrollgrid {
+  border-radius: 10px;
+  overflow: hidden;
+}
