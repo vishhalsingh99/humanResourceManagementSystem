@@ -16,20 +16,9 @@ export function ThemeProvider({ children }) {
   const [theme, setTheme] = useState(getPreferredTheme);
 
   useEffect(() => {
-    const root = document.documentElement;
-    root.classList.toggle('dark', theme === 'dark');
+    document.documentElement.classList.toggle('dark', theme === 'dark');
     localStorage.setItem(STORAGE_KEY, theme);
   }, [theme]);
-
-  useEffect(() => {
-    // Follow the OS preference until the user makes an explicit choice.
-    if (localStorage.getItem(STORAGE_KEY)) return undefined;
-
-    const media = window.matchMedia('(prefers-color-scheme: dark)');
-    const handleChange = (event) => setTheme(event.matches ? 'dark' : 'light');
-    media.addEventListener('change', handleChange);
-    return () => media.removeEventListener('change', handleChange);
-  }, []);
 
   const value = useMemo(() => ({
     theme,
