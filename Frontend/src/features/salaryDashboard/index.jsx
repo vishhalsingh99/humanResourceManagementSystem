@@ -33,25 +33,25 @@ const formatCurrency = (value) =>
   `Rs ${Number(value || 0).toLocaleString('en-IN', { maximumFractionDigits: 2 })}`;
 
 const statTone = {
-  present: 'border-emerald-200 bg-emerald-50 text-emerald-700',
-  absent: 'border-rose-200 bg-rose-50 text-rose-700',
-  half: 'border-sky-200 bg-sky-50 text-sky-700',
-  late: 'border-amber-200 bg-amber-50 text-amber-700',
-  overtime: 'border-indigo-200 bg-indigo-50 text-indigo-700',
-  deduction: 'border-red-200 bg-red-50 text-red-700',
-  bonus: 'border-teal-200 bg-teal-50 text-teal-700',
-  leaveBalance: 'border-violet-200 bg-violet-50 text-violet-700',
-  salary: 'border-blue-200 bg-blue-50 text-blue-700',
+  present: 'border-emerald-500/20 bg-emerald-500/10 text-emerald-300',
+  absent: 'border-rose-500/20 bg-rose-500/10 text-rose-300',
+  half: 'border-sky-500/20 bg-sky-500/10 text-sky-300',
+  late: 'border-amber-500/20 bg-amber-500/10 text-amber-300',
+  overtime: 'border-indigo-500/20 bg-indigo-500/10 text-indigo-300',
+  deduction: 'border-red-500/20 bg-red-500/10 text-red-300',
+  bonus: 'border-teal-500/20 bg-teal-500/10 text-teal-300',
+  leaveBalance: 'border-violet-500/20 bg-violet-500/10 text-violet-300',
+  salary: 'border-red-500/25 bg-red-500/10 text-red-300',
 };
 
 function StatCard({ icon: Icon, label, value, helper, tone }) {
   return (
-    <div className={`rounded-lg border p-4 ${tone}`}>
+    <div className={`rounded-xl border p-4 ${tone}`}>
       <div className="flex items-start justify-between gap-3">
         <div>
-          <p className="m-0 text-xs font-semibold uppercase text-slate-500">{label}</p>
-          <p className="m-0 mt-2 text-2xl font-bold text-slate-900">{value}</p>
-          {helper && <p className="m-0 mt-1 text-xs text-slate-500">{helper}</p>}
+          <p className="m-0 text-xs font-semibold uppercase text-neutral-400">{label}</p>
+          <p className="m-0 mt-2 text-2xl font-bold text-neutral-50">{value}</p>
+          {helper && <p className="m-0 mt-1 text-xs text-neutral-500">{helper}</p>}
         </div>
         <Icon size={22} className="shrink-0" />
       </div>
@@ -64,11 +64,11 @@ function MiniBar({ label, value, max, color }) {
 
   return (
     <div>
-      <div className="mb-1 flex items-center justify-between text-xs font-semibold text-slate-600">
+      <div className="mb-1 flex items-center justify-between text-xs font-semibold text-neutral-400">
         <span>{label}</span>
         <span>{value}</span>
       </div>
-      <div className="h-2 rounded-full bg-slate-100">
+      <div className="h-2 rounded-full bg-neutral-800">
         <div className={`h-2 rounded-full ${color}`} style={{ width: `${width}%` }} />
       </div>
     </div>
@@ -77,9 +77,9 @@ function MiniBar({ label, value, max, color }) {
 
 function DetailRow({ label, value, currency = false, emphasized = false }) {
   return (
-    <div className="flex items-center justify-between gap-4 border-b border-slate-100 py-2 last:border-b-0">
-      <span className={emphasized ? 'font-semibold text-slate-900' : 'text-slate-600'}>{label}</span>
-      <span className={emphasized ? 'font-bold text-slate-900' : 'font-semibold text-slate-800'}>
+    <div className="flex items-center justify-between gap-4 border-b border-neutral-800 py-2 last:border-b-0">
+      <span className={emphasized ? 'font-semibold text-neutral-50' : 'text-neutral-400'}>{label}</span>
+      <span className={emphasized ? 'font-bold text-neutral-50' : 'font-semibold text-neutral-200'}>
         {currency ? formatCurrency(value) : value ?? 0}
       </span>
     </div>
@@ -88,8 +88,8 @@ function DetailRow({ label, value, currency = false, emphasized = false }) {
 
 function DetailSection({ title, children }) {
   return (
-    <section className="border-b border-slate-200 pb-4 last:border-b-0 last:pb-0">
-      <h4 className="m-0 mb-2 text-sm font-bold uppercase tracking-wide text-blue-800">{title}</h4>
+    <section className="border-b border-neutral-800 pb-4 last:border-b-0 last:pb-0">
+      <h4 className="m-0 mb-2 text-sm font-bold uppercase tracking-wide text-red-400">{title}</h4>
       {children}
     </section>
   );
@@ -99,7 +99,7 @@ function SalaryDetailsModal({ dashboard, month, year, onClose }) {
   if (!dashboard) {
     return (
       <Modal title="Salary Details" onClose={onClose}>
-        <p className="m-0 text-sm text-slate-500">Salary details are not available yet. Refresh the dashboard and try again.</p>
+        <p className="m-0 text-sm text-neutral-400">Salary details are not available yet. Refresh the dashboard and try again.</p>
       </Modal>
     );
   }
@@ -113,7 +113,7 @@ function SalaryDetailsModal({ dashboard, month, year, onClose }) {
 
   return (
     <Modal title="Salary Details" onClose={onClose}>
-      <div className="mb-5 rounded-lg bg-slate-50 p-3 text-sm">
+      <div className="mb-5 rounded-xl border border-neutral-800 bg-neutral-950/40 p-3 text-sm">
         <DetailRow label="Employee" value={`${dashboard.employee?.name || '-'} - ${dashboard.employee?.employeeId || dashboard.employee?.id || '-'}`} />
         <DetailRow label="Month" value={dashboard.month || month} />
         <DetailRow label="Year" value={dashboard.year || year} />
@@ -301,14 +301,14 @@ export default function SalaryDashboard() {
     <div className="mt-18 p-4 sm:p-6 lg:p-10">
       <div className="mb-6 flex flex-col gap-4 xl:flex-row xl:items-end xl:justify-between">
         <div>
-          <p className="m-0 text-sm font-semibold uppercase text-blue-700">Employee Salary Dashboard</p>
-          <h1 className="m-0 mt-1 text-3xl font-bold text-slate-900">Live Salary Calculation</h1>
-          <p className="mt-2 max-w-3xl text-sm text-slate-500">
+          <p className="m-0 text-sm font-semibold uppercase text-red-400">Employee Salary Dashboard</p>
+          <h1 className="m-0 mt-1 text-3xl font-bold text-neutral-50">Live Salary Calculation</h1>
+          <p className="mt-2 max-w-3xl text-sm text-neutral-400">
             Attendance, deductions, bonus, payroll status, and payslip download for the selected month.
           </p>
         </div>
 
-        <div className="grid gap-3 rounded-lg border border-slate-200 bg-white p-3 shadow-sm sm:grid-cols-2 lg:grid-cols-4">
+        <div className="grid gap-3 rounded-xl border border-neutral-800/80 bg-neutral-900/40 p-3 shadow-[0_0_28px_rgba(239,68,68,0.08)] backdrop-blur-md sm:grid-cols-2 lg:grid-cols-4">
           {canViewAllPayroll && (
             <SelectField label="Employee" value={selectedEmployeeId} onChange={(e) => setSelectedEmployeeId(e.target.value)} inputClassName="rounded-lg">
               {employees.map((employee) => (
@@ -321,7 +321,7 @@ export default function SalaryDashboard() {
           <SelectField label="Month" value={month} onChange={(e) => setMonth(e.target.value)} options={months} inputClassName="rounded-lg" />
           <InputField label="Year" type="number" value={year} onChange={(e) => setYear(e.target.value)} inputClassName="rounded-lg" />
           <div className="flex items-end gap-2">
-            <Button type="button" icon={RefreshCw} onClick={loadDashboard} disabled={loading} className="h-10 rounded-lg px-3">
+            <Button type="button" icon={RefreshCw} onClick={loadDashboard} disabled={loading} className="h-10 rounded-xl px-3">
               {loading ? 'Loading' : 'Refresh'}
             </Button>
           </div>
@@ -329,26 +329,26 @@ export default function SalaryDashboard() {
       </div>
 
       <div className="mb-6 grid gap-4 lg:grid-cols-[1.3fr_0.7fr]">
-        <section className="rounded-lg border border-slate-200 bg-white p-5 shadow-sm">
+        <section className="rounded-2xl border border-neutral-800/80 bg-neutral-900/40 p-5 shadow-[0_0_28px_rgba(239,68,68,0.08)] backdrop-blur-md">
           <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
             <div>
-              <h2 className="m-0 text-xl font-bold text-slate-900">{dashboard?.employee?.name || selectedEmployee?.name || 'Salary Overview'}</h2>
-              <p className="m-0 mt-1 text-sm text-slate-500">
+              <h2 className="m-0 text-xl font-bold text-neutral-50">{dashboard?.employee?.name || selectedEmployee?.name || 'Salary Overview'}</h2>
+              <p className="m-0 mt-1 text-sm text-neutral-400">
                 {dashboard?.employee?.department || selectedEmployee?.department || '-'} - {dashboard?.employee?.designation || selectedEmployee?.designation || '-'}
               </p>
             </div>
             <div className="flex flex-wrap gap-2">
               {canGeneratePayroll && (
-                <Button type="button" icon={ShieldCheck} onClick={handleGeneratePayroll} disabled={payrollSaving || !dashboard} className="rounded-lg">
+                <Button type="button" icon={ShieldCheck} onClick={handleGeneratePayroll} disabled={payrollSaving || !dashboard} className="rounded-xl">
                   {payrollSaving ? 'Generating' : 'Generate Payroll'}
                 </Button>
               )}
               {canViewSalary && (
-                <Button type="button" icon={FileText} variant="secondary" onClick={() => setShowSalaryDetails(true)} disabled={loading || !dashboard} className="rounded-lg">
+                <Button type="button" icon={FileText} variant="secondary" onClick={() => setShowSalaryDetails(true)} disabled={loading || !dashboard} className="rounded-xl">
                   View Salary Details
                 </Button>
               )}
-              <Button type="button" icon={Download} variant="secondary" onClick={handleDownloadPayslip} disabled={!dashboard} className="rounded-lg">
+              <Button type="button" icon={Download} variant="secondary" onClick={handleDownloadPayslip} disabled={!dashboard} className="rounded-xl">
                 Print Payslip
               </Button>
             </div>
@@ -362,20 +362,20 @@ export default function SalaryDashboard() {
           </div>
 
           <div className="mt-6">
-            <div className="mb-2 flex justify-between text-sm font-semibold text-slate-700">
+            <div className="mb-2 flex justify-between text-sm font-semibold text-neutral-300">
               <span>Salary progress</span>
               <span>{salary.salaryProgress || 0}%</span>
             </div>
-            <div className="h-4 overflow-hidden rounded-full bg-slate-100">
-              <div className="h-full rounded-full bg-blue-600 transition-all" style={{ width: `${salary.salaryProgress || 0}%` }} />
+            <div className="h-4 overflow-hidden rounded-full bg-neutral-800">
+              <div className="h-full rounded-full bg-red-500 transition-all" style={{ width: `${salary.salaryProgress || 0}%` }} />
             </div>
           </div>
         </section>
 
-        <section className="rounded-lg border border-slate-200 bg-white p-5 shadow-sm">
+        <section className="rounded-2xl border border-neutral-800/80 bg-neutral-900/40 p-5 shadow-[0_0_28px_rgba(239,68,68,0.08)] backdrop-blur-md">
           <div className="flex items-center justify-between">
-            <h2 className="m-0 text-lg font-bold text-slate-900">Payroll Status</h2>
-            <span className="rounded-full bg-blue-50 px-3 py-1 text-xs font-bold text-blue-700">
+            <h2 className="m-0 text-lg font-bold text-neutral-50">Payroll Status</h2>
+            <span className="rounded-full bg-red-500/15 px-3 py-1 text-xs font-bold text-red-300">
               {dashboard?.payrollStatus || 'Not Generated'}
             </span>
           </div>
@@ -419,24 +419,24 @@ export default function SalaryDashboard() {
       </div>
 
       {canViewReports && canViewAllPayroll && (
-        <section className="rounded-lg border border-slate-200 bg-white shadow-sm">
-          <div className="flex items-center justify-between border-b border-slate-200 px-5 py-4">
+        <section className="rounded-2xl border border-neutral-800/80 bg-neutral-900/40 shadow-[0_0_28px_rgba(239,68,68,0.08)] backdrop-blur-md">
+          <div className="flex items-center justify-between border-b border-neutral-800 px-5 py-4">
             <div>
-              <h2 className="m-0 text-lg font-bold text-slate-900">
+              <h2 className="m-0 text-lg font-bold text-neutral-50">
                 Monthly Salary Report
               </h2>
-              <p className="m-0 mt-1 text-sm text-slate-500">
+              <p className="m-0 mt-1 text-sm text-neutral-400">
                 {month} {year}
               </p>
             </div>
-            <Users size={22} className="text-slate-500" />
+            <Users size={22} className="text-neutral-500" />
           </div>
 
           {/* Table Wrapper */}
           <div className="overflow-x-auto">
             <table className="min-w-450 w-full border-collapse">
-              <thead className="sticky top-0 z-10 bg-white border-b border-slate-200">
-                <tr className="bg-slate-100 text-left text-xs font-semibold uppercase text-slate-600">
+              <thead className="sticky top-0 z-10 border-b border-neutral-800 bg-neutral-900/95">
+                <tr className="bg-neutral-950/60 text-left text-xs font-semibold uppercase text-neutral-400">
                   <th className="px-4 py-3 whitespace-nowrap min-w-45">Employee</th>
                   <th className="px-4 py-3 whitespace-nowrap min-w-30">Eligible Days</th>
                   <th className="px-4 py-3 whitespace-nowrap min-w-30">Payable Days</th>
@@ -455,37 +455,37 @@ export default function SalaryDashboard() {
 
               <tbody>
                 {paginatedReportRows.map((row) => (
-                  <tr key={row.employee.id} className="border-t border-slate-100">
-                    <td className="px-4 py-3 text-sm font-semibold text-slate-800">
+                  <tr key={row.employee.id} className="border-t border-neutral-800 bg-neutral-950/65">
+                    <td className="px-4 py-3 text-sm font-semibold text-neutral-50">
                       {row.employee.name}
-                      <span className="block text-xs font-normal text-slate-500">
+                      <span className="block text-xs font-normal text-neutral-500">
                         {row.employee.employeeId || row.employee.id}
                       </span>
                     </td>
 
-                    <td className="px-4 py-3">{row.period.eligibleDays || 0}</td>
-                    <td className="px-4 py-3">{row.salary.payableDays || 0}</td>
-                    <td className="px-4 py-3">{row.attendance.presentDays}</td>
-                    <td className="px-4 py-3">{row.attendance.absentDays}</td>
-                    <td className="px-4 py-3">
+                    <td className="px-4 py-3 text-neutral-300">{row.period.eligibleDays || 0}</td>
+                    <td className="px-4 py-3 text-neutral-300">{row.salary.payableDays || 0}</td>
+                    <td className="px-4 py-3 text-neutral-300">{row.attendance.presentDays}</td>
+                    <td className="px-4 py-3 text-neutral-300">{row.attendance.absentDays}</td>
+                    <td className="px-4 py-3 text-neutral-300">
                       {row.leave?.totalLeaveDays ?? row.leaveDays ?? 0}
                     </td>
-                    <td className="px-4 py-3">
+                    <td className="px-4 py-3 text-neutral-300">
                       {row.leave?.sandwichLeaveDays ?? row.sandwichLeaveDays ?? 0}
                     </td>
-                    <td className="px-4 py-3">{row.attendance.halfDays}</td>
-                    <td className="px-4 py-3">{row.attendance.lateCount}</td>
-                    <td className="px-4 py-3 text-rose-700">
+                    <td className="px-4 py-3 text-neutral-300">{row.attendance.halfDays}</td>
+                    <td className="px-4 py-3 text-neutral-300">{row.attendance.lateCount}</td>
+                    <td className="px-4 py-3 text-rose-300">
                       {formatCurrency(row.salary.salaryDeductions)}
                     </td>
-                    <td className="px-4 py-3 text-teal-700">
+                    <td className="px-4 py-3 text-teal-300">
                       {formatCurrency(row.salary.bonus)}
                     </td>
-                    <td className="px-4 py-3 font-bold">
+                    <td className="px-4 py-3 font-bold text-neutral-50">
                       {formatCurrency(row.salary.finalEstimatedSalary)}
                     </td>
                     <td className="px-4 py-3">
-                      <span className="rounded-full bg-slate-100 px-2 py-1 text-xs font-bold text-slate-700">
+                      <span className="rounded-full bg-neutral-800 px-2 py-1 text-xs font-bold text-neutral-200">
                         {row.payrollStatus}
                       </span>
                     </td>
@@ -494,7 +494,7 @@ export default function SalaryDashboard() {
 
                 {paginatedReportRows.length === 0 && (
                   <tr>
-                    <td colSpan={13} className="px-4 py-8 text-center text-sm text-slate-500">
+                    <td colSpan={13} className="px-4 py-8 text-center text-sm text-neutral-500">
                       No report data found.
                     </td>
                   </tr>
@@ -504,7 +504,7 @@ export default function SalaryDashboard() {
           </div>
 
           {/* Footer */}
-          <div className="border-t border-slate-200 px-4 py-3">
+          <div className="border-t border-neutral-800 px-4 py-3">
             <Pagination
               currentPage={currentPage}
               totalItems={sortedReportRows.length}
