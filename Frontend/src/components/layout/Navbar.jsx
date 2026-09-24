@@ -38,7 +38,6 @@ const nav = [
     permission: 'employee.view',
     items: [
       { to: ROUTES.EMPLOYEES, label: 'Employee List', icon: Users },
-      { to: ROUTES.EMPLOYEE_DIRECTORY, label: 'Directory', icon: Layers },
     ],
   },
 
@@ -207,8 +206,8 @@ function NavSection({ section, onLinkClick, collapsed }) {
             className={({ isActive }) =>
               `flex min-h-10 items-center gap-3 rounded-[3px] px-2 py-2.5 text-sm font-semibold no-underline transition-colors duration-150 ${collapsed ? 'h-11 w-11 justify-center px-0 py-0' : ''
               } ${isActive
-                ? 'bg-[#dbe7ff] text-[#3b57ff]'
-                : 'text-slate-950 hover:bg-[#f3f6fb] hover:text-slate-950'
+                ? 'bg-blue-50 text-blue-700'
+                : 'text-slate-600 hover:bg-slate-50 hover:text-slate-950'
               }`
             }
           >
@@ -232,8 +231,8 @@ function NavSection({ section, onLinkClick, collapsed }) {
         className={({ isActive }) =>
           `flex min-h-10 items-center gap-3 rounded-[3px] px-2 py-2.5 text-sm font-semibold no-underline transition-colors duration-150 ${collapsed ? 'h-11 w-11 justify-center px-0 py-0' : ''
           } ${isActive
-            ? 'bg-[#dbe7ff] text-[#3b57ff]'
-            : 'text-slate-950 hover:bg-[#f3f6fb] hover:text-slate-950'
+            ? 'bg-blue-50 text-blue-700'
+            : 'text-slate-600 hover:bg-slate-50 hover:text-slate-950'
           }`
         }
       >
@@ -249,7 +248,7 @@ function NavSection({ section, onLinkClick, collapsed }) {
         <button
           title={section.label}
           onClick={() => setOpen((value) => !value)}
-          className={`flex h-11 w-11 cursor-pointer items-center justify-center rounded-[3px] text-sm font-semibold transition-colors duration-150 ${isAnyActive ? 'bg-[#dbe7ff] text-[#3b57ff]' : 'text-slate-950 hover:bg-[#f3f6fb] hover:text-slate-950'
+          className={`flex h-11 w-11 cursor-pointer items-center justify-center rounded-[3px] text-sm font-semibold transition-colors duration-150 ${isAnyActive ? 'bg-blue-50 text-blue-700' : 'text-slate-600 hover:bg-slate-50 hover:text-slate-950'
             }`}
         >
           <section.icon size={19} strokeWidth={1.8} className="shrink-0" />
@@ -267,7 +266,7 @@ function NavSection({ section, onLinkClick, collapsed }) {
     <div>
       <button
         onClick={() => setOpen((value) => !value)}
-        className={`flex min-h-10 w-full cursor-pointer items-center justify-between rounded-[3px] px-2 py-2.5 text-sm font-semibold transition-colors duration-150 ${isAnyActive ? 'text-slate-950' : 'text-slate-950 hover:bg-[#f3f6fb] hover:text-slate-950'
+        className={`flex min-h-10 w-full cursor-pointer items-center justify-between rounded-[3px] px-2 py-2.5 text-sm font-semibold transition-colors duration-150 ${isAnyActive ? 'text-slate-950' : 'text-slate-600 hover:bg-slate-50 hover:text-slate-950'
           }`}
       >
         <span className="flex items-center gap-3">
@@ -286,7 +285,7 @@ function NavSection({ section, onLinkClick, collapsed }) {
               end={item.end}
               onClick={(event) => onLinkClick(event, item)}
               className={({ isActive }) =>
-                `flex min-h-9 items-center gap-3 rounded-[3px] px-3 py-2 text-sm no-underline transition-colors duration-150 ${isActive ? 'bg-[#dbe7ff] font-semibold text-[#3b57ff]' : 'text-slate-700 hover:bg-[#f3f6fb] hover:text-slate-950'
+                `flex min-h-9 items-center gap-3 rounded-md px-3 py-2 text-sm no-underline transition-colors duration-150 ${isActive ? 'bg-blue-50 font-semibold text-blue-700' : 'text-slate-600 hover:bg-slate-50 hover:text-slate-950'
                 }`
               }
             >
@@ -369,7 +368,7 @@ export default function Navbar({ onToggle, isOpen, collapsed, isMobile, user }) 
       <nav className={`fixed left-0 z-50 flex w-20 flex-col border-r border-slate-200 bg-white py-4 shadow-[3px_0_10px_rgba(15,23,42,0.08)] transition-all duration-300 ease-in-out ${isImpersonating ? ' top-30 h-[calc(100vh-7.5rem)]' : 'top-20 h-[calc(100vh-56px)]'}`}>
 
         <div className="mb-4 flex flex-col items-center justify-center gap-2">
-          <div className="flex top-20 w-11 items-center justify-center rounded-[3px]  font-bold text-[#3b57ff]">
+          <div className="flex top-20 w-11 items-center justify-center rounded-[3px]  font-bold text-blue-700">
             <CalendarDays size={20} strokeWidth={1.8} className="shrink-0" />
           </div>
         </div>
@@ -426,8 +425,8 @@ export default function Navbar({ onToggle, isOpen, collapsed, isMobile, user }) 
           ))}
         </div>
 
-        <div className="mt-4 border-t border-slate-200 px-4 py-16 text-center text-sm text-slate-700">
-          box
+        <div className="mt-4 border-t border-slate-200 px-2 pt-4 text-xs font-medium text-slate-400">
+          Single-company workspace
         </div>
       </nav>
     </>
