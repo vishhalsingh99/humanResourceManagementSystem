@@ -8,6 +8,7 @@ import { createTables } from './db.js';
 import { runMigrations } from './migrations/sql/migrationRunner.js';
 import { seedAccount } from './scripts/seedAccount.js';
 import { seedDemoData } from './scripts/seedDemoData.js';
+import { startKeepAlive } from './utils/keepAlive.js';
 import routes from './routes.js';
 import pdfRoute from './modules/pdf/pdf.routes.js';
 import { rateLimiter, errorHandler, logger } from './middlewares/index.js';
@@ -107,6 +108,7 @@ const startServer = async () => {
     app.listen(PORT, HOST, () => {
       console.log(`Server is running on http://${HOST}:${PORT}`);
       console.log(`HRMS health check: http://localhost:${PORT}/users`);
+      startKeepAlive();
     });
   } catch (error) {
     console.error('Unable to start server:', error.message);
