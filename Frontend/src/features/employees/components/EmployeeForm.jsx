@@ -6,7 +6,6 @@ import { getAadhaarErrorMessage, getPanErrorMessage, getSalaryErrorMessage } fro
 import { uploadEmployeeResume } from '../services/employees.api';
 import AddMasterOptionModal from './AddMasterOptionModal';
 import EmployeeFormSection from './EmployeeFormSection';
-import EmailVerificationField from './EmailVerificationField';
 
 export default function EmployeeForm({
   editingEmployee,
@@ -35,12 +34,6 @@ export default function EmployeeForm({
     email: ''
   });
 
-  const [emailVerified, setEmailVerified] = useState(editingEmployee ? true : false);
-
-  useEffect(() => {
-    setEmailVerified(Boolean(editingEmployee));
-  }, [editingEmployee]);
-
   const handleFieldChange = async (field, value) => {
     if (field === 'resumeFile') {
       if (value.error) {
@@ -63,12 +56,6 @@ export default function EmployeeForm({
 
     const normalizedValue = field === 'panNumber' ? value.toUpperCase() : value;
     onFieldChange(field, normalizedValue);
-
-    // Reset email verification when email changes
-    if (field === 'email' && !editingEmployee) {
-      setEmailVerified(false);
-      setFieldErrors(prev => ({ ...prev, email: '' }));
-    }
 
     // Validate phone fields
     if (field === 'phone' || field === 'emergencyContact') {
@@ -103,11 +90,6 @@ export default function EmployeeForm({
     <div className="p-4 sm:p-6 mt-16 lg:p-10">
       <form
         onSubmit={(e) => {
-          if (!editingEmployee && !emailVerified) {
-            e.preventDefault();
-            setFieldErrors(prev => ({ ...prev, email: 'Please verify your email before creating the employee' }));
-            return;
-          }
           onSubmit(e);
         }}
         className="rounded-none bg-white p-5 shadow-[0_16px_28px_rgba(15,23,42,0.18)] sm:p-7"
@@ -129,29 +111,6 @@ export default function EmployeeForm({
             <p className="mt-2 text-sm text-slate-500">Employee Details Form</p>
           </div>
         </div>
-
-        {/* Email Verification Section for New Employees */}
-        {!editingEmployee && (
-          <div className="mt-8">
-            <h3 className="mb-6 border-b border-slate-200 pb-3 text-2xl font-medium text-slate-900">
-              Email Verification
-            </h3>
-            <div className="grid gap-6">
-              <EmailVerificationField
-                email={form.email || ''}
-                isVerified={emailVerified}
-                onEmailChange={(value) => handleFieldChange('email', value)}
-                onVerificationChange={(isVerified) => {
-                  setEmailVerified(isVerified);
-                  if (isVerified) {
-                    setFieldErrors(prev => ({ ...prev, email: '' }));
-                  }
-                }}
-                error={fieldErrors.email}
-              />
-            </div>
-          </div>
-        )}
 
         {employeeFormSections.map((section, index) => (
           <EmployeeFormSection
@@ -212,12 +171,7 @@ export default function EmployeeForm({
 
           <button
             type="submit"
-            disabled={!editingEmployee && !emailVerified}
-            className={`rounded-none px-5 py-3 text-sm font-semibold text-white transition cursor-pointer ${
-              !editingEmployee && !emailVerified
-                ? 'bg-slate-400 hover:bg-slate-400 cursor-not-allowed'
-                : 'bg-blue-600 hover:bg-blue-700'
-            }`}
+            className="rounded-none bg-blue-600 px-5 py-3 text-sm font-semibold text-white transition hover:bg-blue-700 cursor-pointer"
           >
             {editingEmployee ? 'Update Employee' : 'Save Employee'}
           </button>

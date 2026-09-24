@@ -5,6 +5,8 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { testConnection, pool } from './config/databases.js';
 import { createTables } from './db.js';
+import { runMigrations } from './migrations/sql/migrationRunner.js';
+import { seedAccount } from './scripts/seedAccount.js';
 import routes from './routes.js';
 import pdfRoute from './modules/pdf/pdf.routes.js';
 import { rateLimiter, errorHandler, logger } from './middlewares/index.js';
@@ -95,8 +97,10 @@ const startServer = async () => {
 
     await createTables(pool, {
       includeMasterTables: true,
-      includeTenantTables: false
+      includeTenantTables: true
     });
+    await runMigrations();
+    await seedAccount({ initializeSchema: false, logCredentials: false });
 
     app.listen(PORT, HOST, () => {
       console.log(`Server is running on http://${HOST}:${PORT}`);

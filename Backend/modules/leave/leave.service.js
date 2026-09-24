@@ -5,7 +5,6 @@ import {
   getCarryForwardHistory as fetchCarryForwardHistory,
   upsertManualCarryForward,
 } from '../../services/leaveBalanceService.js';
-import { sendLeaveApprovedEmail, sendLeaveRejectedEmail } from '../../utils/emailService.js';
 import { loadPermissions } from '../../middlewares/requirePermission.js';
 import { ApiError } from '../../utils/ApiError.js';
 
@@ -17,40 +16,6 @@ const userHasPermission = async (authUser, permissionKey) => {
   const permissions = authUser?.permissions || await loadPermissions({ user: authUser });
   authUser.permissions = permissions;
   return permissions.includes(permissionKey);
-};
-
-const logEmailFailure = (notificationName, result) => {
-  if (result?.success) return;
-  console.warn(`${notificationName} email was not sent: ${result?.message || 'Unknown email error'}`);
-};
-
-const sendLeaveStatusEmail = async ({ previousLeave, updatedLeave, rejectionReason }) => {
-  if (!updatedLeave?.employeeEmail || previousLeave?.status === updatedLeave.status) return;
-
-  if (updatedLeave.status === 'Approved') {
-    const result = await sendLeaveApprovedEmail({
-      email: updatedLeave.employeeEmail,
-      employeeName: updatedLeave.employeeName,
-      leaveType: updatedLeave.leave_type,
-      fromDate: updatedLeave.start_date,
-      toDate: updatedLeave.end_date,
-      totalDays: updatedLeave.leaveDays || updatedLeave.days,
-    });
-    logEmailFailure('Leave approved', result);
-    return;
-  }
-
-  if (updatedLeave.status === 'Rejected') {
-    const result = await sendLeaveRejectedEmail({
-      email: updatedLeave.employeeEmail,
-      employeeName: updatedLeave.employeeName,
-      leaveType: updatedLeave.leave_type,
-      fromDate: updatedLeave.start_date,
-      toDate: updatedLeave.end_date,
-      rejectionReason,
-    });
-    logEmailFailure('Leave rejected', result);
-  }
 };
 
 export const getLeaveBalanceService = async (authUser, employeeId, month, year) => {
@@ -200,11 +165,6 @@ export const updateLeaveService = async (authUser, id, body) => {
   }
 
   const updatedLeave = await Leave.update(id, updateData);
-  await sendLeaveStatusEmail({
-    previousLeave: leave,
-    updatedLeave,
-    rejectionReason: rejectionReason || rejection_reason || adminRemark || remarks || null,
-  });
   return updatedLeave;
 };
 

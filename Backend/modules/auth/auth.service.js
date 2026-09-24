@@ -5,10 +5,8 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import User from '../../repositories/user.repository.js';
 import Tenant from '../../repositories/tenant.repository.js';
-import EmailVerification from '../../repositories/emailVerification.repository.js';
 import Location from '../../repositories/location.repository.js';
 import Role from '../../repositories/role.repository.js';
-import { sendOTPEmail } from '../../utils/emailService.js';
 import { JWT_SECRET } from '../../middlewares/authe.js';
 import { createTenantDatabaseName, createTenantDatabase, withTenantDatabase } from '../../config/databases.js';
 import { createTables } from '../../db.js';
@@ -111,50 +109,24 @@ const withLocationNames = async (data = {}) => {
   };
 };
 
-export const requestSignupOTPService = async ({ name, email, password, role }) => {
+export const registerService = async ({ name, email, password, role = 'admin' }) => {
   const existingUser = await User.findByEmailOnly(email);
   if (existingUser) {
     throw new ApiError(400, 'User already exists');
   }
 
-  const otp = User.generateOTP();
-  await User.createPendingSignup({ name, email, password, role }, otp);
-
-  const emailResult = await sendOTPEmail(email, otp);
-  if (!emailResult.success) {
-    throw new ApiError(500, emailResult.message);
-  }
-
-  return { message: 'OTP sent successfully to your email' };
-};
-
-export const verifySignupOTPService = async ({ email, otp }) => {
-  const existingUser = await User.findByEmailOnly(email);
-  if (existingUser) {
-    await User.deletePendingSignup(email);
-    throw new ApiError(400, 'User already exists');
-  }
-
-  const result = await User.verifyPendingSignup(email, otp);
-  if (!result.valid) {
-    throw new ApiError(400, result.message);
-  }
-
-  const user = await enrichUserWithPermissions(await User.createWithHashedPassword({
-    name: result.pendingSignup.name,
-    email: result.pendingSignup.email,
-    password: result.pendingSignup.password,
-    role: result.pendingSignup.role,
+  const user = await enrichUserWithPermissions(await User.create({
+    name,
+    email,
+    password,
+    role,
+    loginId: email,
   }));
-
-  await User.deletePendingSignup(email);
-
-  const token = signToken(user);
 
   return {
     message: 'User registered successfully',
     user: toApiUser(user),
-    token,
+    token: signToken(user),
   };
 };
 
@@ -244,16 +216,6 @@ export const completeOnboardingService = async (authUser, { profile = {}, compan
   const companyName = company.companyName?.trim();
   const companyEmail = company.email?.trim();
 
-  if (companyEmail) {
-    const emailVerified = await EmailVerification.isEmailVerified(companyEmail, 'company_email');
-    if (!emailVerified) {
-      throw new ApiError(400, 'Company email must be verified before completing onboarding', {
-        code: 'COMPANY_EMAIL_NOT_VERIFIED',
-        email: companyEmail,
-      });
-    }
-  }
-
   if (!await Location.isValidDistrictForState(company.state_id, company.district_id)) {
     throw new ApiError(400, 'Company district must belong to the selected state');
   }
@@ -289,7 +251,7 @@ export const completeOnboardingService = async (authUser, { profile = {}, compan
   const token = signToken(updatedUser);
 
   return {
-    message: 'Company tenant database created successfully',
+    message: 'Company onboarding completed successfully',
     tenant,
     user: toApiUser(updatedUser),
     token,
@@ -350,17 +312,6 @@ export const updateOnboardingCompanyService = async (authUser, rawBody, file) =>
 
   if (!uploadedLogoPath && hasBase64Logo(company.logoPreview)) {
     throw new ApiError(400, 'Company logo must be uploaded as a file');
-  }
-
-  const isCompanyEmailChanged = requestedCompanyEmail && requestedCompanyEmail !== existingCompanyEmail;
-  if (isCompanyEmailChanged) {
-    const emailVerified = await EmailVerification.isEmailVerified(companyEmail, 'company_email');
-    if (!emailVerified) {
-      throw new ApiError(400, 'Company email must be verified before updating company details', {
-        code: 'COMPANY_EMAIL_NOT_VERIFIED',
-        email: companyEmail,
-      });
-    }
   }
 
   if (company.pincode && !PINCODE_REGEX.test(String(company.pincode).trim())) {
@@ -454,47 +405,3 @@ export const updateOnboardingSubscriptionService = async (authUser, { subscripti
   };
 };
 
-export const sendOTPService = async (email) => {
-  const user = await User.findByEmailOnly(email);
-  if (!user) {
-    throw new ApiError(404, 'User not found');
-  }
-
-  const otp = User.generateOTP();
-  await User.setOTP(email, otp);
-
-  const emailResult = await sendOTPEmail(email, otp);
-  if (!emailResult.success) {
-    throw new ApiError(500, emailResult.message);
-  }
-
-  return { message: 'OTP sent successfully to your email' };
-};
-
-export const verifyOTPService = async (email, otp) => {
-  const result = await User.verifyOTP(email, otp);
-  if (!result.valid) {
-    throw new ApiError(400, result.message);
-  }
-
-  const resetToken = jwt.sign({ email, purpose: 'password_reset' }, JWT_SECRET, { expiresIn: '15m' });
-
-  return { message: result.message, resetToken };
-};
-
-export const resetPasswordService = async (resetToken, newPassword) => {
-  let decoded;
-  try {
-    decoded = jwt.verify(resetToken, JWT_SECRET);
-  } catch {
-    throw new ApiError(400, 'Invalid or expired reset token');
-  }
-
-  if (decoded.purpose !== 'password_reset') {
-    throw new ApiError(400, 'Invalid token purpose');
-  }
-
-  await User.resetPassword(decoded.email, newPassword);
-
-  return { message: 'Password reset successfully' };
-};

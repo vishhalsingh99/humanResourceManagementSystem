@@ -1,13 +1,12 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { X, Mail, CheckCircle, Clock } from 'lucide-react';
+import { X } from 'lucide-react';
 import { useApp } from '../../context/AppContext';
 import { ROUTES } from '../../constants/routes.constants';
 import { validatePhoneNumber, getPhoneErrorMessage } from '../../utils/phoneValidation';
 import { getPincodeErrorMessage, validatePincode } from '../../utils/formValidation';
 import { useLocationOptions } from '../../hooks/useLocationOptions';
 import { buildUploadedFileUrl } from '../../utils';
-import { checkEmailVerification } from '../../api/emailVerificationApi';
 import api from '../../services/api';
 
 function Field({ label, required, className = '', children }) {
@@ -33,13 +32,6 @@ function Compny({ mode = 'settings' }) {
   const [logoFile, setLogoFile] = useState(null);
   const [phoneError, setPhoneError] = useState('');
   const [pincodeError, setPincodeError] = useState('');
-  const [emailVerificationState, setEmailVerificationState] = useState({
-    otpSent: false,
-    otpCode: '',
-    isVerified: savedCompany.emailVerified || false,
-    isLoading: false,
-    verificationAttempts: 0
-  });
   const [form, setForm] = useState({
     companyName: savedCompany.companyName || '',
     email: savedCompany.email || user?.email || '',
@@ -51,23 +43,6 @@ function Compny({ mode = 'settings' }) {
     address: savedCompany.address || '',
   });
   const { states, districts } = useLocationOptions(form.state_id);
-
-  useEffect(() => {
-    const email = form.email.trim();
-    if (!email) return;
-
-    checkEmailVerification(email, 'company_email')
-      .then((result) => {
-        setEmailVerificationState((current) => ({
-          ...current,
-          isVerified: Boolean(result.isVerified),
-          otpSent: result.isVerified ? false : current.otpSent,
-        }));
-      })
-      .catch(() => {
-        // Keep the saved local verification state when the status check is unavailable.
-      });
-  }, [form.email]);
 
   useEffect(() => {
     return () => {
@@ -83,67 +58,6 @@ function Compny({ mode = 'settings' }) {
     setLogoPreviewUrl(buildUploadedFileUrl(savedCompany.logoPreview));
   }, [logoFile, savedCompany.logoPreview]);
 
-  // Email verification functions
-  const sendEmailOTP = async () => {
-    if (!form.email) {
-      showToast('Please enter an email address', 'error');
-      return;
-    }
-
-    setEmailVerificationState(prev => ({ ...prev, isLoading: true }));
-
-    try {
-      await api.post('/email-verification/company/send-otp', { email: form.email });
-
-      setEmailVerificationState(prev => ({
-        ...prev,
-        otpSent: true,
-        verificationAttempts: 0
-      }));
-      showToast('OTP sent to your email', 'success');
-    } catch (error) {
-      showToast(error.response?.data?.error || error.message || 'Error sending OTP', 'error');
-    } finally {
-      setEmailVerificationState(prev => ({ ...prev, isLoading: false }));
-    }
-  };
-
-  const verifyEmailOTP = async () => {
-    if (!emailVerificationState.otpCode || emailVerificationState.otpCode.length !== 6) {
-      showToast('Please enter a valid 6-digit OTP', 'error');
-      return;
-    }
-
-    setEmailVerificationState(prev => ({ ...prev, isLoading: true }));
-
-    try {
-      await api.post('/email-verification/company/verify-otp', {
-        email: form.email,
-        otp: emailVerificationState.otpCode
-      });
-
-      setEmailVerificationState(prev => ({
-        ...prev,
-        isVerified: true,
-        otpSent: false,
-        otpCode: ''
-      }));
-      showToast('Email verified successfully!', 'success');
-    } catch (error) {
-      setEmailVerificationState(prev => ({
-        ...prev,
-        verificationAttempts: prev.verificationAttempts + 1
-      }));
-      showToast(error.response?.data?.error || error.message || 'Error verifying OTP', 'error');
-    } finally {
-      setEmailVerificationState(prev => ({ ...prev, isLoading: false }));
-    }
-  };
-
-  const resendEmailOTP = async () => {
-    await sendEmailOTP();
-  };
-
   const handleChange = (event) => {
     const { name, value } = event.target;
     setForm((current) => ({
@@ -151,16 +65,6 @@ function Compny({ mode = 'settings' }) {
       [name]: value,
       ...(name === 'state_id' ? { district_id: '' } : {}),
     }));
-    // Reset email verification if email changes
-    if (name === 'email' && value !== form.email) {
-      setEmailVerificationState(prev => ({
-        ...prev,
-        otpSent: false,
-        otpCode: '',
-        isVerified: false,
-        verificationAttempts: 0
-      }));
-    }
     // Validate phone field
     if (name === 'mobile' && value) {
       const error = getPhoneErrorMessage(value);
@@ -199,12 +103,6 @@ function Compny({ mode = 'settings' }) {
   const handleSubmit = async (event) => {
     event.preventDefault();
 
-    // Check email verification
-    if (!emailVerificationState.isVerified) {
-      showToast('Please verify your email address first', 'error');
-      return;
-    }
-
     // Validate phone if provided
     if (form.mobile && !validatePhoneNumber(form.mobile)) {
       const error = getPhoneErrorMessage(form.mobile);
@@ -234,7 +132,7 @@ function Compny({ mode = 'settings' }) {
       }
     }
 
-    const payload = { ...form, logoPreview: nextLogoPreview, emailVerified: true };
+    const payload = { ...form, logoPreview: nextLogoPreview };
 
     if (isOnboarding) {
       completeOnboardingStep('company', payload);
@@ -289,82 +187,8 @@ function Compny({ mode = 'settings' }) {
 
               <div>
                 <Field label="Email" required>
-                  <div className="flex gap-2">
-                    <input
-                      name="email"
-                      type="email"
-                      value={form.email}
-                      onChange={handleChange}
-                      disabled={emailVerificationState.isVerified}
-                      className={`${inputClass} ${emailVerificationState.isVerified ? 'bg-blue-50' : ''}`}
-                    />
-                    {!emailVerificationState.isVerified && (
-                      <button
-                        type="button"
-                        onClick={sendEmailOTP}
-                        disabled={emailVerificationState.isLoading || emailVerificationState.otpSent}
-                        className="h-11 px-3 py-2 bg-blue-600 text-white text-sm font-semibold rounded hover:bg-blue-700 disabled:bg-gray-400 disabled:cursor-not-allowed whitespace-nowrap flex items-center gap-2"
-                      >
-                        <Mail size={16} />
-                        {emailVerificationState.otpSent ? 'OTP Sent' : 'Send OTP'}
-                      </button>
-                    )}
-                    {emailVerificationState.isVerified && (
-                      <button
-                        type="button"
-                        disabled
-                        className="h-11 px-3 py-2 bg-green-600 text-white text-sm font-semibold rounded whitespace-nowrap flex items-center gap-2"
-                      >
-                        <CheckCircle size={16} />
-                        Verified
-                      </button>
-                    )}
-                  </div>
+                  <input name="email" type="email" value={form.email} onChange={handleChange} className={inputClass} />
                 </Field>
-
-                {emailVerificationState.otpSent && (
-                  <div className="mt-3 p-3 bg-blue-50 rounded border border-blue-200">
-                    <div className="flex items-center gap-2 mb-2 text-sm text-blue-700">
-                      <Clock size={16} />
-                      <span>OTP sent to {form.email}</span>
-                    </div>
-                    <div className="flex gap-2">
-                      <input
-                        type="text"
-                        maxLength="6"
-                        inputMode="numeric"
-                        value={emailVerificationState.otpCode}
-                        onChange={(e) => setEmailVerificationState(prev => ({
-                          ...prev,
-                          otpCode: e.target.value.replace(/\D/g, '')
-                        }))}
-                        placeholder="Enter 6-digit OTP"
-                        className={`${inputClass} flex-1`}
-                      />
-                      <button
-                        type="button"
-                        onClick={verifyEmailOTP}
-                        disabled={emailVerificationState.isLoading || emailVerificationState.otpCode.length !== 6}
-                        className="h-11 px-4 bg-green-600 text-white text-sm font-semibold rounded hover:bg-green-700 disabled:bg-gray-400 disabled:cursor-not-allowed whitespace-nowrap"
-                      >
-                        {emailVerificationState.isLoading ? 'Verifying...' : 'Verify'}
-                      </button>
-                    </div>
-                    <button
-                      type="button"
-                      onClick={resendEmailOTP}
-                      disabled={emailVerificationState.isLoading}
-                      className="mt-2 text-xs text-blue-600 hover:text-blue-700 hover:underline disabled:text-gray-400"
-                    >
-                      Resend OTP
-                    </button>
-                    {emailVerificationState.verificationAttempts > 0 && (
-                      <p className="mt-2 text-xs text-red-600">
-                        Failed attempts: {emailVerificationState.verificationAttempts}/5
-                      </p>
-                    )}
-                  </div>
-                )}
               </div>
 
               <Field label="Mobile No." required>

@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import signupImage from '../../assets/images/AdoneeLogo2.png';
 import LegalModal from '../../components/ui/LegalModal';
 import { useApp } from '../../context/AppContext';
 import Button from '../../components/common/Button';
@@ -17,9 +16,7 @@ export default function Signup() {
   const [acceptedTerms, setAcceptedTerms] = useState(false);
   const [legalModal, setLegalModal] = useState(null);
   const [loading, setLoading] = useState(false);
-  const [step, setStep] = useState('details');
-  const [otp, setOtp] = useState('');
-  const { requestSignupOTP, verifySignupOTP, defaultRole, showToast } = useApp();
+  const { register, defaultRole, showToast } = useApp();
   const handle = (e) => setForm({ ...form, [e.target.name]: e.target.value });
 
    
@@ -59,70 +56,19 @@ export default function Signup() {
     const name =
       `${form.firstName.trim()} ${form.lastName.trim()}`.trim();
 
-    await requestSignupOTP(
-      name,
-      form.email.trim(),
-      form.password,
-      defaultRole
-    );
-
-    showToast(
-      'OTP sent to your email',
-      'success'
-    );
-    setStep('otp');
+    await register(name, form.email.trim(), form.password, defaultRole);
+    showToast('Account created successfully!', 'success');
   } catch (err) {
     const message =
       err.response?.data?.error ||
       err.message ||
-      'Unable to send OTP';
+      'Unable to create account';
 
     showToast(message, 'error');
   } finally {
     setLoading(false);
   }
 };
-
-  const handleVerifyOtp = async (e) => {
-    e.preventDefault();
-
-    if (otp.trim().length !== 6) {
-      showToast('Please enter the 6 digit OTP', 'error');
-      return;
-    }
-
-    setLoading(true);
-
-    try {
-      await verifySignupOTP(form.email.trim(), otp.trim());
-      showToast('Account created successfully!', 'success');
-    } catch (err) {
-      const message =
-        err.response?.data?.error ||
-        err.message ||
-        'Unable to verify OTP';
-
-      showToast(message, 'error');
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const handleResendOtp = async () => {
-    const name = `${form.firstName.trim()} ${form.lastName.trim()}`.trim();
-
-    setLoading(true);
-
-    try {
-      await requestSignupOTP(name, form.email.trim(), form.password, defaultRole);
-      setOtp('');
-      showToast('OTP sent again to your email', 'success');
-    } catch (err) {
-      showToast(err.response?.data?.error || 'Unable to resend OTP', 'error');
-    } finally {
-      setLoading(false);
-    }
-  };
 
   return (
     <div className="flex min-h-screen">
@@ -131,12 +77,9 @@ export default function Signup() {
         <div className="w-full max-w-sm">
           <h2 className="text-2xl font-semibold text-gray-900 mb-1">Sign Up</h2>
 <p className="text-sm text-gray-500 mb-6">
-  {step === 'details'
-    ? <>Enter your details to receive an email OTP. The default role is <strong>{defaultRole}</strong>.</>
-    : <>Enter the OTP sent to <strong>{form.email}</strong> to create your account.</>}
+  Enter your details to create an account. The default role is <strong>{defaultRole}</strong>.
 </p>
 
-          {step === 'details' ? (
           <form onSubmit={handleSubmit} className="space-y-4">
             {/* First & Last Name */}
             <div className="flex gap-3">
@@ -230,51 +173,9 @@ export default function Signup() {
               disabled={!acceptedTerms || loading}
               className="w-full rounded py-2.5 transition-all duration-700 ease-in-out"
               variant={acceptedTerms && !loading ? 'primary' : 'secondary'}>
-              {loading ? 'Sending OTP...' : 'Send OTP'}
+              {loading ? 'Creating Account...' : 'Create Account'}
             </Button>
           </form>
-          ) : (
-          <form onSubmit={handleVerifyOtp} className="space-y-4">
-            <InputField
-              type="text"
-              inputMode="numeric"
-              label="Email OTP"
-              placeholder="Enter 6 digit OTP"
-              value={otp}
-              onChange={(e) => setOtp(e.target.value.replace(/\D/g, '').slice(0, 6))}
-              required
-              inputClassName="rounded px-4 py-2.5 text-center text-lg tracking-[0.35em] placeholder:tracking-normal"
-            />
-
-            <Button
-              type="submit"
-              disabled={loading || otp.length !== 6}
-              className="w-full rounded py-2.5 transition-all duration-700 ease-in-out"
-              variant={!loading && otp.length === 6 ? 'primary' : 'secondary'}
-            >
-              {loading ? 'Verifying...' : 'Verify OTP & Create Account'}
-            </Button>
-
-            <div className="flex items-center justify-between gap-3 text-sm">
-              <button
-                type="button"
-                onClick={() => setStep('details')}
-                className="text-gray-600 hover:text-gray-900 hover:underline"
-                disabled={loading}
-              >
-                Edit details
-              </button>
-              <button
-                type="button"
-                onClick={handleResendOtp}
-                className="text-blue-600 hover:underline"
-                disabled={loading}
-              >
-                Resend OTP
-              </button>
-            </div>
-          </form>
-          )}
 
           <p className="mt-5 text-sm text-gray-600">
             Already have an account?{' '}
@@ -283,9 +184,11 @@ export default function Signup() {
         </div>
       </div>
 
-      {/* Right - Image */}
-      <div className="hidden lg:flex w-1/2 items-center justify-center" style={{ backgroundColor: '#0f1f4b' }}>
-        <img src={signupImage} alt="hr Management" className="w-full h-full object-cover" />
+      <div className="hidden lg:flex w-1/2 items-center justify-center bg-[#0f1f4b]">
+        <div className="text-center text-white">
+          <p className="text-6xl font-semibold tracking-tight">NexaHR</p>
+          <p className="mt-4 text-lg text-blue-100">A calmer way to run your people operations.</p>
+        </div>
       </div>
 
       {legalModal && <LegalModal type={legalModal} onClose={() => setLegalModal(null)} />}

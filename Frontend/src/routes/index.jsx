@@ -14,7 +14,6 @@ const Company = lazy(() => import('../pages/onBording/Compny'));
 const Subscription = lazy(() => import('../pages/onBording/Subscription'));
 
 const Employees = lazy(() => import('../features/employees'));
-const EmployeeDirectory = lazy(() => import('../modules/employees'));
 const Departments = lazy(() => import('../features/departments'));
 const Designations = lazy(() => import('../features/departments/designation/designation'));
 const Meetings = lazy(() => import('../features/meetings'));
@@ -32,7 +31,6 @@ const CompanyRule = lazy(() => import('../pages/employeeRule/CompanyRule'));
 
 const Login = lazy(() => import('../pages/auth/Login'));
 const Signup = lazy(() => import('../pages/auth/SignUp'));
-const ForgotPassword = lazy(() => import('../pages/auth/ForgotPassword'));
 
 const Settings = lazy(() => import('../pages/Settings/Settings'));
 const RolesPermissions = lazy(() => import('../pages/Settings/RolesPermissions'));
@@ -126,7 +124,6 @@ export default function AppRoutes({ renderProtectedLayout }) {
       <Routes>
         <Route path={ROUTES.LOGIN} element={<Login />} />
         <Route path={ROUTES.SIGNUP} element={<Signup />} />
-        <Route path={ROUTES.FORGOT_PASSWORD} element={<ForgotPassword />} />
 
         <Route
           path={ROUTES.ONBOARDING_PROFILE}
@@ -239,13 +236,6 @@ export default function AppRoutes({ renderProtectedLayout }) {
                         <Route
                           path={ROUTES.EMPLOYEES}
                           element={<Employees />}
-                        />
-                      )}
-
-                      {!isSuperAdmin && canAccessEmployees && (
-                        <Route
-                          path={ROUTES.EMPLOYEE_DIRECTORY}
-                          element={<EmployeeDirectory />}
                         />
                       )}
 

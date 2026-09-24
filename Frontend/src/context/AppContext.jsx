@@ -291,45 +291,6 @@ export function AppProvider({ children }) {
     navigate(getNextOnboardingPath(onboardingState));
   }
 
-  async function requestSignupOTP(name, email, password, role = 'admin') {
-    const response = await axios.post('/api/auth/signup/send-otp', { name, email, password, role });
-    return response.data;
-  }
-
-  async function verifySignupOTP(email, otp) {
-    const response = await axios.post('/api/auth/signup/verify-otp', { email, otp });
-    const onboardingState = setAuthState(response.data.user, response.data.token);
-    navigate(getNextOnboardingPath(onboardingState));
-    return response.data;
-  }
-  //  send OTP
-  async function sendOTP(email) {
-  const response = await axios.post(
-    '/api/auth/send-otp',
-    { email }
-  );
-
-
-  return response.data;
-}
-// verify email and OTP
-async function verifyOTP(email, otp) {
-  const response = await axios.post(
-    '/api/auth/verify-otp',
-    { email, otp }
-  );
-
-  return response.data;
-}
-// Forgot password flow: reset password
-async function resetPassword(resetToken, newPassword) {
-  const response = await axios.post(
-    '/api/auth/reset-password',
-    { resetToken, newPassword }
-  );
-
-  return response.data;
-}
 
   function logout() {
     clearStoredAuth();
@@ -523,7 +484,7 @@ async function resetPassword(resetToken, newPassword) {
     <AppContext.Provider value={{
       // auth
       isLoggedIn, user, onboarding, updateOnboarding, completeOnboardingStep, completeTenantOnboarding, uploadCompanyLogo, updateCompanyOnboarding, updateProfileOnboarding, updateSubscriptionOnboarding, refreshUserProfile, loadOnboarding, getNextOnboardingPath,
-      defaultRole, setDefaultRole: setDefaultRoleValue, login, register, requestSignupOTP, verifySignupOTP, logout, isImpersonating, startImpersonation, exitImpersonation,
+      defaultRole, setDefaultRole: setDefaultRoleValue, login, register, logout, isImpersonating, startImpersonation, exitImpersonation,
       hasPermission: (permissionKey) => checkPermission(user, permissionKey),
       hasAnyPermission: (permissionKeys) => checkAnyPermission(user, permissionKeys),
       // toast
@@ -536,10 +497,6 @@ async function resetPassword(resetToken, newPassword) {
       attendance, loadAttendance,
       departments, loadDepartments,
       designations, loadDesignations,
-      // OTP and password reset functions
-      sendOTP,
-      verifyOTP,
-      resetPassword,
     }}>
       {children}
     </AppContext.Provider>

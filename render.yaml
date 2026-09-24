@@ -1,0 +1,41 @@
+services:
+  - type: web
+    name: hrms-backend
+    runtime: node
+    rootDir: Backend
+    buildCommand: npm install
+    startCommand: npm start
+    healthCheckPath: /users
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: HOST
+        value: 0.0.0.0
+      - key: PORT
+        value: 10000
+      - key: FRONTEND_URLS
+        sync: false
+      - key: DB_HOST
+        sync: false
+      - key: DB_PORT
+        sync: false
+      - key: DB_USER
+        sync: false
+      - key: DB_PASS
+        sync: false
+      - key: DB_NAME
+        sync: false
+      - key: JWT_SECRET
+        sync: false
+      - key: SEED_ACCOUNT_NAME
+        sync: false
+      - key: SEED_ACCOUNT_EMAIL
+        sync: false
+      - key: SEED_ACCOUNT_PASSWORD
+        sync: false
+      - key: SEED_COMPANY_NAME
+        sync: false
+      - key: SUPER_ADMIN_EMAIL
+        sync: false
+      - key: SUPER_ADMIN_PASSWORD_HASH
+        sync: false

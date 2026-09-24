@@ -1,7 +1,6 @@
 // Backend/config/databases.js
 import './env.js';
 import mysql from 'mysql2/promise';
-import { AsyncLocalStorage } from 'async_hooks';
 
 // Database configuration - using MySQL
 // Update these values according to your database settings
@@ -17,29 +16,11 @@ const dbConfig = {
   dateStrings: true // Ensures that DATE and DATETIME values are returned as strings
 };
 
-const tenantStorage = new AsyncLocalStorage();
-const tenantPools = new Map();
 const masterPool = mysql.createPool(dbConfig);
 
-const createPoolForDatabase = (database) => mysql.createPool({
-  ...dbConfig,
-  database
-});
+const getTenantPool = () => masterPool;
 
-const getTenantPool = (database) => {
-  if (!database) return masterPool;
-
-  if (!tenantPools.has(database)) {
-    tenantPools.set(database, createPoolForDatabase(database));
-  }
-
-  return tenantPools.get(database);
-};
-
-const getActivePool = () => {
-  const tenantDatabase = tenantStorage.getStore()?.tenantDatabase;
-  return tenantDatabase ? getTenantPool(tenantDatabase) : masterPool;
-};
+const getActivePool = () => masterPool;
 
 const pool = {
   execute: (...args) => getActivePool().execute(...args),
@@ -48,45 +29,13 @@ const pool = {
 };
 
 const withTenantDatabase = (tenantDatabase, callback) => {
-  if (!tenantDatabase) return callback();
-  return tenantStorage.run({ tenantDatabase }, callback);
+  return callback();
 };
 
-const createTenantDatabaseName = (companyName, adminId) => {
-  const slug = String(companyName || 'company')
-    .toLowerCase()
-    .replace(/[^a-z0-9]+/g, '_')
-    .replace(/^_+|_+$/g, '')
-    .slice(0, 40) || 'company';
-
-  return `${process.env.TENANT_DB_PREFIX || 'hrsystem'}_${slug}_${adminId}`;
-};
+const createTenantDatabaseName = () => dbConfig.database;
 
 const createTenantDatabase = async (databaseName) => {
-  if (!/^[a-zA-Z0-9_]+$/.test(databaseName)) {
-    throw new Error('Invalid tenant database name');
-  }
-
-  const connection = await mysql.createConnection({
-    host: dbConfig.host,
-    port: dbConfig.port,
-    user: dbConfig.user,
-    password: dbConfig.password
-  });
-
-  try {
-    await connection.query('CREATE DATABASE IF NOT EXISTS ?? CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci', [databaseName]);
-
-   // Grant access to app user and cPanel user for phpMyAdmin visibility
-    // await connection.query(`GRANT ALL PRIVILEGES ON \`${databaseName}\`.* TO 'adonee_user'@'localhost'`);
-    // await connection.query(`GRANT ALL PRIVILEGES ON \`${databaseName}\`.* TO 'adonee'@'localhost'`);
-    // await connection.query('FLUSH PRIVILEGES');
-
-  } finally {
-    await connection.end(); 
-  }
-
-  return getTenantPool(databaseName);
+  return masterPool;
 };
 
 // Test connection

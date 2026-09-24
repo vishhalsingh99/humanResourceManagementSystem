@@ -3,12 +3,13 @@ import path from 'node:path';
 import dotenv from 'dotenv';
 import { fileURLToPath } from 'node:url';
 import {
+  dbConfig,
   masterPool,
-  getTenantPool,
 } from "../../config/databases.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
+const masterMigrationsDir = path.resolve(__dirname, "../master");
 
 dotenv.config({ path: path.join(__dirname, "../../.env") });
 
@@ -16,7 +17,7 @@ const migrationsDir = __dirname;
 // If your SQL files are inside a sql folder, use:
 // const migrationsDir = path.join(__dirname, "sql");
 
-async function migrateDatabase(tenantPool, databaseName) {
+export async function migrateDatabase(tenantPool, databaseName, migrationDirectories = [masterMigrationsDir, __dirname]) {
   console.log(`\n📦 Migrating Database: ${databaseName}`);
 
   // Create migration history table
@@ -28,10 +29,11 @@ async function migrateDatabase(tenantPool, databaseName) {
     )
   `);
 
-  const files = fs
-    .readdirSync(migrationsDir)
+  const files = migrationDirectories.flatMap((directory) => fs
+    .readdirSync(directory)
     .filter(file => file.endsWith(".sql"))
-    .sort();
+    .sort()
+    .map(file => ({ file, path: path.join(directory, file) })));
 
   if (!files.length) {
     console.log("📄 No migration files found.");
@@ -39,22 +41,20 @@ async function migrateDatabase(tenantPool, databaseName) {
   }
 
   for (const file of files) {
+    const filename = file.file;
     const [executed] = await tenantPool.query(
       "SELECT id FROM migrations WHERE filename = ?",
-      [file]
+      [filename]
     );
 
     if (executed.length > 0) {
-      console.log(`⏩ Skipped: ${file}`);
+      console.log(`⏩ Skipped: ${filename}`);
       continue;
     }
 
-    console.log(`🚀 Running: ${file}`);
+    console.log(`🚀 Running: ${filename}`);
 
-    const sql = fs.readFileSync(
-      path.join(migrationsDir, file),
-      "utf8"
-    );
+    const sql = fs.readFileSync(file.path, "utf8");
 
     const connection = await tenantPool.getConnection();
 
@@ -89,16 +89,16 @@ for (const statement of statements) {
 
       await connection.query(
         "INSERT INTO migrations (filename) VALUES (?)",
-        [file]
+        [filename]
       );
 
       await connection.commit();
 
-      console.log(`✅ Completed: ${file}`);
+      console.log(`✅ Completed: ${filename}`);
     } catch (err) {
       await connection.rollback();
 
-      console.error(`❌ Failed: ${file}`);
+      console.error(`❌ Failed: ${filename}`);
       console.error(err.sqlMessage || err.message);
 
       throw err;
@@ -108,46 +108,18 @@ for (const statement of statements) {
   }
 }
 
-async function runMigrations() {
-  try {
-    console.log("🔍 Fetching tenant databases...");
-
-    const [tenants] = await masterPool.query(`
-      SELECT database_name
-      FROM tenants
-      WHERE status = 'active'
-        AND database_name IS NOT NULL
-    `);
-
-    if (!tenants.length) {
-      console.log("⚠️ No tenant databases found.");
-      return;
-    }
-
-    console.log(`✅ Found ${tenants.length} tenant database(s).\n`);
-
-    for (const tenant of tenants) {
-      const databaseName = tenant.database_name;
-
-      const tenantPool = getTenantPool(databaseName);
-
-      await migrateDatabase(
-        tenantPool,
-        databaseName
-      );
-    }
-
-    console.log("\n🎉 All tenant migrations completed successfully.");
-  } catch (err) {
-    console.error("\n❌ Migration Runner Error");
-    console.error(err);
-
-    process.exit(1);
-  }
+export async function runMigrations() {
+  console.log(`🔍 Migrating configured database: ${dbConfig.database}`);
+  await migrateDatabase(masterPool, dbConfig.database);
+  console.log("\n🎉 Database migrations completed successfully.");
 }
 
 if (process.argv[1] === __filename) {
-  runMigrations();
+  runMigrations().catch((error) => {
+    console.error("\n❌ Migration Runner Error");
+    console.error(error);
+    process.exitCode = 1;
+  });
 }
 
 export default runMigrations;

@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import adoneehr from '../../assets/images/AdoneeLogo2.png';
 
 import { useApp } from '../../context/AppContext';
 import Button from '../../components/common/Button';
@@ -75,9 +74,6 @@ export default function Login() {
                   </button>
                 }
               />
-              <div className="text-right mt-1">
-                <Link to="/forgot-password" className="text-sm text-blue-600 hover:underline">Forgot Password?</Link>
-              </div>
             </div>
 
             <Button
@@ -96,13 +92,11 @@ export default function Login() {
         </div>
       </div>
 
-      {/* Right - Image */}
-      <div className="hidden lg:flex w-1/2 items-center justify-center" style={{ backgroundColor: '#0f1f4b' }}>
-        <img
-          src={adoneehr}
-          alt="ADONEE_Hrms"
-          className="w-full h-full object-cover"
-        />
+      <div className="hidden lg:flex w-1/2 items-center justify-center bg-[#0f1f4b]">
+        <div className="text-center text-white">
+          <p className="text-6xl font-semibold tracking-tight">NexaHR</p>
+          <p className="mt-4 text-lg text-blue-100">People operations, clearly organized.</p>
+        </div>
       </div>
     </div>
   );

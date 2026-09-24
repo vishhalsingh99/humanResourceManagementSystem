@@ -18,14 +18,12 @@ import locationRoutes from './modules/location/location.routes.js';
 import superAdminRoutes from './modules/superAdmin/superAdmin.routes.js';
 import employeeCompanyRoutes from './modules/employeeCompany/employeeCompany.routes.js';
 
-import emailVerificationRoutes from './modules/emailVerification/emailVerification.routes.js';
 import { authMiddleware } from './middlewares/authe.js';
 import tenantContext from './middlewares/tenantContext.js';
 
 // Use routes
 router.use('/auth', authRoutes);
 router.use('/super-admin', superAdminRoutes); 
-router.use('/email-verification', emailVerificationRoutes);
 router.use('/', authMiddleware, locationRoutes);
 router.use('/employees', authMiddleware, tenantContext, employeeRoutes);
 router.use('/leaves', authMiddleware, tenantContext, leaveRoutes);

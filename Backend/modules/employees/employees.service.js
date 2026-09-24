@@ -3,11 +3,9 @@ import Employee from '../../repositories/employee.repository.js';
 import EmployeeAttendanceSchedule, { validateSchedule } from '../../repositories/employeeAttendanceSchedule.repository.js';
 import CompanySettings from '../../repositories/companySettings.repository.js';
 import User from '../../repositories/user.repository.js';
-import EmailVerification from '../../repositories/emailVerification.repository.js';
 import Tenant from '../../repositories/tenant.repository.js';
 import Role from '../../repositories/role.repository.js';
 import { getEmployeeLimitMessage, getSubscriptionPlan } from '../../config/subscriptionPlans.js';
-import { sendWelcomeEmployeeEmail, sendPasswordResetEmail } from '../../utils/emailService.js';
 import { ApiError } from '../../utils/ApiError.js';
 
 const isDuplicateLoginError = (error) => (
@@ -35,23 +33,6 @@ const duplicateEmailError = (email) => new ApiError(
 const getRequestedEmployeeLoginId = (body = {}) => {
   const value = body.employee_login_id || body.loginId || body.login_id;
   return value ? String(value).trim() : '';
-};
-
-const getCompanyNameForRequest = async (tenantId) => {
-  if (!tenantId) return 'your company';
-
-  try {
-    const onboarding = await Tenant.findOnboardingByTenantId(tenantId);
-    return onboarding?.company?.companyName || 'your company';
-  } catch (error) {
-    console.error('Failed to load company name for email notification:', error.message);
-    return 'your company';
-  }
-};
-
-const logEmailFailure = (notificationName, result) => {
-  if (result?.success) return;
-  console.warn(`${notificationName} email was not sent: ${result?.message || 'Unknown email error'}`);
 };
 
 const getSchedulePayload = (body = {}, fallbackEffectiveFrom = null) => ({
@@ -158,14 +139,6 @@ export const createEmployeeService = async (authUser, body, companyId) => {
     }
   }
 
-  const emailVerified = await EmailVerification.isEmailVerified(email, 'employee_email');
-  if (!emailVerified) {
-    throw new ApiError(400, 'Employee email must be verified before creating account', {
-      code: 'EMAIL_NOT_VERIFIED',
-      email,
-    });
-  }
-
   try {
     const plan = getSubscriptionPlan(body.subscriptionPlan);
 
@@ -236,16 +209,6 @@ export const createEmployeeService = async (authUser, body, companyId) => {
       await Employee.delete(employee.id);
       throw userCreateError;
     }
-
-    const companyName = await getCompanyNameForRequest(companyId);
-    const welcomeEmailResult = await sendWelcomeEmployeeEmail({
-      email: employee.email,
-      employeeName: employee.name,
-      companyName,
-      loginId: employeeLoginId,
-      temporaryPassword: loginPassword,
-    });
-    logEmailFailure('Welcome employee', welcomeEmailResult);
 
     return employee;
   } catch (err) {
@@ -331,14 +294,6 @@ export const updateEmployeeService = async (authUser, employeeId, body, companyI
         password: nextPassword || undefined,
       });
 
-      if (nextPassword) {
-        const passwordResetEmailResult = await sendPasswordResetEmail({
-          email: body.email,
-          employeeName,
-          temporaryPassword: nextPassword,
-        });
-        logEmailFailure('Password reset', passwordResetEmailResult);
-      }
     } else if (nextPassword) {
       await User.create({
         name: employeeName,
@@ -353,15 +308,6 @@ export const updateEmployeeService = async (authUser, employeeId, body, companyI
         onboardingCompleted: true,
       });
 
-      const companyName = await getCompanyNameForRequest(companyId);
-      const welcomeEmailResult = await sendWelcomeEmployeeEmail({
-        email: body.email,
-        employeeName,
-        companyName,
-        loginId: nextLoginId,
-        temporaryPassword: nextPassword,
-      });
-      logEmailFailure('Welcome employee', welcomeEmailResult);
     }
 
     return updatedEmployee;

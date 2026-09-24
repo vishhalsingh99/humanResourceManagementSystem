@@ -4,8 +4,7 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import multer from 'multer';
 import {
-  requestSignupOTP,
-  verifySignupOTP,
+  register,
   login,
   getProfile,
   getOnboarding,
@@ -14,19 +13,12 @@ import {
   updateOnboardingCompany,
   updateOnboardingProfile,
   updateOnboardingSubscription,
-  sendOTP,
-  verifyOTP,
-  resetPassword,
 } from './auth.controller.js';
 import { authMiddleware } from '../../middlewares/authe.js';
 import { validate } from '../../middlewares/validate.js';
 import {
   requestSignupOTPSchema,
-  verifySignupOTPSchema,
   loginSchema,
-  sendOTPSchema,
-  verifyOTPSchema,
-  resetPasswordSchema,
   completeOnboardingSchema,
   updateOnboardingProfileSchema,
   updateOnboardingSubscriptionSchema,
@@ -66,13 +58,8 @@ const handleCompanyLogoUpload = (req, res, next) => {
 };
 
 // Public routes
-router.post('/register', validate(requestSignupOTPSchema), requestSignupOTP);
-router.post('/signup/send-otp', validate(requestSignupOTPSchema), requestSignupOTP);
-router.post('/signup/verify-otp', validate(verifySignupOTPSchema), verifySignupOTP);
+router.post('/register', validate(requestSignupOTPSchema), register);
 router.post('/login', validate(loginSchema), login);
-router.post('/send-otp', validate(sendOTPSchema), sendOTP);
-router.post('/verify-otp', validate(verifyOTPSchema), verifyOTP);
-router.post('/reset-password', validate(resetPasswordSchema), resetPassword);
 
 // Protected routes
 router.get('/profile', authMiddleware, getProfile);

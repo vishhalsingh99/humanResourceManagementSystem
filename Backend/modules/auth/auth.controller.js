@@ -1,7 +1,6 @@
 import { asyncHandler } from '../../utils/asyncHandler.js';
 import {
-  requestSignupOTPService,
-  verifySignupOTPService,
+  registerService,
   loginService,
   getProfileService,
   getOnboardingService,
@@ -9,9 +8,6 @@ import {
   updateOnboardingCompanyService,
   updateOnboardingProfileService,
   updateOnboardingSubscriptionService,
-  sendOTPService,
-  verifyOTPService,
-  resetPasswordService,
 } from './auth.service.js';
 
 const companyLogoUploadPath = 'uploads/company/logos';
@@ -26,13 +22,8 @@ export const uploadCompanyLogo = (req, res) => {
   });
 };
 
-export const requestSignupOTP = asyncHandler(async (req, res) => {
-  const result = await requestSignupOTPService(req.body);
-  res.json(result);
-});
-
-export const verifySignupOTP = asyncHandler(async (req, res) => {
-  const result = await verifySignupOTPService(req.body);
+export const register = asyncHandler(async (req, res) => {
+  const result = await registerService(req.body);
   res.status(201).json(result);
 });
 
@@ -71,17 +62,3 @@ export const updateOnboardingSubscription = asyncHandler(async (req, res) => {
   res.json(result);
 });
 
-export const sendOTP = asyncHandler(async (req, res) => {
-  const result = await sendOTPService(req.body.email);
-  res.json(result);
-});
-
-export const verifyOTP = asyncHandler(async (req, res) => {
-  const result = await verifyOTPService(req.body.email, req.body.otp);
-  res.json(result);
-});
-
-export const resetPassword = asyncHandler(async (req, res) => {
-  const result = await resetPasswordService(req.body.resetToken, req.body.newPassword);
-  res.json(result);
-});

@@ -26,7 +26,7 @@ const content = {
       },
       {
         heading: 'Contact',
-        body: 'For questions regarding these Terms, please contact us at adoneesupport@hrms.com.',
+        body: 'For questions regarding these Terms, please contact your HR administrator.',
       },
     ],
   },
@@ -51,7 +51,7 @@ const content = {
       },
       {
         heading: 'Your Rights',
-        body: 'You have the right to access, correct, or request deletion of your personal data. To exercise these rights, contact your hrms administrator or reach us at adonee.in',
+        body: 'You have the right to access, correct, or request deletion of your personal data. To exercise these rights, contact your HR administrator.',
       },
       {
         heading: 'Cookies',
