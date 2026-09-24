@@ -11,6 +11,7 @@ export default function useAttendanceData({ attendance, employees, departments, 
     const [showBulkRows, setShowBulkRows] = useState(false);
     const [bulkRows, setBulkRows] = useState({});
     const [isSavingBulk, setIsSavingBulk] = useState(false);
+    const [isSaving, setIsSaving] = useState(false);
     const [deleteAttendanceId, setDeleteAttendanceId] = useState(null);
     const [calendar, setCalendar] = useState({ employee: null, records: [] });
     const [dateFilteredEmployees, setDateFilteredEmployees] = useState([]);
@@ -84,6 +85,8 @@ export default function useAttendanceData({ attendance, employees, departments, 
 
     const handleSubmit = useCallback(async (event) => {
         event.preventDefault();
+        if (isSaving) return;
+        setIsSaving(true);
         try {
             const payload = getAttendancePayload(form);
             if (editingRecord?.id) {
@@ -99,9 +102,11 @@ export default function useAttendanceData({ attendance, employees, departments, 
         catch
         (error) {
             showToast(error.response?.data?.error || 'Unable to save attendance', 'error');
+        } finally {
+            setIsSaving(false);
         }
     },
-        [closeForm, editingRecord, form, loadAttendance, showToast]);
+        [closeForm, editingRecord, form, isSaving, loadAttendance, showToast]);
     const handleBulkSave = useCallback(async () => {
         if (!criteria.date) return showToast('Attendance date is required', 'error');
         if (!criteriaEmployees.length) return showToast('No employees found for selected criteria', 'error');
@@ -170,5 +175,5 @@ export default function useAttendanceData({ attendance, employees, departments, 
         [showToast]);
 
 
-    return { mode, form, criteria, showBulkRows, isSavingBulk, departmentOptions, designationOptions, criteriaEmployees, stats, deleteAttendanceId, setDeleteAttendanceId, calendar, setCalendar, openAdd, openEdit, closeForm, updateForm, updateCriteria, updateBulkRow, getBulkRow, setAllAttendanceStatus, handleCriteriaSearch, handleSubmit, handleBulkSave, confirmDelete, openCalendar };
+    return { mode, form, criteria, showBulkRows, isSaving, isSavingBulk, departmentOptions, designationOptions, criteriaEmployees, stats, deleteAttendanceId, setDeleteAttendanceId, calendar, setCalendar, openAdd, openEdit, closeForm, updateForm, updateCriteria, updateBulkRow, getBulkRow, setAllAttendanceStatus, handleCriteriaSearch, handleSubmit, handleBulkSave, confirmDelete, openCalendar };
 }

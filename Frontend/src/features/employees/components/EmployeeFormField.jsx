@@ -41,8 +41,8 @@ export default function EmployeeFormField({ field, value, onChange, onAddOption,
           onChange={handleFileChange}
           className={`${inputClassName} ${error ? 'border-red-500' : ''}`}
         />
-        {field.fileName && <p className="mt-1 break-all text-xs text-slate-500">Current file: {field.fileName}</p>}
-        {error && <p className="mt-1 text-xs text-red-500">{error}</p>}
+        {field.fileName && <p className="mt-1 break-all text-xs text-neutral-500">Current file: {field.fileName}</p>}
+        {error && <p className="mt-1 text-xs text-red-400">{error}</p>}
       </div>
     );
   }
@@ -88,7 +88,7 @@ export default function EmployeeFormField({ field, value, onChange, onAddOption,
             <button
               type="button"
               onClick={() => onAddOption(field.name)}
-              className="flex items-center justify-center gap-2 rounded-xl bg-blue-600 px-4 text-xs font-semibold text-white shadow-sm transition duration-200 hover:-translate-y-0.5 hover:bg-blue-700 hover:shadow-md cursor-pointer"
+              className="flex cursor-pointer items-center justify-center gap-2 rounded-xl bg-red-500 px-4 text-xs font-semibold text-white shadow-[0_0_16px_rgba(239,68,68,0.25)] transition duration-200 hover:scale-[1.02] hover:bg-red-400"
             >
               <Plus size={16} />
               Add
@@ -118,7 +118,7 @@ export default function EmployeeFormField({ field, value, onChange, onAddOption,
         className={`${inputClassName} ${error ? 'border-red-500' : ''}`}
         required={field.required}
       />
-      {error && <p className="mt-1 text-xs text-red-500">{error}</p>}
+      {error && <p className="mt-1 text-xs text-red-400">{error}</p>}
     </div>
   );
 }

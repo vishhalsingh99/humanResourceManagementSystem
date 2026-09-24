@@ -36,6 +36,7 @@ export default function Employees() {
     optionModalType,
     optionForm,
     isSavingOption,
+    isSaving,
     updateOptionForm,
     handleOptionFormSubmit,
     closeOptionModal,
@@ -85,6 +86,7 @@ export default function Employees() {
         onClose={closeForm}
         onFieldChange={updateField}
         onSubmit={handleSubmit}
+        isSaving={isSaving}
         roles={roles}
         departmentOptions={departmentOptions}
         designationOptions={designationOptions}

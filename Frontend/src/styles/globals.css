@@ -1,5 +1,36 @@
 @import "tailwindcss";
 
+@theme {
+  --font-sans: 'Space Grotesk', ui-sans-serif, system-ui, sans-serif;
+  --font-mono: 'IBM Plex Mono', ui-monospace, monospace;
+  --color-surface: #0a0a0b;
+  --color-surface-raised: #111113;
+  --color-panel: rgba(23, 23, 26, 0.72);
+  --color-accent: #ef4444;
+  --color-accent-soft: rgba(239, 68, 68, 0.12);
+  --color-border-subtle: rgba(38, 38, 42, 0.9);
+}
+
+@layer base {
+  html {
+    color-scheme: dark;
+  }
+
+  body {
+    margin: 0;
+    min-height: 100vh;
+    font-family: var(--font-sans);
+    background-color: var(--color-surface);
+    color: #e5e5e5;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  ::selection {
+    background: rgba(239, 68, 68, 0.35);
+    color: #fff;
+  }
+}
+
 .sidebar-scrollbar {
   scrollbar-width: none;
   -ms-overflow-style: none;
@@ -12,17 +43,74 @@
 input[type='date']::-webkit-calendar-picker-indicator {
   cursor: pointer;
   opacity: 0.7;
-  filter: saturate(0.8);
+  filter: invert(0.85) saturate(0.8);
 }
 
 input[type='date']::-webkit-calendar-picker-indicator:hover {
   opacity: 1;
 }
 
-/* Attendance calendar (FullCalendar) — matches the app's slate/blue theme */
+/* Shared surface utilities */
+.ui-panel {
+  border: 1px solid rgba(38, 38, 42, 0.9);
+  background: rgba(23, 23, 26, 0.72);
+  backdrop-filter: blur(12px);
+  border-radius: 1rem;
+  box-shadow: 0 0 24px rgba(239, 68, 68, 0.06);
+}
+
+.ui-glow {
+  box-shadow: 0 0 20px rgba(239, 68, 68, 0.15);
+}
+
+.ui-input {
+  width: 100%;
+  border-radius: 0.75rem;
+  border: 1px solid rgba(64, 64, 70, 0.9);
+  background: rgba(10, 10, 11, 0.65);
+  padding: 0.625rem 0.75rem;
+  font-size: 0.875rem;
+  color: #f5f5f5;
+  outline: none;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
+}
+
+.ui-input::placeholder {
+  color: #737373;
+}
+
+.ui-input:hover {
+  border-color: rgba(115, 115, 115, 0.9);
+}
+
+.ui-input:focus {
+  border-color: rgba(239, 68, 68, 0.7);
+  box-shadow: 0 0 0 4px rgba(239, 68, 68, 0.12), 0 0 20px rgba(239, 68, 68, 0.1);
+}
+
+/* Ambient page glow */
+.app-ambient {
+  position: relative;
+  isolation: isolate;
+}
+
+.app-ambient::before {
+  content: '';
+  pointer-events: none;
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  background:
+    radial-gradient(ellipse 60% 40% at 15% 10%, rgba(239, 68, 68, 0.12), transparent 55%),
+    radial-gradient(ellipse 45% 35% at 85% 20%, rgba(239, 68, 68, 0.06), transparent 50%),
+    radial-gradient(ellipse 50% 40% at 50% 100%, rgba(23, 23, 26, 0.9), transparent 60%),
+    #0a0a0b;
+}
+
+/* Attendance calendar — dark cyberpunk theme */
 .attendance-calendar .fc {
-  --fc-border-color: #e2e8f0;
-  --fc-today-bg-color: #eff6ff;
+  --fc-border-color: #26262a;
+  --fc-today-bg-color: rgba(239, 68, 68, 0.08);
   --fc-page-bg-color: transparent;
   font-family: inherit;
 }
@@ -34,38 +122,40 @@ input[type='date']::-webkit-calendar-picker-indicator:hover {
 .attendance-calendar .fc .fc-toolbar-title {
   font-size: 1.125rem;
   font-weight: 700;
-  color: #0f172a;
+  color: #f5f5f5;
 }
 
 .attendance-calendar .fc .fc-button-primary {
-  background-color: #fff;
-  border-color: #cbd5e1;
-  color: #334155;
+  background-color: rgba(23, 23, 26, 0.9);
+  border-color: #404046;
+  color: #d4d4d4;
   font-weight: 500;
   text-transform: capitalize;
   box-shadow: none;
+  border-radius: 0.75rem;
 }
 
 .attendance-calendar .fc .fc-button-primary:hover {
-  background-color: #f1f5f9;
-  border-color: #cbd5e1;
-  color: #0f172a;
+  background-color: rgba(38, 38, 42, 0.95);
+  border-color: #52525b;
+  color: #fff;
 }
 
 .attendance-calendar .fc .fc-button-primary:not(:disabled).fc-button-active,
 .attendance-calendar .fc .fc-button-primary:not(:disabled):active {
-  background-color: #2563eb;
-  border-color: #2563eb;
+  background-color: #ef4444;
+  border-color: #ef4444;
   color: #fff;
+  box-shadow: 0 0 16px rgba(239, 68, 68, 0.25);
 }
 
 .attendance-calendar .fc .fc-button:focus,
 .attendance-calendar .fc .fc-button-primary:focus {
-  box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.25);
+  box-shadow: 0 0 0 2px rgba(239, 68, 68, 0.3);
 }
 
 .attendance-calendar .fc .fc-col-header-cell {
-  background-color: #f8fafc;
+  background-color: rgba(17, 17, 19, 0.9);
   padding: 0.5rem 0;
 }
 
@@ -74,18 +164,18 @@ input[type='date']::-webkit-calendar-picker-indicator:hover {
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.05em;
-  color: #64748b;
+  color: #a3a3a3;
 }
 
 .attendance-calendar .fc .fc-daygrid-day-number {
   padding: 6px 8px;
   font-size: 0.8125rem;
-  color: #334155;
+  color: #d4d4d4;
 }
 
 .attendance-calendar .fc .fc-day-today .fc-daygrid-day-number {
   font-weight: 700;
-  color: #2563eb;
+  color: #f87171;
 }
 
 .attendance-calendar .fc .fc-daygrid-day-frame {
@@ -93,11 +183,11 @@ input[type='date']::-webkit-calendar-picker-indicator:hover {
 }
 
 .attendance-calendar .fc .fc-daygrid-day:hover .fc-daygrid-day-frame {
-  background-color: #f8fafc;
+  background-color: rgba(38, 38, 42, 0.5);
 }
 
 .attendance-calendar .fc .fc-daygrid-event {
-  border-radius: 6px;
+  border-radius: 8px;
   border: none;
   padding: 2px 6px;
   font-size: 0.75rem;
@@ -106,6 +196,15 @@ input[type='date']::-webkit-calendar-picker-indicator:hover {
 }
 
 .attendance-calendar .fc .fc-scrollgrid {
-  border-radius: 10px;
+  border-radius: 12px;
   overflow: hidden;
+}
+
+@keyframes shrink {
+  from {
+    width: 100%;
+  }
+  to {
+    width: 0%;
+  }
 }

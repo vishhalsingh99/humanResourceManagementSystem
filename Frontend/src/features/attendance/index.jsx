@@ -64,15 +64,15 @@ export default function Attendance() {
   }, [canMarkAttendance, canEditAttendance, canDeleteAttendance, loadAttendance, loadDepartments, loadDesignations, loadEmployees]);
 
   if (data.mode === 'bulk') return <BulkAttendance criteria={data.criteria} departmentOptions={data.departmentOptions} designationOptions={data.designationOptions} employees={data.criteriaEmployees} isSaving={data.isSavingBulk} showRows={data.showBulkRows} onCriteriaChange={data.updateCriteria} onSearch={data.handleCriteriaSearch} onClose={data.closeForm} onSave={data.handleBulkSave} onSetAllStatus={data.setAllAttendanceStatus} getRow={data.getBulkRow} onRowChange={data.updateBulkRow} />;
-  if (data.mode === 'edit') return <AttendanceForm form={data.form} employees={employees} onChange={data.updateForm} onSubmit={data.handleSubmit} onClose={data.closeForm} />;
+  if (data.mode === 'edit') return <AttendanceForm form={data.form} employees={employees} onChange={data.updateForm} onSubmit={data.handleSubmit} onClose={data.closeForm} isSaving={data.isSaving} />;
 
   return (
-    <div className="p-4 sm:p-6 mt-18 lg:p-10">
+    <div className="p-4 sm:p-6 mt-4 lg:p-10">
       <div className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-slate-800">Attendance Management</h1>
-          <p className="text-slate-600">Track employee attendance records</p>
-          </div>{canMarkAttendance && <Button onClick={data.openAdd} icon={Plus} variant="primary" className="rounded-lg px-4 py-2">Mark Attendance</Button>}</div>
+          <h1 className="text-2xl font-bold text-neutral-50">Attendance Management</h1>
+          <p className="text-neutral-400">Track employee attendance records</p>
+          </div>{canMarkAttendance && <Button onClick={data.openAdd} icon={Plus} variant="primary" className="px-4 py-2">Mark Attendance</Button>}</div>
       <AttendanceStats stats={{ ...data.stats, totalWorkingDays }} />
       <AttendanceFilters search={filters.search} status={filters.status} date={filters.date} onSearchChange={filters.setSearch} onStatusChange={filters.setStatus} onDateChange={filters.setDate} />
       <AttendanceTable records={filters.paginatedRecords} employeeById={filters.employeeById} canEdit={canEditAttendance} canDelete={canDeleteAttendance} onEdit={data.openEdit} onDelete={data.setDeleteAttendanceId} onOpenCalendar={data.openCalendar} onViewSummary={handleViewSummary} />

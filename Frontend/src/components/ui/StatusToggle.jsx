@@ -1,7 +1,11 @@
 export default function StatusToggle({ isActive, disabled = false, onToggle }) {
   return (
-    <div className="flex flex-col items-center gap-1 select-none">
-      <span className={`text-[10px] font-bold tracking-wide ${isActive ? 'text-green-600' : 'text-red-600'}`}>
+    <div className="flex select-none flex-col items-center gap-1">
+      <span
+        className={`font-mono text-[10px] font-bold tracking-wide ${
+          isActive ? 'text-emerald-400' : 'text-red-400'
+        }`}
+      >
         {isActive ? 'ON' : 'OFF'}
       </span>
 
@@ -11,8 +15,10 @@ export default function StatusToggle({ isActive, disabled = false, onToggle }) {
         aria-checked={isActive}
         disabled={disabled}
         onClick={onToggle}
-        className={`relative inline-flex h-5 w-10 shrink-0 items-center rounded-full transition-colors duration-300 ease-in-out focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-1 ${
-          isActive ? 'bg-green-500 focus-visible:ring-green-400' : 'bg-red-500 focus-visible:ring-red-400'
+        className={`relative inline-flex h-5 w-10 shrink-0 items-center rounded-full transition-colors duration-300 ease-in-out focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-1 focus-visible:ring-offset-neutral-950 ${
+          isActive
+            ? 'bg-emerald-500 shadow-[0_0_12px_rgba(16,185,129,0.35)] focus-visible:ring-emerald-400'
+            : 'bg-red-500 shadow-[0_0_12px_rgba(239,68,68,0.35)] focus-visible:ring-red-400'
         } ${disabled ? 'cursor-not-allowed opacity-60' : 'cursor-pointer'}`}
       >
         <span
@@ -22,7 +28,7 @@ export default function StatusToggle({ isActive, disabled = false, onToggle }) {
         />
       </button>
 
-      <span className={`text-[10px] font-semibold ${isActive ? 'text-green-600' : 'text-red-600'}`}>
+      <span className={`text-[10px] font-semibold ${isActive ? 'text-emerald-400' : 'text-red-400'}`}>
         {isActive ? 'Active' : 'Inactive'}
       </span>
     </div>

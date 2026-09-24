@@ -14,8 +14,8 @@ const emptyForm = {
   notes: '',
 };
 
-const inputClassName = 'w-full rounded-none border border-slate-300 bg-white px-4 py-3 text-sm text-slate-900 outline-none transition focus:border-blue-500';
-const labelClassName = 'mb-2 block text-sm font-semibold text-slate-800';
+const inputClassName = 'w-full rounded-xl border border-neutral-700/90 bg-neutral-950/65 px-4 py-3 text-sm text-neutral-100 outline-none transition focus:border-red-500/70 focus:shadow-[0_0_0_4px_rgba(239,68,68,0.12)]';
+const labelClassName = 'mb-2 block text-sm font-semibold text-neutral-200';
 
 function TimePicker({ value, onChange }) {
   const [open, setOpen] = useState(false);
@@ -70,14 +70,14 @@ function TimePicker({ value, onChange }) {
       <button
         type="button"
         onClick={() => setOpen((current) => !current)}
-        className="flex w-full items-center justify-between rounded-none border border-slate-300 bg-white px-4 py-3 text-sm text-slate-900 cursor-pointer"
+        className="flex w-full items-center justify-between rounded-xl border border-neutral-700 bg-neutral-950/65 px-4 py-3 text-sm text-neutral-50 cursor-pointer"
       >
         <span>{display}</span>
         <span className="text-xs text-slate-400">▼</span>
       </button>
 
       {open && (
-        <div className="absolute left-0 top-[calc(100%+6px)] z-50 min-w-60 border border-slate-200 bg-white p-3 shadow-[0_12px_22px_rgba(15,23,42,0.18)]">
+        <div className="absolute left-0 top-[calc(100%+6px)] z-50 min-w-60 border border-neutral-800 bg-neutral-950/65 p-3 shadow-[0_12px_22px_rgba(15,23,42,0.18)]">
           <div className="flex gap-2">
             {[{ label: 'Hour', items: hours, key: 'hour' }, { label: 'Min', items: minutes, key: 'minute' }].map(({ label, items, key }) => (
               <div key={key} className="flex-1">
@@ -89,7 +89,7 @@ function TimePicker({ value, onChange }) {
                       type="button"
                       onClick={() => setPick((current) => ({ ...current, [key]: item }))}
                       className={`px-2 py-1.5 text-center text-sm cursor-pointer ${
-                        pick[key] === item ? 'bg- -600 font-semibold text-black' : 'text-slate-700 hover:bg-slate-100'
+                        pick[key] === item ? 'bg-red-500/20 font-semibold text-red-300' : 'text-neutral-300 hover:bg-neutral-800'
                       }`}
                     >
                       {item}
@@ -108,7 +108,7 @@ function TimePicker({ value, onChange }) {
                     type="button"
                     onClick={() => setPick((current) => ({ ...current, ampm }))}
                     className={`px-2 py-1.5 text-center text-sm cursor-pointer ${
-                      pick.ampm === ampm ? '0 font-semibold text-black' : 'text-slate-700 hover:bg-slate-100'
+                      pick.ampm === ampm ? 'bg-red-500/20 font-semibold text-red-300' : 'text-neutral-300 hover:bg-neutral-800'
                     }`}
                   >
                     {ampm}
@@ -121,7 +121,7 @@ function TimePicker({ value, onChange }) {
           <Button
             type="button"
             onClick={confirmTime}
-            className="mt-3 w-full rounded-none bg-blue-600 py-2 text-sm font-semibold text-white transition hover:bg-blue-700 cursor-pointer"
+            className="mt-3 w-full rounded-xl bg-red-500 py-2 text-sm font-semibold text-white transition hover:bg-red-400 cursor-pointer"
           >
             Done
           </Button>
@@ -132,9 +132,9 @@ function TimePicker({ value, onChange }) {
 }
 
 const statusClassNames = {
-  Scheduled: 'bg-blue-50 text-blue-900',
-  Completed: 'bg-green-50 text-green-800',
-  Cancelled: 'bg-red-50 text-red-800',
+  Scheduled: 'bg-red-500/15 text-red-300',
+  Completed: 'bg-emerald-500/15 text-emerald-300',
+  Cancelled: 'bg-rose-500/15 text-rose-300',
 };
 
 export default function Meetings() {
@@ -147,6 +147,7 @@ export default function Meetings() {
   const [editingMeeting, setEditingMeeting] = useState(null);
   const [form, setForm] = useState(emptyForm);
   const [deleteMeetingId, setDeleteMeetingId] = useState(null);
+  const [isSaving, setIsSaving] = useState(false);
 
   useEffect(() => {
     loadMeetings();
@@ -175,6 +176,7 @@ export default function Meetings() {
   }
 
   function closeForm() {
+    if (isSaving) return;
     setShowForm(false);
     setEditingMeeting(null);
     setForm(emptyForm);
@@ -186,7 +188,9 @@ export default function Meetings() {
 
   async function handleSubmit(e) {
     e.preventDefault();
+    if (isSaving) return;
 
+    setIsSaving(true);
     try {
       if (editingMeeting?._id) {
         await axios.put(`/api/meetings/${editingMeeting._id}`, form);
@@ -197,9 +201,14 @@ export default function Meetings() {
       }
 
       await loadMeetings();
-      closeForm();
+      setIsSaving(false);
+      setShowForm(false);
+      setEditingMeeting(null);
+      setForm(emptyForm);
     } catch (err) {
       showToast(err.response?.data?.error || 'Unable to save meeting', 'error');
+    } finally {
+      setIsSaving(false);
     }
   }
 
@@ -246,27 +255,28 @@ export default function Meetings() {
   if (showForm) {
     return (
       <div className="p-4 sm:p-6 mt-18 lg:p-10">
-        <form onSubmit={handleSubmit} className="rounded-none bg-white p-5 shadow-[0_16px_28px_rgba(15,23,42,0.32)] sm:p-7">
-          <div className="flex flex-col gap-4 border-b border-slate-100 pb-6 lg:flex-row lg:items-center lg:justify-between">
+        <form onSubmit={handleSubmit} className="rounded-2xl border border-neutral-800/80 bg-neutral-900/40 p-5 shadow-[0_0_28px_rgba(239,68,68,0.08)] backdrop-blur-md sm:p-7">
+          <div className="flex flex-col gap-4 border-b border-neutral-800 pb-6 lg:flex-row lg:items-center lg:justify-between">
             <button
               type="button"
               onClick={closeForm}
-              className="flex items-center gap-2 self-start rounded-none bg-blue-600 px-4 py-3 text-sm font-semibold text-white transition hover:bg-blue-700 cursor-pointer"
+              className="flex items-center gap-2 self-start rounded-xl bg-red-500 px-4 py-3 text-sm font-semibold text-white shadow-[0_0_20px_rgba(239,68,68,0.25)] transition hover:scale-[1.02] hover:bg-red-400 cursor-pointer disabled:opacity-60"
+              disabled={isSaving}
             >
               <ArrowLeft size={18} />
               <span>Back</span>
             </button>
 
             <div className="text-left lg:text-right">
-              <h2 className="m-0 text-3xl font-semibold text-slate-900">
+              <h2 className="m-0 text-3xl font-semibold text-neutral-50">
                 {editingMeeting ? 'Update Meeting' : 'Add New Meeting'}
               </h2>
-              <p className="mt-2 text-sm text-slate-500">Use the form below to save meeting details in the HRMS system.</p>
+              <p className="mt-2 text-sm text-neutral-400">Use the form below to save meeting details in the HRMS system.</p>
             </div>
           </div>
 
           <div className="pt-8">
-            <h3 className="m-0 text-2xl font-semibold text-slate-900">Meeting Details</h3>
+            <h3 className="m-0 text-2xl font-semibold text-neutral-50">Meeting Details</h3>
             <div className="mt-6 grid gap-6 md:grid-cols-2 xl:grid-cols-3">
               <div>
                 <label className={labelClassName}>Employee</label>
@@ -341,19 +351,21 @@ export default function Meetings() {
             </div>
           </div>
 
-          <div className="mt-8 flex flex-col-reverse gap-3 border-t border-slate-100 pt-6 sm:flex-row sm:justify-end">
+          <div className="mt-8 flex flex-col-reverse gap-3 border-t border-neutral-800 pt-6 sm:flex-row sm:justify-end">
             <button
               type="button"
               onClick={closeForm}
-              className="rounded-none border border-slate-300 px-5 py-3 text-sm font-semibold text-slate-700 transition hover:bg-slate-50 cursor-pointer"
+              disabled={isSaving}
+              className="rounded-xl border border-neutral-700 px-5 py-3 text-sm font-semibold text-neutral-300 transition hover:bg-neutral-800 cursor-pointer disabled:opacity-60"
             >
               Back
             </button>
             <button
               type="submit"
-              className="rounded-none bg-blue-600 px-5 py-3 text-sm font-semibold text-white transition hover:bg-blue-700 cursor-pointer"
+              disabled={isSaving}
+              className="rounded-xl bg-red-500 px-5 py-3 text-sm font-semibold text-white shadow-[0_0_20px_rgba(239,68,68,0.25)] transition hover:bg-red-400 cursor-pointer disabled:opacity-70"
             >
-              {editingMeeting ? 'Update Meeting' : 'Save Meeting'}
+              {isSaving ? (editingMeeting ? 'Updating...' : 'Saving...') : (editingMeeting ? 'Update Meeting' : 'Save Meeting')}
             </button>
           </div>
         </form>
@@ -363,11 +375,11 @@ export default function Meetings() {
 
   return (
     <div className="p-4 sm:p-6 mt-18 lg:p-10">
-      <section className="rounded-none bg-white p-5 shadow-[0_16px_28px_rgba(15,23,42,0.32)] sm:p-7">
+      <section className="rounded-2xl border border-neutral-800/80 bg-neutral-900/40 p-5 shadow-[0_0_28px_rgba(239,68,68,0.08)] backdrop-blur-md sm:p-7">
         <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
           <div>
-            <h2 className="m-0 text-3xl font-semibold text-slate-900">Meeting Master</h2>
-            <p className="mt-2 text-sm text-slate-500">
+            <h2 className="m-0 text-3xl font-semibold text-neutral-50">Meeting Master</h2>
+            <p className="mt-2 text-sm text-neutral-400">
               {meetings.length} meeting{meetings.length !== 1 ? 's' : ''} available in the HRMS system
             </p>
           </div>
@@ -379,13 +391,13 @@ export default function Meetings() {
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
                 placeholder="Search meeting"
-                className="w-full rounded-none border border-slate-300 bg-white py-3 pl-11 pr-4 text-sm text-slate-900 outline-none transition focus:border-blue-500 sm:w-96"
+                className="w-full rounded-xl border border-neutral-700 bg-neutral-950/65 py-3 pl-11 pr-4 text-sm text-neutral-50 outline-none transition focus:border-blue-500 sm:w-96"
               />
             </div>
             {canCreateMeeting && (
               <button
                 onClick={openAddMeeting}
-                className="flex items-center justify-center gap-2 rounded-none bg-blue-700 px-5 py-3 text-sm font-semibold text-white transition  cursor-pointer"
+                className="flex items-center justify-center gap-2 rounded-xl bg-red-500 px-5 py-3 text-sm font-semibold text-white transition  cursor-pointer"
               >
                 <Plus size={18} />
                 <span>Add Meeting</span>
@@ -394,13 +406,13 @@ export default function Meetings() {
           </div>
         </div>
 
-        <div className="mt-6 overflow-hidden rounded-none border border-slate-200">
+        <div className="mt-6 overflow-hidden rounded-xl border border-neutral-800">
           <div className="overflow-x-auto">
             <table className="min-w-full border-collapse">
               <thead>
                 <tr className="bg-[#e8f2ff] text-left">
                   {['S.No.', 'Employee', 'Organizer', 'Department', 'Date', 'Time', 'Status', 'Actions'].map((heading) => (
-                    <th key={heading} className="px-5 py-4 text-sm font-semibold text-slate-800">
+                    <th key={heading} className="px-5 py-4 text-sm font-semibold text-neutral-200">
                       {heading}
                     </th>
                   ))}
@@ -408,13 +420,13 @@ export default function Meetings() {
               </thead>
               <tbody>
                 {filtered.map((meeting, index) => (
-                  <tr key={meeting._id} className="border-t border-slate-100 bg-white">
+                  <tr key={meeting._id} className="border-t border-neutral-800 bg-neutral-950/65">
                     <td className="px-5 py-4 text-sm text-slate-600">{index + 1}</td>
-                    <td className="px-5 py-4 text-sm font-semibold text-slate-900">{meeting.employee?.name}</td>
-                    <td className="px-5 py-4 text-sm text-slate-700">{meeting.organizer?.name}</td>
-                    <td className="px-5 py-4 text-sm text-slate-700">{meeting.organizer?.department || '-'}</td>
-                    <td className="px-5 py-4 text-sm text-slate-700">{meeting.date}</td>
-                    <td className="px-5 py-4 text-sm text-slate-700">{meeting.time}</td>
+                    <td className="px-5 py-4 text-sm font-semibold text-neutral-50">{meeting.employee?.name}</td>
+                    <td className="px-5 py-4 text-sm text-neutral-300">{meeting.organizer?.name}</td>
+                    <td className="px-5 py-4 text-sm text-neutral-300">{meeting.organizer?.department || '-'}</td>
+                    <td className="px-5 py-4 text-sm text-neutral-300">{meeting.date}</td>
+                    <td className="px-5 py-4 text-sm text-neutral-300">{meeting.time}</td>
                     <td className="px-5 py-4">
                       <span className={`px-3 py-1 text-xs font-semibold ${statusClassNames[meeting.status] || ''}`}>
                         {meeting.status}
@@ -425,7 +437,7 @@ export default function Meetings() {
                         {canEditMeeting && (
                           <button
                             onClick={() => openEditMeeting(meeting)}
-                            className="flex h-10 w-10 items-center justify-center rounded-none bg-emerald-50 text-emerald-700 transition hover:bg-emerald-100 cursor-pointer"
+                            className="flex h-10 w-10 items-center justify-center rounded-xl border border-neutral-700 bg-neutral-900/60 text-emerald-400 transition hover:border-emerald-500/40 hover:bg-emerald-500/10 cursor-pointer"
                             title="Edit meeting"
                           >
                             <PencilLine size={16} />
@@ -434,7 +446,7 @@ export default function Meetings() {
                         {canDeleteMeeting && (
                           <button
                             onClick={() => setDeleteMeetingId(meeting._id)}
-                            className="flex h-10 w-10 items-center justify-center rounded-none bg-rose-50 text-rose-700 transition hover:bg-rose-100 cursor-pointer"
+                            className="flex h-10 w-10 items-center justify-center rounded-xl border border-neutral-700 bg-neutral-900/60 text-rose-400 transition hover:border-rose-500/40 hover:bg-rose-500/10 cursor-pointer"
                             title="Delete meeting"
                           >
                             <Trash2 size={16} />

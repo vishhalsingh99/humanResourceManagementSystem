@@ -26,10 +26,7 @@ export default function EmployeesList({
   const [currentPage, setCurrentPage] = useState(1);
   const totalPages = Math.max(1, Math.ceil(filteredEmployees.length / itemsPerPage));
   const startIndex = (currentPage - 1) * itemsPerPage;
-  const paginatedEmployees = filteredEmployees.slice(
-    startIndex,
-    currentPage * itemsPerPage
-  );
+  const paginatedEmployees = filteredEmployees.slice(startIndex, currentPage * itemsPerPage);
 
   useEffect(() => {
     setCurrentPage(1);
@@ -42,8 +39,8 @@ export default function EmployeesList({
   }, [currentPage, totalPages]);
 
   return (
-    <div className="p-6 mt-16 sm:p-6 text lg:p-10">
-      <section className="rounded-none bg-white p-5 shadow-[0_16px_28px_rgba(15,23,42,0.18)] sm:p-7">
+    <div className="mt-4 p-6 text-neutral-100 sm:p-6 lg:p-10">
+      <section className="rounded-2xl border border-neutral-800/80 bg-neutral-900/40 p-5 shadow-[0_0_28px_rgba(239,68,68,0.08)] backdrop-blur-md sm:p-7">
         <EmployeesToolbar
           employeeCount={employees.length}
           search={search}

@@ -42,6 +42,7 @@ export default function Designations() {
   const [deleteDesignationId, setDeleteDesignationId] = useState(null);
   const [search, setSearch] = useState('');
   const [formData, setFormData] = useState(emptyDesignation);
+  const [isSaving, setIsSaving] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
 
   useEffect(() => {
@@ -138,6 +139,7 @@ export default function Designations() {
   }
 
   function closeForm() {
+    if (isSaving) return;
     setEditingDesignation(null);
     setFormData(emptyDesignation);
     setShowForm(false);
@@ -145,6 +147,7 @@ export default function Designations() {
 
   async function handleSubmit(event) {
     event.preventDefault();
+    if (isSaving) return;
 
     const payload = {
       name: formData.name,
@@ -155,6 +158,7 @@ export default function Designations() {
       status: formData.status,
     };
 
+    setIsSaving(true);
     try {
       if (editingDesignation?.id) {
         await updateDesignation(editingDesignation.id, payload);
@@ -165,9 +169,14 @@ export default function Designations() {
       }
 
       await loadDesignations();
-      closeForm();
+      setIsSaving(false);
+      setEditingDesignation(null);
+      setFormData(emptyDesignation);
+      setShowForm(false);
     } catch (err) {
       showToast(err.response?.data?.error || 'Unable to save designation', 'error');
+    } finally {
+      setIsSaving(false);
     }
   }
 
@@ -187,22 +196,22 @@ export default function Designations() {
   if (showForm) {
     return (
       <div className="p-4 sm:p-6 mt-18 lg:p-10">
-        <form onSubmit={handleSubmit} className="rounded-none bg-white p-5 shadow-[0_16px_28px_rgba(15,23,42,0.32)] sm:p-7">
-          <div className="flex flex-col gap-4 border-b border-slate-100 pb-6 lg:flex-row lg:items-center lg:justify-between">
-            <Button type="button" onClick={closeForm} variant="primary" icon={ArrowLeft} className="self-start">
+        <form onSubmit={handleSubmit} className="rounded-2xl border border-neutral-800/80 bg-neutral-900/40 p-5 shadow-[0_0_28px_rgba(239,68,68,0.08)] backdrop-blur-md sm:p-7">
+          <div className="flex flex-col gap-4 border-b border-neutral-800 pb-6 lg:flex-row lg:items-center lg:justify-between">
+            <Button type="button" onClick={closeForm} variant="primary" icon={ArrowLeft} className="self-start" disabled={isSaving}>
               <span>Back</span>
             </Button>
 
             <div className="text-left lg:text-right">
-              <h2 className="m-0 text-3xl font-semibold text-slate-900">
+              <h2 className="m-0 text-3xl font-semibold text-neutral-50">
                 {editingDesignation ? 'Update Designation' : 'Add Designation'}
               </h2>
-              <p className="mt-2 text-sm text-slate-500">Connect each designation with its department.</p>
+              <p className="mt-2 text-sm text-neutral-400">Connect each designation with its department.</p>
             </div>
           </div>
 
           <div className="pt-8">
-            <h3 className="m-0 text-2xl font-semibold text-slate-900">Designation Details</h3>
+            <h3 className="m-0 text-2xl font-semibold text-neutral-50">Designation Details</h3>
             <div className="mt-6 grid gap-6 md:grid-cols-2 xl:grid-cols-3">
               <SelectField
                 label="Department"
@@ -210,44 +219,46 @@ export default function Designations() {
                 onChange={(event) => updateField('department_id', event.target.value)}
                 options={departmentOptions}
                 required
-                inputClassName="rounded-lg"
+                
               />
               <InputField
                 label="Designation Name"
                 value={formData.name}
                 onChange={(event) => updateField('name', event.target.value)}
                 required
-                inputClassName="rounded-lg"
+                
               />
               <InputField
                 label="Designation Code"
                 value={formData.code}
                 onChange={(event) => updateField('code', event.target.value)}
-                inputClassName="rounded-lg"
+                
               />
               <SelectField
                 label="Status"
                 value={formData.status}
                 onChange={(event) => updateField('status', event.target.value)}
                 options={['Active', 'Inactive']}
-                inputClassName="rounded-lg"
+                
               />
               <TextareaField
                 className="md:col-span-2"
                 label="Description"
                 value={formData.description}
                 onChange={(event) => updateField('description', event.target.value)}
-                inputClassName="rounded-lg"
+                
               />
             </div>
           </div>
 
-          <div className="mt-8 flex flex-col-reverse gap-3 border-t border-slate-100 pt-6 sm:flex-row sm:justify-end">
-            <Button type="button" onClick={closeForm} variant="secondary">
+          <div className="mt-8 flex flex-col-reverse gap-3 border-t border-neutral-800 pt-6 sm:flex-row sm:justify-end">
+            <Button type="button" onClick={closeForm} variant="secondary" disabled={isSaving}>
               Back
             </Button>
-            <Button type="submit" variant="primary">
-              {editingDesignation ? 'Update Designation' : 'Save Designation'}
+            <Button type="submit" variant="primary" loading={isSaving}>
+              {isSaving
+                ? (editingDesignation ? 'Updating...' : 'Saving...')
+                : (editingDesignation ? 'Update Designation' : 'Save Designation')}
             </Button>
           </div>
         </form>
@@ -256,11 +267,11 @@ export default function Designations() {
   }
 
   return (
-    <div className="min-h-screen bg-slate-100 p-6">
-      <div className="mb-6 mt-20 flex flex-col md:flex-row md:items-center md:justify-between">
+    <div className="p-6">
+      <div className="mb-6 mt-4 flex flex-col md:flex-row md:items-center md:justify-between">
         <div>
-          <h1 className="text-3xl font-bold text-slate-800">Designations</h1>
-          <p className="mt-1 text-slate-500">Manage designations by department.</p>
+          <h1 className="text-3xl font-bold text-neutral-100">Designations</h1>
+          <p className="mt-1 text-neutral-400">Manage designations by department.</p>
         </div>
 
         <Button icon={Plus} className="mt-4 rounded-xl md:mt-0" onClick={openAddDesignation}>
@@ -274,14 +285,14 @@ export default function Designations() {
           ['Active Designations', stats.active],
           ['Inactive Designations', stats.inactive],
         ].map(([label, value]) => (
-          <div key={label} className="rounded-2xl bg-white p-5 shadow-[0_10px_30px_rgba(0,0,0,0.08)]">
-            <p className="text-sm text-slate-500">{label}</p>
+          <div key={label} className="rounded-2xl bg-neutral-900/40 p-5 shadow-[0_10px_30px_rgba(0,0,0,0.08)]">
+            <p className="text-sm text-neutral-400">{label}</p>
             <h2 className="mt-2 text-3xl font-bold">{value}</h2>
           </div>
         ))}
       </div>
 
-      <div className="mb-6 rounded-sm bg-white p-4 shadow-[0_10px_30px_rgba(0,0,0,0.08)]">
+      <div className="mb-6 rounded-sm bg-neutral-900/40 p-4 shadow-[0_10px_30px_rgba(0,0,0,0.08)]">
         <SearchBar
           value={search}
           onChange={(event) => setSearch(event.target.value)}
@@ -294,13 +305,13 @@ export default function Designations() {
         headers={['Designation', 'Department', 'Status', 'Actions']}
         className="rounded-2xl shadow-[0_10px_30px_rgba(0,0,0,0.08)]"
         tableClassName="min-w-full border-collapse"
-        headerCellClassName="px-5 py-4 text-left text-sm font-semibold text-slate-800"
+        headerCellClassName="px-5 py-4 text-left text-sm font-semibold text-neutral-100"
       >
         {paginatedDesignations.map((designation) => (
-          <tr key={designation.id} className="border-b border-slate-100 transition hover:bg-slate-50">
+          <tr key={designation.id} className="border-b border-neutral-800 transition hover:bg-neutral-800/30">
             <td className="p-4">
-              <h3 className="font-semibold text-slate-800">{designation.name}</h3>
-              <p className="text-sm text-slate-500">{designation.description}</p>
+              <h3 className="font-semibold text-neutral-100">{designation.name}</h3>
+              <p className="text-sm text-neutral-400">{designation.description}</p>
             </td>
             <td className="p-4 text-sm text-slate-700">
               {designation.department_name || designation.departmentName || '-'}
@@ -310,13 +321,13 @@ export default function Designations() {
             </td>
             <td className="p-4">
               <div className="flex items-center justify-center gap-3">
-                <Button size="icon" variant="ghost" className="text-blue-600" title="View designation">
+                <Button size="icon" variant="ghost" className="text-red-300" title="View designation">
                   <Eye size={18} />
                 </Button>
                 <Button
                   size="icon"
                   variant="ghost"
-                  className="text-yellow-600"
+                  className="text-amber-400"
                   title="Edit designation"
                   onClick={() => openEditDesignation(designation)}
                 >
@@ -325,7 +336,7 @@ export default function Designations() {
                 <Button
                   size="icon"
                   variant="ghost"
-                  className="text-red-600"
+                  className="text-rose-400"
                   title="Delete designation"
                   onClick={() => setDeleteDesignationId(designation.id)}
                 >

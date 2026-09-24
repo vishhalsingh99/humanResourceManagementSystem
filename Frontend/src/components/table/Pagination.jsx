@@ -12,6 +12,7 @@ export default function Pagination({
     if (page < 1 || page > totalPages || page === currentPage) return;
     onPageChange(page);
   };
+
   const getPageNumbers = () => {
     const pages = [];
 
@@ -44,8 +45,8 @@ export default function Pagination({
   };
 
   return (
-    <div className="flex flex-col gap-3 border-t border-slate-200 bg-white px-4 py-3 sm:flex-row sm:items-center sm:justify-between">
-      <p className="text-sm text-slate-600">
+    <div className="flex flex-col gap-3 border-t border-neutral-800/80 bg-transparent px-4 py-3 sm:flex-row sm:items-center sm:justify-between">
+      <p className="font-mono text-xs text-neutral-400">
         Showing {startEntry} to {endEntry} of {totalItems} entries
       </p>
 
@@ -54,17 +55,14 @@ export default function Pagination({
           type="button"
           onClick={() => goToPage(currentPage - 1)}
           disabled={currentPage === 1}
-          className="rounded-md border cursor-pointer border-slate-200 px-3 py-1.5 text-sm font-medium text-slate-700 transition hover:bg-slate-50 disabled:cursor-not-allowed disabled:opacity-50"
+          className="cursor-pointer rounded-xl border border-neutral-700 px-3 py-1.5 text-sm font-medium text-neutral-300 transition hover:bg-neutral-800 disabled:cursor-not-allowed disabled:opacity-50"
         >
           Previous
         </button>
 
         {getPageNumbers().map((page, index) =>
           page === '...' ? (
-            <span
-              key={`ellipsis-${index}`}
-              className="px-2 text-sm text-slate-500"
-            >
+            <span key={`ellipsis-${index}`} className="px-2 text-sm text-neutral-500">
               ...
             </span>
           ) : (
@@ -72,10 +70,11 @@ export default function Pagination({
               key={page}
               type="button"
               onClick={() => goToPage(page)}
-              className={`rounded-md border px-3 py-1.5 text-sm font-medium transition ${currentPage === page
-                  ? 'border-purple-600 bg-purple-600 text-white'
-                  : 'border-slate-200 text-slate-700 hover:bg-slate-50'
-                }`}
+              className={`rounded-xl border px-3 py-1.5 text-sm font-medium transition ${
+                currentPage === page
+                  ? 'border-red-500 bg-red-500 text-white shadow-[0_0_16px_rgba(239,68,68,0.3)]'
+                  : 'border-neutral-700 text-neutral-300 hover:bg-neutral-800'
+              }`}
             >
               {page}
             </button>
@@ -86,7 +85,7 @@ export default function Pagination({
           type="button"
           onClick={() => goToPage(currentPage + 1)}
           disabled={currentPage === totalPages}
-          className="rounded-md border cursor-pointer border-slate-200 px-3 py-1.5 text-sm font-medium text-slate-700 transition hover:bg-slate-50 disabled:cursor-not-allowed disabled:opacity-50"
+          className="cursor-pointer rounded-xl border border-neutral-700 px-3 py-1.5 text-sm font-medium text-neutral-300 transition hover:bg-neutral-800 disabled:cursor-not-allowed disabled:opacity-50"
         >
           Next
         </button>

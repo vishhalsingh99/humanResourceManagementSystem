@@ -3,31 +3,31 @@ import { CheckCircle, XCircle, AlertCircle, Info, X } from 'lucide-react';
 
 const config = {
   success: {
-    icon: CheckCircle,  
-    bar: 'bg-green-400',
-    bg: 'bg-white border-l-4 border-green-500',
-    iconColor: 'text-green-500',
+    icon: CheckCircle,
+    bar: 'bg-emerald-400',
+    bg: 'border-l-4 border-emerald-500 bg-neutral-900/95',
+    iconColor: 'text-emerald-400',
     title: 'Success',
   },
   error: {
     icon: XCircle,
     bar: 'bg-red-400',
-    bg: 'bg-white border-l-4 border-red-500',
-    iconColor: 'text-red-500',
+    bg: 'border-l-4 border-red-500 bg-neutral-900/95',
+    iconColor: 'text-red-400',
     title: 'Error',
   },
   warning: {
     icon: AlertCircle,
-    bar: 'bg-yellow-400',
-    bg: 'bg-white border-l-4 border-yellow-500',
-    iconColor: 'text-yellow-500',
+    bar: 'bg-amber-400',
+    bg: 'border-l-4 border-amber-500 bg-neutral-900/95',
+    iconColor: 'text-amber-400',
     title: 'Warning',
   },
   info: {
     icon: Info,
-    bar: 'bg-blue-400',
-    bg: 'bg-white border-l-4 border-blue-500',
-    iconColor: 'text-blue-500',
+    bar: 'bg-red-400/80',
+    bg: 'border-l-4 border-red-500/80 bg-neutral-900/95',
+    iconColor: 'text-red-300',
     title: 'Info',
   },
 };
@@ -36,32 +36,33 @@ export default function Toast({ message, type = 'success', onClose }) {
   const [visible, setVisible] = useState(false);
 
   useEffect(() => {
-    // trigger enter animation
     const enter = setTimeout(() => setVisible(true), 10);
-    // start exit animation before unmount
     const exit = setTimeout(() => setVisible(false), 2700);
     const close = setTimeout(onClose, 3000);
-    return () => { clearTimeout(enter); clearTimeout(exit); clearTimeout(close); };
+    return () => {
+      clearTimeout(enter);
+      clearTimeout(exit);
+      clearTimeout(close);
+    };
   }, [onClose]);
 
   const { icon: Icon, bar, bg, iconColor, title } = config[type] || config.success;
 
   return (
     <div
-      className={`fixed bottom-6 right-6 z-50 w-80 rounded-lg shadow-xl overflow-hidden transition-all duration-300
-        ${visible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'} ${bg}`}
+      className={`fixed bottom-6 right-6 z-50 w-80 overflow-hidden rounded-2xl border border-neutral-800/80 shadow-[0_0_30px_rgba(239,68,68,0.12)] backdrop-blur-md transition-all duration-300
+        ${visible ? 'translate-y-0 opacity-100' : 'translate-y-4 opacity-0'} ${bg}`}
     >
       <div className="flex items-start gap-3 px-4 py-3">
-        <Icon size={20} className={`shrink-0 mt-0.5 ${iconColor}`} />
-        <div className="flex-1 min-w-0">
-          <p className="text-sm font-semibold text-gray-800">{title}</p>
-          <p className="text-sm text-gray-600 mt-0.5 leading-snug">{message}</p>
+        <Icon size={20} className={`mt-0.5 shrink-0 ${iconColor}`} />
+        <div className="min-w-0 flex-1">
+          <p className="text-sm font-semibold text-neutral-100">{title}</p>
+          <p className="mt-0.5 text-sm leading-snug text-neutral-400">{message}</p>
         </div>
-        <button onClick={onClose} className="text-gray-400 hover:text-gray-600 cursor-pointer shrink-0">
+        <button onClick={onClose} className="shrink-0 cursor-pointer text-neutral-500 hover:text-neutral-200">
           <X size={16} />
         </button>
       </div>
-      {/* Progress bar */}
       <div className={`h-1 ${bar} animate-[shrink_3s_linear_forwards]`} />
     </div>
   );

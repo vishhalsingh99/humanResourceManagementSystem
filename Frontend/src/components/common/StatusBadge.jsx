@@ -1,14 +1,16 @@
 const toneClasses = {
-  green: 'bg-green-100 text-green-800',
-  red: 'bg-red-100 text-red-800',
-  yellow: 'bg-yellow-100 text-yellow-800',
-  blue: 'bg-blue-100 text-blue-800',
-  slate: 'bg-slate-100 text-slate-700',
+  green: 'bg-emerald-500/15 text-emerald-300 border border-emerald-500/25',
+  red: 'bg-red-500/15 text-red-300 border border-red-500/25',
+  yellow: 'bg-amber-500/15 text-amber-300 border border-amber-500/25',
+  blue: 'bg-neutral-800 text-neutral-200 border border-neutral-700',
+  slate: 'bg-neutral-800/80 text-neutral-300 border border-neutral-700',
 };
 
 export default function StatusBadge({ children, tone = 'slate', className = '' }) {
   return (
-    <span className={`inline-flex rounded-full px-2 py-1 text-xs font-semibold ${toneClasses[tone]} ${className}`}>
+    <span
+      className={`inline-flex rounded-xl px-2 py-1 text-xs font-semibold ${toneClasses[tone]} ${className}`}
+    >
       {children}
     </span>
   );

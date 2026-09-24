@@ -41,6 +41,7 @@ export function useEmployeesFeature() {
   const [optionModalType, setOptionModalType] = useState(null);
   const [optionForm, setOptionForm] = useState(emptyOptionForm);
   const [isSavingOption, setIsSavingOption] = useState(false);
+  const [isSaving, setIsSaving] = useState(false);
   const [roles, setRoles] = useState([]);
   const [statusFilter, setStatusFilter] = useState('all');
   const [statusUpdatingId, setStatusUpdatingId] = useState(null);
@@ -119,6 +120,7 @@ export function useEmployeesFeature() {
   }
 
   function closeForm() {
+    if (isSaving) return;
     setShowForm(false);
     setEditingEmployee(null);
     setForm(emptyEmployeeForm);
@@ -216,6 +218,39 @@ export function useEmployeesFeature() {
   async function handleSubmit(event) {
     event.preventDefault();
 
+    const requiredFields = [
+      ['name', 'Employee name'],
+      ['dob', 'Date of birth'],
+      ['gender', 'Gender'],
+      ['fatherName', "Father's name"],
+      ['motherName', "Mother's name"],
+      ['maritalStatus', 'Marital status'],
+      ['phone', 'Contact number'],
+      ['email', 'Email ID'],
+      ['currentAddress', 'Current address'],
+      ['permanentAddress', 'Permanent address'],
+      ['department', 'Department'],
+      ['designation', 'Designation'],
+      ['salary', 'Current salary'],
+      ['join_date', 'Date of joining'],
+      ['aadhaarNumber', 'Aadhaar number'],
+    ];
+    const missingField = requiredFields.find(([field]) => !String(form[field] || '').trim());
+    if (missingField) {
+      showToast(`${missingField[1]} is required`, 'error');
+      return;
+    }
+
+    if (!editingEmployee && !String(form.loginPassword || '').trim()) {
+      showToast('Login password is required', 'error');
+      return;
+    }
+
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(String(form.email).trim())) {
+      showToast('Enter a valid employee email address', 'error');
+      return;
+    }
+
     // Validate phone numbers
     if (form.phone && !validatePhoneNumber(form.phone)) {
       showToast('Contact Number must be at least 10 digits and start with 6, 7, 8, or 9', 'error');
@@ -278,6 +313,9 @@ if (form.dob) {
   }
 }
 
+    if (isSaving) return;
+
+    setIsSaving(true);
     try {
       if (editingEmployee?.id) {
         await updateEmployee(editingEmployee.id, form);
@@ -302,9 +340,14 @@ if (form.dob) {
       }
 
       await loadEmployees('all');
-      closeForm();
+      setIsSaving(false);
+      setShowForm(false);
+      setEditingEmployee(null);
+      setForm(emptyEmployeeForm);
     } catch (err) {
       showToast(err.response?.data?.error || 'Unable to save employee', 'error');
+    } finally {
+      setIsSaving(false);
     }
   }
 
@@ -380,6 +423,7 @@ if (form.dob) {
     optionModalType,
     optionForm,
     isSavingOption,
+    isSaving,
     updateOptionForm,
     handleOptionFormSubmit,
     closeOptionModal,

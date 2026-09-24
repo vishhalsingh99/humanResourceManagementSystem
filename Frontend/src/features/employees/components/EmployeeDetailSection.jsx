@@ -4,7 +4,7 @@ import EmployeeDetailField from './EmployeeDetailField';
 export default function EmployeeDetailSection({ employee, group }) {
   return (
     <div>
-      <h3 className="mb-5 text-xl font-bold text-slate-900">{group.title}</h3>
+      <h3 className="mb-5 text-xl font-bold text-neutral-50">{group.title}</h3>
 
       <div className="space-y-4">
         {group.fields.map(([label, field]) => (

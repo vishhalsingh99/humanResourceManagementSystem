@@ -17,18 +17,18 @@ export default function EmployeeDetailView({
   const companyLogoUrl = buildUploadedFileUrl(company.logoPreview);
 
   return (
-    <div className="min-h-screen mt-18 bg-slate-100 p-4 sm:p-6 lg:p-10">
-      <div className="mx-auto max-w-5xl bg-white shadow-2xl border border-slate-300">
-        <div className="border-b-4 border-black px-6 py-6">
-          <div className="flex mt-5 items-start justify-between gap-4">
-            <Button onClick={onBack} className="rounded-md px-4 py-2">
+    <div className="mt-4 p-4 sm:p-6 lg:p-10">
+      <div className="mx-auto max-w-5xl rounded-2xl border border-neutral-800/80 bg-neutral-900/40 shadow-[0_0_28px_rgba(239,68,68,0.08)] backdrop-blur-md">
+        <div className="border-b border-neutral-800 px-6 py-6">
+          <div className="mt-2 flex items-start justify-between gap-4">
+            <Button onClick={onBack} className="px-4 py-2">
               Back
             </Button>
             <Button
               onClick={() => onDownloadPdf(employee)}
               icon={Download}
               variant="success"
-              className="rounded-lg px-5 py-2"
+              className="px-5 py-2"
             >
               Print
             </Button>
@@ -44,11 +44,11 @@ export default function EmployeeDetailView({
                 />
               )}
               <div>
-                <h1 className="text-3xl font-bold tracking-wide text-slate-900">
+                <h1 className="text-3xl font-bold tracking-wide text-neutral-50">
                   {company.companyName || 'HRMS'}
                 </h1>
                 {company.address && (
-                  <p className="whitespace-pre-line text-sm text-slate-600">
+                  <p className="whitespace-pre-line text-sm text-neutral-400">
                     {company.address}
                   </p>
                 )}
@@ -56,7 +56,7 @@ export default function EmployeeDetailView({
             </div>
           </div>
 
-          <h2 className="mt-8 text-center text-2xl font-bold text-slate-900">
+          <h2 className="mt-8 text-center text-2xl font-bold text-neutral-50">
             EMPLOYEE DETAILS FORM
           </h2>
         </div>
@@ -67,24 +67,24 @@ export default function EmployeeDetailView({
           ))}
 
           <div>
-            <h3 className="mb-5 text-xl font-bold text-slate-900">10. Declaration</h3>
-            <p className="text-sm text-slate-700 leading-7">
+            <h3 className="mb-5 text-xl font-bold text-neutral-50">10. Declaration</h3>
+            <p className="text-sm leading-7 text-neutral-300">
               I hereby declare that the above information is true to the best of my knowledge.
             </p>
-            <div className="mt-10   gap-8 md:grid-cols-2">
-              <div className="mb-10  pb-2 text-sm font-medium">
+            <div className="mt-10 gap-8 md:grid-cols-2">
+              <div className="mb-10 pb-2 text-sm font-medium text-neutral-300">
                 <p>Employee Signature: ___________________</p>
               </div>
               <div>
-                <p className="mb-10    pb-2 text-sm font-medium">
+                <p className="mb-10 pb-2 text-sm font-medium text-neutral-300">
                   Date: _____/_______/________
                 </p>
               </div>
             </div>
           </div>
 
-          <div className="flex justify-end gap-4 border-t border-slate-300 pt-6">
-            <Button onClick={onBack} variant="secondary" className="rounded-md px-5 py-2">
+          <div className="flex justify-end gap-4 border-t border-neutral-800 pt-6">
+            <Button onClick={onBack} variant="secondary" className="px-5 py-2">
               Close
             </Button>
 
@@ -92,7 +92,7 @@ export default function EmployeeDetailView({
               <Button
                 onClick={() => onEdit(employee)}
                 variant="success"
-                className="rounded-md px-5 py-2"
+                className="px-5 py-2"
               >
                 Edit Employee
               </Button>

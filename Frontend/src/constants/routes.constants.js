@@ -1,7 +1,6 @@
 export const ROUTES = {
   DASHBOARD: '/',
   EMPLOYEES: '/employees',
-  EMPLOYEE_DIRECTORY: '/employees/directory',
   DEPARTMENTS: '/departments',
   DESIGNATIONS: '/designations',
   LEAVE: '/leave',

@@ -25,6 +25,7 @@ export default function Departments() {
     setSearch,
     deleteDepartmentId,
     showForm,
+    isSaving,
     stats,
     closeForm,
     closeDeleteConfirmation,
@@ -94,47 +95,50 @@ export default function Departments() {
 
   if (showForm) {
     return (
-      <div className="p-4 sm:p-6 mt-18 lg:p-10">
-        <form onSubmit={handleSubmit} className="rounded-none bg-white p-5 shadow-[0_16px_28px_rgba(15,23,42,0.32)] sm:p-7">
-          <div className="flex flex-col gap-4 border-b border-slate-100 pb-6 lg:flex-row lg:items-center lg:justify-between">
+      <div className="mt-4 p-4 sm:p-6 lg:p-10">
+        <form
+          onSubmit={handleSubmit}
+          className="rounded-2xl border border-neutral-800/80 bg-neutral-900/40 p-5 shadow-[0_0_28px_rgba(239,68,68,0.08)] backdrop-blur-md sm:p-7"
+        >
+          <div className="flex flex-col gap-4 border-b border-neutral-800 pb-6 lg:flex-row lg:items-center lg:justify-between">
             <Button
               type="button"
               onClick={closeForm}
               variant="primary"
               icon={ArrowLeft}
               className="self-start"
+              disabled={isSaving}
             >
               <span>Back</span>
             </Button>
 
             <div className="text-left lg:text-right">
-              <h2 className="m-0 text-3xl font-semibold text-slate-900">
+              <h2 className="m-0 text-3xl font-semibold text-neutral-50">
                 {editingDepartment ? 'Update Department' : 'Add Department'}
               </h2>
-              <p className="mt-2 text-sm text-slate-500">Fill in the details below to manage a department.</p>
+              <p className="mt-2 text-sm text-neutral-400">Fill in the details below to manage a department.</p>
             </div>
           </div>
 
           <div className="pt-8">
-            <h3 className="m-0 text-2xl font-semibold text-slate-900">Department Details</h3>
+            <h3 className="m-0 text-2xl font-semibold text-neutral-50">Department Details</h3>
             <div className="mt-6 grid gap-6 md:grid-cols-2 xl:grid-cols-3">
               {departmentFormFields.map(renderDepartmentField)}
             </div>
           </div>
 
-          <div className="mt-8 flex flex-col-reverse gap-3 border-t border-slate-100 pt-6 sm:flex-row sm:justify-end">
-            <Button
-              type="button"
-              onClick={closeForm}
-              variant="secondary"
-            >
+          <div className="mt-8 flex flex-col-reverse gap-3 border-t border-neutral-800 pt-6 sm:flex-row sm:justify-end">
+            <Button type="button" onClick={closeForm} variant="secondary" disabled={isSaving}>
               Back
             </Button>
-            <Button
-              type="submit"
-              variant="primary"
-            >
-              {editingDepartment ? 'Update Department' : 'Save Department'}
+            <Button type="submit" variant="primary" loading={isSaving}>
+              {isSaving
+                ? editingDepartment
+                  ? 'Updating...'
+                  : 'Saving...'
+                : editingDepartment
+                  ? 'Update Department'
+                  : 'Save Department'}
             </Button>
           </div>
         </form>
@@ -143,28 +147,31 @@ export default function Departments() {
   }
 
   return (
-    <div className="min-h-screen bg-slate-100 p-6">
-      <div className="mb-6 mt-20 flex flex-col md:flex-row md:items-center md:justify-between">
+    <div className="p-6">
+      <div className="mb-6 mt-4 flex flex-col md:flex-row md:items-center md:justify-between">
         <div>
-          <h1 className="text-3xl font-bold text-slate-800">Departments</h1>
-          <p className="mt-1 text-slate-500">Manage your departments.</p>
+          <h1 className="text-3xl font-bold text-neutral-50">Departments</h1>
+          <p className="mt-1 text-neutral-400">Manage your departments.</p>
         </div>
 
-        <Button icon={Plus} className="mt-4 rounded-xl md:mt-0" onClick={openAddDepartment}>
+        <Button icon={Plus} className="mt-4 md:mt-0" onClick={openAddDepartment}>
           Add Department
         </Button>
       </div>
 
       <div className="mb-8 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
         {departmentStatCards.map(({ label, key, icon: Icon, tone }) => (
-          <div key={key} className="rounded-2xl bg-white p-5 shadow-[0_10px_30px_rgba(0,0,0,0.08)]">
+          <div
+            key={key}
+            className="rounded-2xl border border-neutral-800/80 bg-neutral-900/40 p-5 shadow-[0_0_24px_rgba(239,68,68,0.06)] backdrop-blur-md"
+          >
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm text-slate-500">{label}</p>
-                <h2 className="mt-2 text-3xl font-bold">{stats[key]}</h2>
+                <p className="text-sm text-neutral-400">{label}</p>
+                <h2 className="mt-2 text-3xl font-bold text-neutral-50">{stats[key]}</h2>
               </div>
               {Icon && (
-                <div className={`rounded-xl p-3 ${tone === 'green' ? 'bg-green-100 text-green-600' : 'bg-blue-100 text-blue-600'}`}>
+                <div className={`rounded-xl p-3 ${tone === 'green' ? 'bg-emerald-500/15 text-emerald-400' : 'bg-red-500/15 text-red-400'}`}>
                   <Icon />
                 </div>
               )}
@@ -173,26 +180,25 @@ export default function Departments() {
         ))}
       </div>
 
-      <div className="mb-6 rounded-sm bg-white p-4 shadow-[0_10px_30px_rgba(0,0,0,0.08)]">
+      <div className="mb-6 rounded-2xl border border-neutral-800/80 bg-neutral-900/40 p-4 backdrop-blur-md">
         <SearchBar
           value={search}
           onChange={(e) => setSearch(e.target.value)}
           placeholder="Search Department..."
-          inputClassName="rounded-sm"
         />
       </div>
 
       <DataTable
         headers={['Department',  'Status', 'Actions']}
-        className="rounded-2xl shadow-[0_10px_30px_rgba(0,0,0,0.08)]"
+        className="rounded-2xl"
         tableClassName="min-w-full border-collapse"
-        headerCellClassName="px-5 py-4 text-left text-sm font-semibold text-slate-800"
+        headerCellClassName="px-5 py-4 text-left text-sm font-semibold text-neutral-400"
       >
         {paginatedDepartments.map((dept) => (
-          <tr key={dept.id} className="border-b border-slate-100 transition hover:bg-slate-50">
+          <tr key={dept.id} className="border-b border-neutral-800/80 transition hover:bg-neutral-800/30">
             <td className="p-4">
-              <h3 className="font-semibold text-slate-800">{dept.name || dept.department_name}</h3>
-              <p className="text-sm text-slate-500">{dept.description}</p>
+              <h3 className="font-semibold text-neutral-100">{dept.name || dept.department_name}</h3>
+              <p className="text-sm text-neutral-500">{dept.description}</p>
             </td>
           
             <td className="p-4">
@@ -200,13 +206,13 @@ export default function Departments() {
             </td>
             <td className="p-4">
               <div className="flex items-center justify-center gap-3">
-                <Button size="icon" variant="ghost" className="text-blue-600" title="View department">
+                <Button size="icon" variant="ghost" className="text-red-300" title="View department">
                   <Eye size={18} />
                 </Button>
                 <Button
                   size="icon"
                   variant="ghost"
-                  className="text-yellow-600"
+                  className="text-amber-400"
                   title="Edit department"
                   onClick={() => openEditDepartment(dept)}
                 >
@@ -215,7 +221,7 @@ export default function Departments() {
                 <Button
                   size="icon"
                   variant="ghost"
-                  className="text-red-600"
+                  className="text-rose-400"
                   title="Delete department"
                   onClick={() => requestDeleteDepartment(dept.id)}
                 >

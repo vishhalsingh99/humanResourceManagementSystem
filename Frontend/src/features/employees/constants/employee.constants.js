@@ -2,7 +2,7 @@ export const emptyEmployeeForm = {
   name: '',
   employeeId: '',
   dob: '',
-  gender: 'select Gender',
+  gender: '',
   bloodGroup: '',
   fatherName: '',
   motherName: '',
@@ -17,8 +17,8 @@ export const emptyEmployeeForm = {
   experience: '',
  previousSalary: '',
   reasonForLeaving: '',
-  department: 'select department',
-  designation: ' select designation',
+  department: '',
+  designation: '',
   salary: '',
   join_date: '',
   workStartTime: '',
@@ -41,9 +41,9 @@ export const emptyEmployeeForm = {
  
 
 export const inputClassName =
-  'w-full rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-sm text-slate-900 shadow-sm outline-none transition duration-200 placeholder:text-slate-400 hover:border-slate-300 focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10';
+  'w-full rounded-xl border border-neutral-700/90 bg-neutral-950/65 px-3 py-2.5 text-sm text-neutral-100 outline-none transition duration-200 placeholder:text-neutral-500 hover:border-neutral-500 focus:border-red-500/70 focus:shadow-[0_0_0_4px_rgba(239,68,68,0.12),0_0_20px_rgba(239,68,68,0.1)]';
 
-export const labelClassName = 'mb-2 block text-sm font-semibold text-slate-800';
+export const labelClassName = 'mb-2 block text-sm font-semibold text-neutral-200';
 
 export const employeeTableHeadings = [
   'S.No.',
