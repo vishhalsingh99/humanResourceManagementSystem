@@ -1,7 +1,8 @@
-import { Menu, CircleUserRound, ChevronDown } from 'lucide-react';
+import { Menu, CircleUserRound, ChevronDown, Moon, Sun } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { ROUTES } from '../../constants/routes.constants';
 import { useApp } from '../../context/AppContext';
+import { useTheme } from '../../context/ThemeContext';
 import { buildUploadedFileUrl } from '../../utils';
 
 export default function Header({
@@ -13,6 +14,7 @@ export default function Header({
   hideMenu = false,
 }) {
   const { onboarding, isImpersonating } = useApp();
+  const { isDark, toggleTheme } = useTheme();
   const roleLabel = user?.roleName || user?.role || 'Admin';
   const companyName =
     onboarding?.company?.companyName || 'HRMS';
@@ -53,7 +55,17 @@ export default function Header({
             </p>
           </div>
         </div>
-        <div className="relative">
+        <div className="flex items-center gap-2">
+          <button
+            type="button"
+            onClick={toggleTheme}
+            aria-label={isDark ? 'Switch to light mode' : 'Switch to dark mode'}
+            title={isDark ? 'Switch to light mode' : 'Switch to dark mode'}
+            className="flex h-9 w-9 items-center justify-center rounded-full bg-slate-800 text-slate-300 transition hover:-translate-y-0.5 hover:bg-slate-700 hover:text-white"
+          >
+            {isDark ? <Sun size={17} /> : <Moon size={17} />}
+          </button>
+          <div className="relative">
           <button
             onClick={() => setProfileOpen((open) => !open)}
             className="flex cursor-pointer items-center gap-3 rounded-md px-1 py-1 text-slate-200 transition hover:bg-slate-800 sm:px-3"
@@ -117,7 +129,8 @@ export default function Header({
               </div>
             </div>
           )}
-        </div>
+          </div>
+          </div>
       </div>
     </header>
   );

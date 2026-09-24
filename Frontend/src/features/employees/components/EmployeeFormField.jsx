@@ -88,7 +88,7 @@ export default function EmployeeFormField({ field, value, onChange, onAddOption,
             <button
               type="button"
               onClick={() => onAddOption(field.name)}
-              className="flex items-center justify-center gap-2 rounded-none bg-blue-600 px-4 text-xs font-semibold text-white transition hover:bg-blue-700 cursor-pointer"
+              className="flex items-center justify-center gap-2 rounded-xl bg-blue-600 px-4 text-xs font-semibold text-white shadow-sm transition duration-200 hover:-translate-y-0.5 hover:bg-blue-700 hover:shadow-md cursor-pointer"
             >
               <Plus size={16} />
               Add
