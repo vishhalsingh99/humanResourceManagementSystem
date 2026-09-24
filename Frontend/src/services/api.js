@@ -1,6 +1,9 @@
 import axios from 'axios';
-const backendUrl = import.meta.env.VITE_BACKEND_URL || 'http://localhost:5003';
-const API_URL = import.meta.env.VITE_API_URL || `${backendUrl}/api`;
+
+const stripApiSuffix = (value) => String(value || '').replace(/\/+$/, '').replace(/(?:\/api)+$/, '');
+const backendUrl = stripApiSuffix(import.meta.env.VITE_BACKEND_URL || 'http://localhost:5003');
+const API_URL = `${stripApiSuffix(import.meta.env.VITE_API_URL || backendUrl)}/api`;
+
 const api = axios.create({
   baseURL: API_URL,
 });
@@ -15,4 +18,5 @@ api.interceptors.request.use((config) => {
   return config;
 });
 
+export { API_URL };
 export default api;
