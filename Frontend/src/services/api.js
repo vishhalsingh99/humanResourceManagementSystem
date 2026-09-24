@@ -19,4 +19,5 @@ api.interceptors.request.use((config) => {
 });
 
 export { API_URL };
+export { backendUrl as BACKEND_URL };
 export default api;

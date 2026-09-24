@@ -3,9 +3,9 @@ import { createRoot } from 'react-dom/client'
 import axios from 'axios'
 import './styles/globals.css'
 import App from './App.jsx'
-import { API_URL } from './services/api.js'
+import { BACKEND_URL } from './services/api.js'
 
-axios.defaults.baseURL = API_URL
+axios.defaults.baseURL = BACKEND_URL
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
