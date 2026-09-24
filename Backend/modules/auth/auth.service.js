@@ -110,6 +110,8 @@ const withLocationNames = async (data = {}) => {
 };
 
 export const registerService = async ({ name, email, password, role = 'admin' }) => {
+  throw new ApiError(403, 'Public account creation is disabled for this single-company workspace');
+
   const existingUser = await User.findByEmailOnly(email);
   if (existingUser) {
     throw new ApiError(400, 'User already exists');

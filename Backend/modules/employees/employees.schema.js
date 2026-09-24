@@ -72,6 +72,7 @@ export const updateEmployeeSchema = z.object({
   join_date: z.string().trim().optional(),
   gender: z.string().trim().optional(),
   phone: z.string().trim().optional(),
+  email: z.string().trim().min(1, 'Employee email is required'),
   salary: salaryField,
   aadhaarNumber: aadhaarField,
   panNumber: panField,

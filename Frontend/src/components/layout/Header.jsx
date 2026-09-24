@@ -3,7 +3,6 @@ import { useNavigate } from 'react-router-dom';
 import { ROUTES } from '../../constants/routes.constants';
 import { useApp } from '../../context/AppContext';
 import { buildUploadedFileUrl } from '../../utils';
-import ThemeToggle from '../ui/ThemeToggle';
 
 export default function Header({
   profileOpen,
@@ -23,14 +22,14 @@ export default function Header({
   const navigate = useNavigate();
 
   return (
-    <header className={`fixed inset-x-0 z-60 h-20 bg-[#EAB308] ${isImpersonating ? 'top-10' : 'top-0'}`}>
-      <div className="flex w-full  mt-4 justify-between">
+    <header className={`fixed inset-x-0 z-60 h-20 border-b border-slate-800 bg-[#111827] ${isImpersonating ? 'top-10' : 'top-0'}`}>
+      <div className="flex w-full items-center justify-between px-4 py-3 lg:px-6">
         {/* Left Side */}
         <div className="flex items-center gap-3">
           {!hideMenu && (
             <button
               onClick={onMenuToggle}
-              className="flex h-8 w-8 cursor-pointer items-center justify-center text-slate-950 hover:bg-[#e9aa00]"
+              className="flex h-9 w-9 cursor-pointer items-center justify-center rounded-md text-slate-300 transition hover:bg-slate-800 hover:text-white"
             >
               <Menu size={22} className="stroke-[2.5]" />
             </button>
@@ -49,20 +48,17 @@ export default function Header({
               </div>
             )}
 
-            <p className="text-xl font-bold text-blue-600">
+            <p className="text-xl font-semibold tracking-tight text-white">
               {companyName}
             </p>
           </div>
         </div>
-        <div className="flex items-center gap-3">
-          <ThemeToggle />
-
-          <div className="relative">
+        <div className="relative">
           <button
             onClick={() => setProfileOpen((open) => !open)}
-            className="flex cursor-pointer items-center gap-3 rounded px-1 py-1 text-slate-950 transition hover:bg-white/15 sm:px-3"
+            className="flex cursor-pointer items-center gap-3 rounded-md px-1 py-1 text-slate-200 transition hover:bg-slate-800 sm:px-3"
           >
-            <div className="flex h-11 w-11 cursor-pointer items-center justify-center rounded-full bg-[#ffe6a3] text-sm font-bold uppercase">
+            <div className="flex h-10 w-10 cursor-pointer items-center justify-center rounded-full bg-blue-600 text-sm font-bold uppercase text-white">
               {(user?.name || 'User').charAt(0)}
             </div>
             <div className="hidden items-center gap-2 sm:flex">
@@ -121,7 +117,6 @@ export default function Header({
               </div>
             </div>
           )}
-          </div>
         </div>
       </div>
     </header>

@@ -35,7 +35,7 @@ const { toast, clearToast, user, logout, isImpersonating, exitImpersonation } = 
     <>
       <AppRoutes
         renderProtectedLayout={({ content }) => (
-          <div className="flex min-h-screen bg-[#eef3f9]" style={{ fontFamily: "'Outfit', 'Segoe UI', Arial, sans-serif" }}>
+          <div className="flex min-h-screen bg-[#f4f6fa]" style={{ fontFamily: "'Outfit', 'Segoe UI', Arial, sans-serif" }}>
             {isImpersonating && (
               <div className="fixed inset-x-0 top-0 z-70 flex min-h-10 items-center justify-center gap-4 bg-slate-950 px-4 py-2 text-center text-sm font-semibold text-white">
                 <span>You are logged in as Company Admin</span>

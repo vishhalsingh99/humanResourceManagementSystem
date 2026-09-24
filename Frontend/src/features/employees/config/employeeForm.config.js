@@ -64,7 +64,7 @@ export const getEmployeeFormSections = (
       fields: [
         { label: 'Contact Number', name: 'phone', type: 'tel', maxLength: 10, required: true },
         { label: 'Emergency Contact Number', name: 'emergencyContact', maxLength: 10, type: 'tel' },
-        ...(isEditing ? [{ label: 'Email ID', name: 'email', type: 'email', required: true }] : []),
+        { label: 'Email ID', name: 'email', type: 'email', required: true },
       ],
     },
     {
