@@ -61,10 +61,54 @@ export const seedAccount = async ({ initializeSchema = true, logCredentials = tr
   const tenantId = tenants[0]?.id;
 
   await masterPool.execute(
-    `INSERT INTO tenant_companies (tenant_id, admin_user_id, company_name)
-     VALUES (?, ?, ?)
-     ON DUPLICATE KEY UPDATE company_name = VALUES(company_name), updated_at = NOW()`,
-    [tenantId, adminId, account.companyName]
+    `UPDATE users
+     SET tenant_id = ?, tenant_database = ?, onboarding_completed = TRUE, updated_at = NOW()
+     WHERE id = ?`,
+    [tenantId, dbConfig.database, adminId]
+  );
+
+  await masterPool.execute(
+    `INSERT INTO states (name) VALUES ('Karnataka')
+     ON DUPLICATE KEY UPDATE id = LAST_INSERT_ID(id)`
+  );
+  const [states] = await masterPool.execute(
+    `SELECT id FROM states WHERE name = 'Karnataka' LIMIT 1`
+  );
+  const stateId = states[0]?.id;
+
+  await masterPool.execute(
+    `INSERT INTO districts (state_id, name) VALUES (?, 'Bengaluru Urban')
+     ON DUPLICATE KEY UPDATE id = LAST_INSERT_ID(id)`,
+    [stateId]
+  );
+  const [districts] = await masterPool.execute(
+    `SELECT id FROM districts WHERE state_id = ? AND name = 'Bengaluru Urban' LIMIT 1`,
+    [stateId]
+  );
+  const districtId = districts[0]?.id;
+
+  await masterPool.execute(
+    `INSERT INTO tenant_profiles (
+      tenant_id, admin_user_id, first_name, last_name, email, mobile,
+      address, city, state, district, state_id, district_id, pincode
+    ) VALUES (?, ?, 'HRMS', 'Admin', ?, '9876543210', 'Bengaluru', 'Bengaluru',
+      'Karnataka', 'Bengaluru Urban', ?, ?, '560001')
+    ON DUPLICATE KEY UPDATE
+      email = VALUES(email), state_id = VALUES(state_id), district_id = VALUES(district_id),
+      state = VALUES(state), district = VALUES(district), updated_at = NOW()`,
+    [tenantId, adminId, account.email, stateId, districtId]
+  );
+
+  await masterPool.execute(
+    `INSERT INTO tenant_companies (
+      tenant_id, admin_user_id, company_name, email, mobile, pincode,
+      state, district, state_id, district_id, address
+    ) VALUES (?, ?, ?, ?, '9876543210', '560001', 'Karnataka', 'Bengaluru Urban', ?, ?, 'Bengaluru')
+    ON DUPLICATE KEY UPDATE
+      company_name = VALUES(company_name), email = VALUES(email), state_id = VALUES(state_id),
+      district_id = VALUES(district_id), state = VALUES(state), district = VALUES(district),
+      updated_at = NOW()`,
+    [tenantId, adminId, account.companyName, account.email, stateId, districtId]
   );
 
   await masterPool.execute(

@@ -417,6 +417,7 @@ export function AppProvider({ children }) {
   const [attendance, setAttendance] = useState([]);
   const [departments, setDepartments] = useState([]);
   const [designations, setDesignations] = useState([]);
+  const [isInitialDataLoading, setIsInitialDataLoading] = useState(false);
 
   const loadEmployees = useCallback(async (status = 'active') => {
     const res = await axios.get('/api/employees', { params: { status } });
@@ -469,15 +470,17 @@ export function AppProvider({ children }) {
   useEffect(() => {
     if (!isLoggedIn) return;
     if (user?.role === 'SUPER_ADMIN') return;
-    if (checkAnyPermission(user, ['attendance.view', 'attendance.view_all'])) loadAttendance();
-    if (checkAnyPermission(user, ['leave.view', 'leave.view_all'])) loadLeaves();
-    if (checkPermission(user, 'employee.view')) loadEmployees();
-    if (checkPermission(user, 'meeting.view')) loadMeetings();
-    if (checkPermission(user, 'payroll.view_all')) loadPayrolls();
+    setIsInitialDataLoading(true);
+    const requests = [];
+    if (checkAnyPermission(user, ['attendance.view', 'attendance.view_all'])) requests.push(loadAttendance());
+    if (checkAnyPermission(user, ['leave.view', 'leave.view_all'])) requests.push(loadLeaves());
+    if (checkPermission(user, 'employee.view')) requests.push(loadEmployees());
+    if (checkPermission(user, 'meeting.view')) requests.push(loadMeetings());
+    if (checkPermission(user, 'payroll.view_all')) requests.push(loadPayrolls());
     if (checkPermission(user, 'settings.view')) {
-      loadDepartments();
-      loadDesignations();
+      requests.push(loadDepartments(), loadDesignations());
     }
+    Promise.allSettled(requests).finally(() => setIsInitialDataLoading(false));
   }, [isLoggedIn, user, loadEmployees, loadMeetings, loadPayrolls, loadLeaves, loadAttendance, loadDepartments, loadDesignations]);
 
   return (
@@ -490,7 +493,7 @@ export function AppProvider({ children }) {
       // toast
       toast, showToast, clearToast,
       // data + loaders
-      employees, loadEmployees,
+      employees, loadEmployees, isInitialDataLoading,
       meetings, loadMeetings,
       payrolls, loadPayrolls,
       leaves, loadLeaves,

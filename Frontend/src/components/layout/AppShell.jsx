@@ -7,7 +7,7 @@ import Footer from './Footer';
 import AppRoutes from '../../routes';
 
 export default function AppShell() {
-const { toast, clearToast, user, logout, isImpersonating, exitImpersonation } = useApp();
+const { toast, clearToast, user, logout, isImpersonating, exitImpersonation, isInitialDataLoading } = useApp();
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const handleSidebarToggle = useCallback(() => {
     setSidebarOpen((open) => !open);
@@ -74,7 +74,14 @@ const { toast, clearToast, user, logout, isImpersonating, exitImpersonation } = 
             <div className={`flex-1 min-w-0 flex flex-col pt- transition-all duration-300 ${isMobile ? 'lg:ml-60' : (sidebarCollapsed ? 'lg:ml-20' : 'lg:ml-60')
               }`}>
               <main className="flex-1">
-                {content}
+                {isInitialDataLoading ? (
+                  <div className="flex min-h-[calc(100vh-10rem)] items-center justify-center">
+                    <div className="flex flex-col items-center gap-4 text-slate-500">
+                      <div className="h-10 w-10 animate-spin rounded-full border-4 border-slate-200 border-t-blue-600" />
+                      <span className="text-sm font-medium">Loading workspace data...</span>
+                    </div>
+                  </div>
+                ) : content}
               </main>
               <Footer />
             </div>
