@@ -238,8 +238,8 @@ export default function Leave() {
   if (showForm) {
     return (
       <div className="p-4 sm:p-6 mt-18 lg:p-10">
-        <form onSubmit={handleSubmit} className="rounded-2xl border border-neutral-800/80 bg-neutral-900/40 p-5 shadow-[0_0_28px_rgba(239,68,68,0.08)] backdrop-blur-md sm:p-7">
-          <div className="flex flex-col gap-4 border-b border-neutral-800 pb-6 lg:flex-row lg:items-center lg:justify-between">
+        <form onSubmit={handleSubmit} className="rounded-2xl border t-border bg-[var(--bg-surface)] p-5 shadow-[0_0_28px_rgba(239,68,68,0.08)] backdrop-blur-md sm:p-7">
+          <div className="flex flex-col gap-4 border-b t-divider pb-6 lg:flex-row lg:items-center lg:justify-between">
             <Button
               type="button"
               onClick={closeForm}
@@ -251,15 +251,15 @@ export default function Leave() {
             </Button>
 
             <div className="text-left lg:text-right">
-              <h2 className="m-0 text-3xl font-semibold text-neutral-50">
+              <h2 className="m-0 text-3xl font-semibold t-text-heading">
                 {editingLeave ? 'Update Leave Request' : 'New Leave Request'}
               </h2>
-              <p className="mt-2 text-sm text-neutral-400">Fill in the details below to submit a leave request.</p>
+              <p className="mt-2 text-sm t-text-muted">Fill in the details below to submit a leave request.</p>
             </div>
           </div>
 
           <div className="pt-8">
-            <h3 className="m-0 text-2xl font-semibold text-neutral-50">Leave Details</h3>
+            <h3 className="m-0 text-2xl font-semibold t-text-heading">Leave Details</h3>
             <div className="mt-6 grid gap-6 md:grid-cols-2 xl:grid-cols-3">
               {!isEmployee && (
                 <SelectField label="Employee" value={form.employee_id} onChange={(e) => updateField('employee_id', e.target.value)} required inputClassName="rounded-xl">
@@ -279,7 +279,7 @@ export default function Leave() {
             </div>
           </div>
 
-          <div className="mt-8 flex flex-col-reverse gap-3 border-t border-neutral-800 pt-6 sm:flex-row sm:justify-end">
+          <div className="mt-8 flex flex-col-reverse gap-3 border-t t-divider pt-6 sm:flex-row sm:justify-end">
             <Button
               type="button"
               onClick={closeForm}
@@ -305,8 +305,8 @@ export default function Leave() {
     <div className="p-4 sm:p-6 mt-18 lg:p-10">
       <div className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <h1 className="text-3xl font-semibold text-neutral-50">Leave Management</h1>
-          <p className="mt-2 text-sm text-neutral-400">
+          <h1 className="text-3xl font-semibold t-text-heading">Leave Management</h1>
+          <p className="mt-2 text-sm t-text-muted">
             {isEmployee ? 'Request leave and track approval status' : 'Manage employee leave requests'}
           </p>
         </div>
@@ -332,13 +332,13 @@ export default function Leave() {
       )}
 
       {canEditCarryForward && (
-        <div className="mb-6 rounded-2xl border border-neutral-800/80 bg-neutral-900/40 p-4 shadow-[0_0_28px_rgba(239,68,68,0.08)] backdrop-blur-md">
+        <div className="mb-6 rounded-2xl border t-border bg-[var(--bg-surface)] p-4 shadow-[0_0_28px_rgba(239,68,68,0.08)] backdrop-blur-md">
           <div className="mb-4 flex flex-col gap-1 sm:flex-row sm:items-center sm:justify-between">
             <div>
-              <h2 className="text-lg font-semibold text-neutral-50">Carry Forward Leave</h2>
-              <p className="text-sm text-neutral-400">Enter monthly carry-forward leave through the current month.</p>
+              <h2 className="text-lg font-semibold t-text-heading">Carry Forward Leave</h2>
+              <p className="text-sm t-text-muted">Enter monthly carry-forward leave through the current month.</p>
             </div>
-            <RotateCcw className="hidden text-neutral-500 sm:block" size={22} />
+            <RotateCcw className="hidden t-text-subtle sm:block" size={22} />
           </div>
 
           <form onSubmit={handleCarryForwardSave} className="grid gap-4 md:grid-cols-5">
@@ -367,7 +367,7 @@ export default function Leave() {
           {carryForwardHistory.length > 0 && (
             <div className="mt-5 overflow-x-auto">
               <table className="min-w-full text-left text-sm">
-                <thead className="bg-neutral-950/60 text-xs uppercase text-neutral-400">
+                <thead className="t-thead text-xs uppercase t-text-muted">
                   <tr>
                     <th className="px-3 py-2">Month</th>
                     <th className="px-3 py-2">Carry Forward</th>
@@ -382,14 +382,14 @@ export default function Leave() {
                   {carryForwardHistory.slice(-6).map((row) => {
                     const date = new Date(`${row.balanceMonth}T00:00:00`);
                     return (
-                      <tr key={row.balanceMonth} className="border-t border-neutral-800 bg-neutral-950/40">
-                        <td className="px-3 py-2 text-neutral-300">{date.toLocaleString(undefined, { month: 'short', year: 'numeric' })}</td>
-                        <td className="px-3 py-2 text-neutral-300">{row.carryForwardBalance}</td>
-                        <td className="px-3 py-2 text-neutral-300">{row.monthlyLeaveCredit}</td>
-                        <td className="px-3 py-2 text-neutral-300">{row.totalAvailableLeave}</td>
-                        <td className="px-3 py-2 text-neutral-300">{row.paidLeaveUsed}</td>
-                        <td className="px-3 py-2 font-semibold text-neutral-50">{row.paidLeaveBalance}</td>
-                        <td className="px-3 py-2 text-neutral-400">{row.requiresManualCarryForward ? 'Admin pending' : row.source}</td>
+                      <tr key={row.balanceMonth} className="border-t t-divider bg-[var(--bg-input)]">
+                        <td className="px-3 py-2 t-text-secondary">{date.toLocaleString(undefined, { month: 'short', year: 'numeric' })}</td>
+                        <td className="px-3 py-2 t-text-secondary">{row.carryForwardBalance}</td>
+                        <td className="px-3 py-2 t-text-secondary">{row.monthlyLeaveCredit}</td>
+                        <td className="px-3 py-2 t-text-secondary">{row.totalAvailableLeave}</td>
+                        <td className="px-3 py-2 t-text-secondary">{row.paidLeaveUsed}</td>
+                        <td className="px-3 py-2 font-semibold t-text-heading">{row.paidLeaveBalance}</td>
+                        <td className="px-3 py-2 t-text-muted">{row.requiresManualCarryForward ? 'Admin pending' : row.source}</td>
                       </tr>
                     );
                   })}
@@ -415,33 +415,33 @@ export default function Leave() {
       <DataTable
         headers={['Employee', 'Employee ID', 'Leave Type', 'Start Date', 'End Date', 'Days', 'Reason', 'Status']}
         actions
-        className="rounded-2xl border border-neutral-800/80 bg-neutral-900/40 shadow-[0_0_28px_rgba(239,68,68,0.08)] backdrop-blur-md"
-        headerCellClassName="bg-neutral-950/60 px-4 py-3 text-left text-xs font-semibold uppercase text-neutral-300"
+        className="rounded-2xl border t-border bg-[var(--bg-surface)] shadow-[0_0_28px_rgba(239,68,68,0.08)] backdrop-blur-md"
+        headerCellClassName="t-thead px-4 py-3 text-left text-xs font-semibold uppercase t-text-secondary"
       >
             {filtered.length === 0 ? (
               <tr>
-                <td colSpan="9" className="px-4 py-8 text-center text-neutral-500">
+                <td colSpan="9" className="px-4 py-8 text-center t-text-subtle">
                   No leave requests found
                 </td>
               </tr>
             ) : (
               paginatedLeaves.map((leave) => (
-                <tr key={leave.id} className="border-t border-neutral-800 bg-neutral-950/65">
-                  <td className="px-4 py-3 text-sm text-neutral-50">
+                <tr key={leave.id} className="border-t t-divider bg-[var(--bg-input)]">
+                  <td className="px-4 py-3 text-sm t-text-heading">
                     {leave.employeeName || leave.employee_name || leave.employee?.name || 'N/A'}
                   </td>
-                  <td className="px-4 py-3 text-sm text-neutral-300">
+                  <td className="px-4 py-3 text-sm t-text-secondary">
                     {leave.employeeCode || leave.employee_code || leave.employee?.employee_id || leave.employee_id || '-'}
                   </td>
-                  <td className="px-4 py-3 text-sm text-neutral-300">{leave.leave_type}</td>
-                  <td className="px-4 py-3 text-sm text-neutral-300">
+                  <td className="px-4 py-3 text-sm t-text-secondary">{leave.leave_type}</td>
+                  <td className="px-4 py-3 text-sm t-text-secondary">
                     {leave.start_date ? new Date(leave.start_date).toLocaleDateString() : '-'}
                   </td>
-                  <td className="px-4 py-3 text-sm text-neutral-300">
+                  <td className="px-4 py-3 text-sm t-text-secondary">
                     {leave.end_date ? new Date(leave.end_date).toLocaleDateString() : '-'}
                   </td>
-                  <td className="px-4 py-3 text-sm text-neutral-300">{leave.leaveDays || leave.days || 0}</td>
-                  <td className="px-4 py-3 text-sm text-neutral-300">{leave.reason || 'N/A'}</td>
+                  <td className="px-4 py-3 text-sm t-text-secondary">{leave.leaveDays || leave.days || 0}</td>
+                  <td className="px-4 py-3 text-sm t-text-secondary">{leave.reason || 'N/A'}</td>
                   <td className="px-4 py-3">{getStatusBadge(leave.status)}</td>
                   <td className="px-4 py-3">
                     <div className="flex items-center gap-2">
@@ -450,7 +450,7 @@ export default function Leave() {
                           {canApproveLeave && (
                             <button
                               onClick={() => handleStatusUpdate(leave, 'Approved')}
-                              className="flex h-9 w-9 items-center justify-center rounded-xl border border-neutral-700 bg-neutral-900/60 text-emerald-400 transition hover:border-emerald-500/40 hover:bg-emerald-500/10 cursor-pointer"
+                              className="flex h-9 w-9 items-center justify-center rounded-xl border t-border bg-[var(--bg-input)] text-emerald-400 transition hover:border-emerald-500/40 hover:bg-emerald-500/10 cursor-pointer"
                               title="Approve"
                             >
                               <Check size={18} />
@@ -459,7 +459,7 @@ export default function Leave() {
                           {canRejectLeave && (
                             <button
                               onClick={() => handleStatusUpdate(leave, 'Rejected')}
-                              className="flex h-9 w-9 items-center justify-center rounded-xl border border-neutral-700 bg-neutral-900/60 text-rose-400 transition hover:border-rose-500/40 hover:bg-rose-500/10 cursor-pointer"
+                              className="flex h-9 w-9 items-center justify-center rounded-xl border t-border bg-[var(--bg-input)] text-rose-400 transition hover:border-rose-500/40 hover:bg-rose-500/10 cursor-pointer"
                               title="Reject"
                             >
                               <X size={18} />
@@ -470,7 +470,7 @@ export default function Leave() {
                       {canEditLeave(leave) && (
                         <button
                           onClick={() => openEditLeave(leave)}
-                          className="flex h-9 w-9 items-center justify-center rounded-xl border border-neutral-700 bg-neutral-900/60 text-sky-400 transition hover:border-sky-500/40 hover:bg-sky-500/10 cursor-pointer"
+                          className="flex h-9 w-9 items-center justify-center rounded-xl border t-border bg-[var(--bg-input)] text-sky-400 transition hover:border-sky-500/40 hover:bg-sky-500/10 cursor-pointer"
                           title="Edit"
                         >
                           <PencilLine size={18} />
@@ -479,7 +479,7 @@ export default function Leave() {
                       {canDeleteLeave(leave) && (
                         <button
                           onClick={() => setDeleteLeaveId(leave.id)}
-                          className="flex h-9 w-9 items-center justify-center rounded-xl border border-neutral-700 bg-neutral-900/60 text-rose-400 transition hover:border-rose-500/40 hover:bg-rose-500/10 cursor-pointer"
+                          className="flex h-9 w-9 items-center justify-center rounded-xl border t-border bg-[var(--bg-input)] text-rose-400 transition hover:border-rose-500/40 hover:bg-rose-500/10 cursor-pointer"
                           title="Delete"
                         >
                           <Trash2 size={18} />

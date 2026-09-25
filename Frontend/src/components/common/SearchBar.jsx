@@ -6,7 +6,7 @@ export default function SearchBar({
   placeholder = 'Search',
   className = '',
   inputClassName = '',
-  iconClassName = 'text-neutral-500',
+  iconClassName = 't-text-subtle',
 }) {
   return (
     <div className={`relative ${className}`}>
@@ -18,7 +18,7 @@ export default function SearchBar({
         value={value}
         onChange={onChange}
         placeholder={placeholder}
-        className={`w-full rounded-xl border border-neutral-700/90 bg-neutral-950/65 py-3 pl-11 pr-4 text-sm text-neutral-100 outline-none transition duration-200 placeholder:text-neutral-500 hover:border-neutral-500 focus:border-red-500/70 focus:shadow-[0_0_0_4px_rgba(239,68,68,0.12)] ${inputClassName}`}
+        className={`ui-input w-full rounded-xl py-3 pl-11 pr-4 text-sm outline-none transition duration-200 ${inputClassName}`}
       />
     </div>
   );

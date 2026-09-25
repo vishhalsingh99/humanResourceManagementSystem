@@ -34,7 +34,7 @@ export default function AppShell() {
     <>
       <AppRoutes
         renderProtectedLayout={({ content }) => (
-          <div className="app-ambient flex min-h-screen font-sans text-neutral-100">
+          <div className="app-ambient flex min-h-screen font-sans t-text-primary">
             {isImpersonating && (
               <div className="fixed inset-x-0 top-0 z-70 flex min-h-10 items-center justify-center gap-4 border-b border-red-500/30 bg-neutral-950/95 px-4 py-2 text-center text-sm font-semibold text-white backdrop-blur-md">
                 <span>You are logged in as Company Admin</span>

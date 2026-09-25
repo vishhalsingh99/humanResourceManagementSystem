@@ -1,9 +1,9 @@
 import { forwardRef } from 'react';
 
-const baseInputClass =
-  'w-full rounded-xl border border-neutral-700/90 bg-neutral-950/65 px-4 py-3 text-sm text-neutral-100 outline-none transition duration-200 placeholder:text-neutral-500 hover:border-neutral-500 focus:border-red-500/70 focus:shadow-[0_0_0_4px_rgba(239,68,68,0.12),0_0_20px_rgba(239,68,68,0.1)] disabled:bg-neutral-900 disabled:text-neutral-500';
+export const baseInputClass =
+  'ui-input w-full rounded-xl px-4 py-3 text-sm outline-none transition duration-200';
 
-const baseLabelClass = 'mb-2 block text-sm font-semibold text-neutral-200';
+export const baseLabelClass = 'mb-2 block text-sm font-semibold t-text-secondary';
 
 function InputField(
   { label, required, className = '', inputClassName = '', rightElement, ...props },
@@ -29,5 +29,5 @@ function InputField(
   );
 }
 
-export { baseInputClass, baseLabelClass };
+export { baseInputClass as baseInputClass };
 export default forwardRef(InputField);

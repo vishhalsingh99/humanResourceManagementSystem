@@ -105,11 +105,11 @@ export default function Employees() {
   if (isLoadingEmployees) {
     return (
       <div className="mt-4 flex min-h-[60vh] items-center justify-center p-6">
-        <div className="flex flex-col items-center gap-4 rounded-2xl border border-neutral-800/80 bg-neutral-900/40 px-8 py-7 text-center shadow-[0_0_28px_rgba(239,68,68,0.08)] backdrop-blur-md">
+        <div className="flex flex-col items-center gap-4 rounded-2xl border t-border bg-[var(--bg-surface)] px-8 py-7 text-center shadow-[var(--shadow-panel)] backdrop-blur-md">
           <Loader2 className="h-9 w-9 animate-spin text-red-400" />
           <div>
-            <p className="text-base font-semibold text-neutral-50">Loading employees</p>
-            <p className="mt-1 text-sm text-neutral-400">Fetching employee records...</p>
+            <p className="text-base font-semibold t-text-heading">Loading employees</p>
+            <p className="mt-1 text-sm t-text-muted">Fetching employee records...</p>
           </div>
         </div>
       </div>

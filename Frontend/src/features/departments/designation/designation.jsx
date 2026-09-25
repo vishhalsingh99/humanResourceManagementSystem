@@ -196,22 +196,22 @@ export default function Designations() {
   if (showForm) {
     return (
       <div className="p-4 sm:p-6 mt-18 lg:p-10">
-        <form onSubmit={handleSubmit} className="rounded-2xl border border-neutral-800/80 bg-neutral-900/40 p-5 shadow-[0_0_28px_rgba(239,68,68,0.08)] backdrop-blur-md sm:p-7">
-          <div className="flex flex-col gap-4 border-b border-neutral-800 pb-6 lg:flex-row lg:items-center lg:justify-between">
+        <form onSubmit={handleSubmit} className="rounded-2xl border t-border bg-[var(--bg-surface)] p-5 shadow-[0_0_28px_rgba(239,68,68,0.08)] backdrop-blur-md sm:p-7">
+          <div className="flex flex-col gap-4 border-b t-divider pb-6 lg:flex-row lg:items-center lg:justify-between">
             <Button type="button" onClick={closeForm} variant="primary" icon={ArrowLeft} className="self-start" disabled={isSaving}>
               <span>Back</span>
             </Button>
 
             <div className="text-left lg:text-right">
-              <h2 className="m-0 text-3xl font-semibold text-neutral-50">
+              <h2 className="m-0 text-3xl font-semibold t-text-heading">
                 {editingDesignation ? 'Update Designation' : 'Add Designation'}
               </h2>
-              <p className="mt-2 text-sm text-neutral-400">Connect each designation with its department.</p>
+              <p className="mt-2 text-sm t-text-muted">Connect each designation with its department.</p>
             </div>
           </div>
 
           <div className="pt-8">
-            <h3 className="m-0 text-2xl font-semibold text-neutral-50">Designation Details</h3>
+            <h3 className="m-0 text-2xl font-semibold t-text-heading">Designation Details</h3>
             <div className="mt-6 grid gap-6 md:grid-cols-2 xl:grid-cols-3">
               <SelectField
                 label="Department"
@@ -251,7 +251,7 @@ export default function Designations() {
             </div>
           </div>
 
-          <div className="mt-8 flex flex-col-reverse gap-3 border-t border-neutral-800 pt-6 sm:flex-row sm:justify-end">
+          <div className="mt-8 flex flex-col-reverse gap-3 border-t t-divider pt-6 sm:flex-row sm:justify-end">
             <Button type="button" onClick={closeForm} variant="secondary" disabled={isSaving}>
               Back
             </Button>
@@ -270,8 +270,8 @@ export default function Designations() {
     <div className="p-6">
       <div className="mb-6 mt-4 flex flex-col md:flex-row md:items-center md:justify-between">
         <div>
-          <h1 className="text-3xl font-bold text-neutral-100">Designations</h1>
-          <p className="mt-1 text-neutral-400">Manage designations by department.</p>
+          <h1 className="text-3xl font-bold t-text-primary">Designations</h1>
+          <p className="mt-1 t-text-muted">Manage designations by department.</p>
         </div>
 
         <Button icon={Plus} className="mt-4 rounded-xl md:mt-0" onClick={openAddDesignation}>
@@ -285,14 +285,14 @@ export default function Designations() {
           ['Active Designations', stats.active],
           ['Inactive Designations', stats.inactive],
         ].map(([label, value]) => (
-          <div key={label} className="rounded-2xl bg-neutral-900/40 p-5 shadow-[0_10px_30px_rgba(0,0,0,0.08)]">
-            <p className="text-sm text-neutral-400">{label}</p>
+          <div key={label} className="rounded-2xl bg-[var(--bg-surface)] p-5 shadow-[0_10px_30px_rgba(0,0,0,0.08)]">
+            <p className="text-sm t-text-muted">{label}</p>
             <h2 className="mt-2 text-3xl font-bold">{value}</h2>
           </div>
         ))}
       </div>
 
-      <div className="mb-6 rounded-sm bg-neutral-900/40 p-4 shadow-[0_10px_30px_rgba(0,0,0,0.08)]">
+      <div className="mb-6 rounded-sm bg-[var(--bg-surface)] p-4 shadow-[0_10px_30px_rgba(0,0,0,0.08)]">
         <SearchBar
           value={search}
           onChange={(event) => setSearch(event.target.value)}
@@ -305,13 +305,13 @@ export default function Designations() {
         headers={['Designation', 'Department', 'Status', 'Actions']}
         className="rounded-2xl shadow-[0_10px_30px_rgba(0,0,0,0.08)]"
         tableClassName="min-w-full border-collapse"
-        headerCellClassName="px-5 py-4 text-left text-sm font-semibold text-neutral-100"
+        headerCellClassName="px-5 py-4 text-left text-sm font-semibold t-text-primary"
       >
         {paginatedDesignations.map((designation) => (
-          <tr key={designation.id} className="border-b border-neutral-800 transition hover:bg-neutral-800/30">
+          <tr key={designation.id} className="border-b t-divider transition hover:bg-neutral-800/30">
             <td className="p-4">
-              <h3 className="font-semibold text-neutral-100">{designation.name}</h3>
-              <p className="text-sm text-neutral-400">{designation.description}</p>
+              <h3 className="font-semibold t-text-primary">{designation.name}</h3>
+              <p className="text-sm t-text-muted">{designation.description}</p>
             </td>
             <td className="p-4 text-sm text-slate-700">
               {designation.department_name || designation.departmentName || '-'}

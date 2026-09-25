@@ -179,40 +179,40 @@ export default function EmployeeSummaryPage() {
   ], [summary]);
 
   if (!summary && !loading) {
-    return <div className="mt-20 p-6 text-neutral-400">No attendance summary available.</div>;
+    return <div className="mt-20 p-6 t-text-muted">No attendance summary available.</div>;
   }
 
   return (
     <div className="mt-4 p-4 sm:p-6 lg:p-10">
       {/* Header card */}
-      <div className="mb-6 flex flex-col gap-4 rounded-2xl border border-neutral-800/80 bg-neutral-900/40 p-5 shadow-[0_0_28px_rgba(239,68,68,0.08)] backdrop-blur-md sm:p-7">
+      <div className="mb-6 flex flex-col gap-4 rounded-2xl border t-border ui-card p-5 shadow-[0_0_28px_rgba(239,68,68,0.08)] backdrop-blur-md sm:p-7">
         <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
           <div>
             <p className="font-mono text-xs font-semibold uppercase tracking-[0.18em] text-red-400">Employee Attendance Summary</p>
-            <h1 className="mt-1 text-2xl font-bold text-neutral-50">{summary?.employee?.name || 'Loading...'}</h1>
+            <h1 className="mt-1 text-2xl font-bold t-text-heading">{summary?.employee?.name || 'Loading...'}</h1>
           </div>
           <Button variant="secondary" onClick={() => navigate('/attendance')}>Back</Button>
         </div>
 
         <div className="grid gap-4 md:grid-cols-4">
           <div>
-            <p className="text-xs font-semibold uppercase tracking-wide text-neutral-500">Employee</p>
-            <p className="mt-1 text-base font-semibold text-neutral-100">{summary?.employee?.name || '-'}</p>
+            <p className="text-xs font-semibold uppercase tracking-wide t-text-subtle">Employee</p>
+            <p className="mt-1 text-base font-semibold t-text-primary">{summary?.employee?.name || '-'}</p>
           </div>
           <div>
-            <p className="text-xs font-semibold uppercase tracking-wide text-neutral-500">Employee Code</p>
-            <p className="mt-1 text-base font-semibold text-neutral-100">{summary?.employee?.employeeCode || '-'}</p>
+            <p className="text-xs font-semibold uppercase tracking-wide t-text-subtle">Employee Code</p>
+            <p className="mt-1 text-base font-semibold t-text-primary">{summary?.employee?.employeeCode || '-'}</p>
           </div>
           <div>
-            <p className="text-xs font-semibold uppercase tracking-wide text-neutral-500">Date of Joining</p>
-            <p className="mt-1 text-base font-semibold text-neutral-100">{summary?.employee?.dateOfJoining || '-'}</p>
+            <p className="text-xs font-semibold uppercase tracking-wide t-text-subtle">Date of Joining</p>
+            <p className="mt-1 text-base font-semibold t-text-primary">{summary?.employee?.dateOfJoining || '-'}</p>
           </div>
           <div>
-            <p className="text-xs font-semibold uppercase tracking-wide text-neutral-500">Month</p>
+            <p className="text-xs font-semibold uppercase tracking-wide t-text-subtle">Month</p>
             <select
               value={selectedMonth}
               onChange={(e) => setSelectedMonth(e.target.value)}
-              className="mt-1 w-full rounded-xl border border-neutral-700 bg-neutral-950/65 px-3 py-2 text-sm text-neutral-100 outline-none transition focus:border-red-500/70"
+              className="mt-1 w-full rounded-xl border t-border-in bg-[var(--bg-input)] px-3 py-2 text-sm t-text-primary outline-none transition focus:border-red-500/70"
             >
               {monthOptions().map((option) => (
                 <option key={option.value} value={option.value}>{option.label}</option>
@@ -234,35 +234,35 @@ export default function EmployeeSummaryPage() {
       {/* Summary stat cards */}
       <div className="grid gap-4 md:grid-cols-3 xl:grid-cols-5">
         {cards.map((card) => (
-          <div key={card.label} className="rounded-xl border border-neutral-800/80 bg-neutral-900/40 p-4 backdrop-blur-md">
-            <p className="text-xs font-semibold uppercase tracking-wide text-neutral-500">{card.label}</p>
-            <p className="mt-2 text-2xl font-bold text-neutral-100">{card.value}</p>
+          <div key={card.label} className="rounded-xl border t-border ui-card p-4 backdrop-blur-md">
+            <p className="text-xs font-semibold uppercase tracking-wide t-text-subtle">{card.label}</p>
+            <p className="mt-2 text-2xl font-bold t-text-primary">{card.value}</p>
           </div>
         ))}
       </div>
 
       {/* Daily attendance table */}
-      <div className="mt-6 overflow-hidden rounded-2xl border border-neutral-800/80 bg-neutral-900/40 backdrop-blur-md">
+      <div className="mt-6 overflow-hidden rounded-2xl border t-border ui-card backdrop-blur-md">
         <div className="overflow-x-auto">
           <table className="min-w-full text-left">
             <thead>
               <tr className="bg-neutral-950/80">
                 {['Date', 'Day', 'Check In', 'Check Out', 'Working Hours', 'Late By', 'Status', 'Remarks'].map((h) => (
-                  <th key={h} className="px-4 py-3 text-xs font-semibold uppercase tracking-wide text-neutral-400">{h}</th>
+                  <th key={h} className="px-4 py-3 text-xs font-semibold uppercase tracking-wide t-text-muted">{h}</th>
                 ))}
               </tr>
             </thead>
             <tbody>
               {(summary?.dailyAttendance || []).map((day) => (
-                <tr key={day.date} className="border-t border-neutral-800 transition-colors hover:bg-neutral-800/30">
-                  <td className="px-4 py-3 text-sm text-neutral-200">{day.date}</td>
-                  <td className="px-4 py-3 text-sm text-neutral-300">{day.day}</td>
-                  <td className="px-4 py-3 text-sm text-neutral-300">{day.checkIn === '--' ? '--' : day.checkIn}</td>
-                  <td className="px-4 py-3 text-sm text-neutral-300">{day.checkOut === '--' ? '--' : day.checkOut}</td>
-                  <td className="px-4 py-3 text-sm text-neutral-300">{day.workingHours}</td>
-                  <td className="px-4 py-3 text-sm text-neutral-300">{day.lateBy}</td>
-                  <td className="px-4 py-3 text-sm text-neutral-300">{day.status}</td>
-                  <td className="px-4 py-3 text-sm text-neutral-300">{day.remarks || '-'}</td>
+                <tr key={day.date} className="border-t t-divider transition-colors hover:bg-neutral-800/30">
+                  <td className="px-4 py-3 text-sm t-text-secondary">{day.date}</td>
+                  <td className="px-4 py-3 text-sm t-text-secondary">{day.day}</td>
+                  <td className="px-4 py-3 text-sm t-text-secondary">{day.checkIn === '--' ? '--' : day.checkIn}</td>
+                  <td className="px-4 py-3 text-sm t-text-secondary">{day.checkOut === '--' ? '--' : day.checkOut}</td>
+                  <td className="px-4 py-3 text-sm t-text-secondary">{day.workingHours}</td>
+                  <td className="px-4 py-3 text-sm t-text-secondary">{day.lateBy}</td>
+                  <td className="px-4 py-3 text-sm t-text-secondary">{day.status}</td>
+                  <td className="px-4 py-3 text-sm t-text-secondary">{day.remarks || '-'}</td>
                 </tr>
               ))}
             </tbody>

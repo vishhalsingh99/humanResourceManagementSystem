@@ -4,26 +4,22 @@ export default function DataTable({
   actions = false,
   className = '',
   tableClassName = 'w-full',
-  headClassName = 'bg-neutral-900/80',
+  headClassName = '',
   headerRowClassName = '',
-  headerCellClassName = 'px-4 py-3 text-left text-sm font-semibold text-neutral-400',
+  headerCellClassName = 'px-4 py-3 text-left text-sm font-semibold t-text-muted',
   bodyClassName = '',
 }) {
   const tableHeaders = actions ? [...headers, 'Actions'] : headers;
 
   return (
-    <div
-      className={`overflow-x-auto rounded-2xl border border-neutral-800/80 bg-neutral-900/40 backdrop-blur-md ${className}`}
-    >
+    <div className={`overflow-x-auto rounded-2xl border t-border ui-card ${className}`}>
       <table className={tableClassName}>
-        <thead className={headClassName}>
+        <thead className={`t-thead ${headClassName}`}>
           <tr className={headerRowClassName}>
             {tableHeaders.map((header) => {
-              const label = typeof header === 'string' ? header : header.label;
-              const key = typeof header === 'string' ? header : header.key || header.label;
-              const cellClass =
-                typeof header === 'string' ? headerCellClassName : header.className || headerCellClassName;
-
+              const label     = typeof header === 'string' ? header : header.label;
+              const key       = typeof header === 'string' ? header : header.key || header.label;
+              const cellClass = typeof header === 'string' ? headerCellClassName : header.className || headerCellClassName;
               return (
                 <th key={key} className={cellClass}>
                   {label}

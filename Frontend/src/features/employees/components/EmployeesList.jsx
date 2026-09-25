@@ -39,8 +39,8 @@ export default function EmployeesList({
   }, [currentPage, totalPages]);
 
   return (
-    <div className="mt-4 p-6 text-neutral-100 sm:p-6 lg:p-10">
-      <section className="rounded-2xl border border-neutral-800/80 bg-neutral-900/40 p-5 shadow-[0_0_28px_rgba(239,68,68,0.08)] backdrop-blur-md sm:p-7">
+    <div className="mt-4 p-6 sm:p-6 lg:p-10">
+      <section className="ui-card rounded-2xl p-5 sm:p-7">
         <EmployeesToolbar
           employeeCount={employees.length}
           search={search}

@@ -111,8 +111,8 @@ export default function Payroll() {
   if (showForm) {
     return (
       <div className="p-4 mt-18 md:p-10">
-        <form onSubmit={handleSubmit} className="rounded-2xl border border-neutral-800/80 bg-neutral-900/40 p-5 shadow-[0_0_28px_rgba(239,68,68,0.08)] backdrop-blur-md sm:p-7">
-          <div className="flex flex-col gap-4 border-b border-neutral-800 pb-6 lg:flex-row lg:items-center lg:justify-between">
+        <form onSubmit={handleSubmit} className="rounded-2xl border t-border bg-[var(--bg-surface)] p-5 shadow-[0_0_28px_rgba(239,68,68,0.08)] backdrop-blur-md sm:p-7">
+          <div className="flex flex-col gap-4 border-b t-divider pb-6 lg:flex-row lg:items-center lg:justify-between">
             <button
               type="button"
               onClick={closeForm}
@@ -123,13 +123,13 @@ export default function Payroll() {
             </button>
 
             <div className="text-left lg:text-right">
-              <h2 className="m-0 text-3xl font-semibold text-neutral-50">Record Salary</h2>
-              <p className="mt-2 text-sm text-neutral-400">Use the form below to record payroll details.</p>
+              <h2 className="m-0 text-3xl font-semibold t-text-heading">Record Salary</h2>
+              <p className="mt-2 text-sm t-text-muted">Use the form below to record payroll details.</p>
             </div>
           </div>
 
           <div className="pt-8">
-            <h3 className="m-0 text-2xl font-semibold text-neutral-50">Payroll Details</h3>
+            <h3 className="m-0 text-2xl font-semibold t-text-heading">Payroll Details</h3>
             <div className="mt-6 grid gap-6 sm:grid-cols-1 md:grid-cols-2 xl:grid-cols-3">
               <SelectField label="Employee" value={form.employee} onChange={(e) => handleEmployeeChange(e.target.value)} required inputClassName="rounded-xl px-3 py-2">
                   <option value="">Select employee</option>
@@ -156,7 +156,7 @@ export default function Payroll() {
             </div>
           </div>
 
-          <div className="mt-8 flex flex-col-reverse gap-3 border-t border-neutral-800 pt-6 sm:flex-row sm:justify-end">
+          <div className="mt-8 flex flex-col-reverse gap-3 border-t t-divider pt-6 sm:flex-row sm:justify-end">
             <Button
               type="button"
               onClick={closeForm}
@@ -179,8 +179,8 @@ export default function Payroll() {
     <div className="p-4 mt-18 md:p-10">
       <div className="flex flex-col gap-4 mb-6 sm:flex-row sm:justify-between sm:items-start">
         <div>
-          <h2 className="text-3xl font-semibold text-neutral-50 m-0">Payroll</h2>
-          <p className="text-neutral-400 text-sm mt-1">
+          <h2 className="text-3xl font-semibold t-text-heading m-0">Payroll</h2>
+          <p className="t-text-muted text-sm mt-1">
             Total Payroll:
             <span className="font-bold text-emerald-400"> Rs {totalPayroll.toLocaleString()}</span>
           </p>
@@ -199,25 +199,25 @@ export default function Payroll() {
 
       <DataTable
         headers={['Employee', 'Department', 'Month',  'Year', 'Basic Salary', 'Allowances', 'Present Days',  'Absent Days', 'Leave Days', 'Deductions', 'Net Salary', 'Payment Date', 'Status', 'Actions']}
-        className="rounded-2xl border border-neutral-800/80 bg-neutral-900/40 shadow-[0_0_28px_rgba(239,68,68,0.08)] backdrop-blur-md"
+        className="rounded-2xl border t-border bg-[var(--bg-surface)] shadow-[0_0_28px_rgba(239,68,68,0.08)] backdrop-blur-md"
         tableClassName="w-full border-collapse min-w-3xl"
         headClassName=""
-        headerCellClassName="bg-neutral-950/60 px-2 py-3 text-left text-xs text-neutral-300 font-semibold uppercase tracking-wide sm:px-4"
+        headerCellClassName="t-thead px-2 py-3 text-left text-xs t-text-secondary font-semibold uppercase tracking-wide sm:px-4"
       >
               {paginatedPayrolls.map((p, i) => (
-                <tr key={p.id} className={`border-b border-neutral-800 ${i % 2 === 0 ? 'bg-neutral-900/40' : 'bg-neutral-950/40'}`}>
-                  <td className="px-2 py-3 text-sm font-medium text-neutral-50 sm:px-4">{p.employee?.name}</td>
-                  <td className="px-2 py-3 text-sm text-neutral-300 sm:px-4">{p.employee?.department || '—'}</td>
-                  <td className="px-2 py-3 text-sm text-neutral-300 sm:px-4">{p.month}</td>
-                  <td className="px-2 py-3 text-sm text-neutral-300 sm:px-4">{p.year}</td>
-                  <td className="px-2 py-3 text-sm text-neutral-300 sm:px-4">Rs {Number(p.basic_salary).toLocaleString()}</td>
-                  <td className="px-2 py-3 text-sm text-neutral-300 sm:px-4">Rs {Number(p.allowances).toLocaleString()}</td>
-                  <td className="px-2 py-3 text-sm text-neutral-300 sm:px-4">{p.presentDays}</td>
-                  <td className="px-2 py-3 text-sm text-neutral-300 sm:px-4">{p.absentDays}</td>
-                  <td className="px-2 py-3 text-sm text-neutral-300 sm:px-4">{p.leaveDays}</td>
-                  <td className="px-2 py-3 text-sm text-neutral-300 sm:px-4">Rs {Number(p.deductions).toLocaleString()}</td>
+                <tr key={p.id} className={`border-b t-divider ${i % 2 === 0 ? 'bg-[var(--bg-surface)]' : 'bg-[var(--bg-input)]'}`}>
+                  <td className="px-2 py-3 text-sm font-medium t-text-heading sm:px-4">{p.employee?.name}</td>
+                  <td className="px-2 py-3 text-sm t-text-secondary sm:px-4">{p.employee?.department || '—'}</td>
+                  <td className="px-2 py-3 text-sm t-text-secondary sm:px-4">{p.month}</td>
+                  <td className="px-2 py-3 text-sm t-text-secondary sm:px-4">{p.year}</td>
+                  <td className="px-2 py-3 text-sm t-text-secondary sm:px-4">Rs {Number(p.basic_salary).toLocaleString()}</td>
+                  <td className="px-2 py-3 text-sm t-text-secondary sm:px-4">Rs {Number(p.allowances).toLocaleString()}</td>
+                  <td className="px-2 py-3 text-sm t-text-secondary sm:px-4">{p.presentDays}</td>
+                  <td className="px-2 py-3 text-sm t-text-secondary sm:px-4">{p.absentDays}</td>
+                  <td className="px-2 py-3 text-sm t-text-secondary sm:px-4">{p.leaveDays}</td>
+                  <td className="px-2 py-3 text-sm t-text-secondary sm:px-4">Rs {Number(p.deductions).toLocaleString()}</td>
                   <td className="px-2 py-3 text-sm font-medium text-emerald-400 sm:px-4">Rs {Number(p.net_salary).toLocaleString()}</td>
-                  <td className="px-2 py-3 text-sm text-neutral-300 sm:px-4">{p.payment_date ? String(p.payment_date).slice(0, 10).split('-').reverse().join('/') : '—'}</td>
+                  <td className="px-2 py-3 text-sm t-text-secondary sm:px-4">{p.payment_date ? String(p.payment_date).slice(0, 10).split('-').reverse().join('/') : '—'}</td>
                   <td className="px-2 py-3 sm:px-4">
                     <span className={`px-2 py-0.5 rounded-full text-xs font-semibold ${statusCls[p.status] || ''} sm:px-3`}>
                       {p.status}
@@ -227,7 +227,7 @@ export default function Payroll() {
                     {canDeletePayroll && (
                       <button
                         onClick={() => setDeletePayrollId(p.id)}
-                        className="px-2 py-1 rounded-xl border border-neutral-700 bg-neutral-900/60 text-rose-400 text-xs font-semibold hover:border-rose-500/40 hover:bg-rose-500/10 cursor-pointer transition-colors sm:px-3"
+                        className="px-2 py-1 rounded-xl border t-border bg-[var(--bg-input)] text-rose-400 text-xs font-semibold hover:border-rose-500/40 hover:bg-rose-500/10 cursor-pointer transition-colors sm:px-3"
                       >
                         Delete
                       </button>
@@ -238,7 +238,7 @@ export default function Payroll() {
 
               {safePayrolls.length === 0 && (
                 <tr>
-                  <td colSpan={11} className="px-2 py-8 text-center text-neutral-500 sm:px-4">
+                  <td colSpan={11} className="px-2 py-8 text-center t-text-subtle sm:px-4">
                     No payroll records found.
                   </td>
                 </tr>

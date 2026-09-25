@@ -52,8 +52,8 @@ export default function ReportPayroll() {
       {/* Header */}
       <div className="mb-6">
         <p className="mb-1 font-mono text-xs font-semibold uppercase tracking-[0.18em] text-red-400">Reports</p>
-        <h1 className="text-3xl font-semibold text-neutral-50">Payroll Report</h1>
-        <p className="mt-1 text-sm text-neutral-400">Overview of salary and payroll records.</p>
+        <h1 className="text-3xl font-semibold t-text-heading">Payroll Report</h1>
+        <p className="mt-1 text-sm t-text-muted">Overview of salary and payroll records.</p>
       </div>
 
       {/* Stat Cards */}
@@ -80,7 +80,7 @@ export default function ReportPayroll() {
         <select
           value={monthFilter}
           onChange={(e) => setMonthFilter(e.target.value)}
-          className="rounded-xl border border-neutral-700 bg-neutral-950/65 px-4 py-2.5 text-sm text-neutral-100 outline-none transition focus:border-red-500/70"
+          className="rounded-xl border t-border bg-[var(--bg-input)] px-4 py-2.5 text-sm t-text-primary outline-none transition focus:border-red-500/70"
         >
           <option value="">All Months</option>
           {months.map((m) => (
@@ -90,7 +90,7 @@ export default function ReportPayroll() {
         <select
           value={statusFilter}
           onChange={(e) => setStatusFilter(e.target.value)}
-          className="rounded-xl border border-neutral-700 bg-neutral-950/65 px-4 py-2.5 text-sm text-neutral-100 outline-none transition focus:border-red-500/70"
+          className="rounded-xl border t-border bg-[var(--bg-input)] px-4 py-2.5 text-sm t-text-primary outline-none transition focus:border-red-500/70"
         >
           <option value="all">All Status</option>
           <option value="Paid">Paid</option>
@@ -100,13 +100,13 @@ export default function ReportPayroll() {
       </div>
 
       {/* Table */}
-      <div className="overflow-hidden rounded-2xl border border-neutral-800/80 bg-neutral-900/40 backdrop-blur-md">
+      <div className="overflow-hidden rounded-2xl border t-border bg-[var(--bg-surface)] backdrop-blur-md">
         <div className="overflow-x-auto">
           <table className="min-w-full border-collapse">
             <thead>
-              <tr className="bg-neutral-950/80">
+              <tr className="t-thead">
                 {['#', 'Employee', 'Department', 'Month', 'Year', 'Basic Salary', 'Allowances', 'Deductions', 'Net Salary', 'Status'].map((h) => (
-                  <th key={h} className="px-5 py-4 text-left text-xs font-semibold uppercase tracking-wide text-neutral-400">
+                  <th key={h} className="px-5 py-4 text-left text-xs font-semibold uppercase tracking-wide t-text-muted">
                     {h}
                   </th>
                 ))}
@@ -114,18 +114,18 @@ export default function ReportPayroll() {
             </thead>
             <tbody>
               {filtered.map((p, idx) => (
-                <tr key={p.id} className="border-t border-neutral-800 transition-colors hover:bg-neutral-800/30">
-                  <td className="px-5 py-3 text-sm text-neutral-500">{idx + 1}</td>
-                  <td className="px-5 py-3 text-sm font-semibold text-neutral-100">{p.employee?.name || '—'}</td>
-                  <td className="px-5 py-3 text-sm text-neutral-300">{p.employee?.department || '—'}</td>
-                  <td className="px-5 py-3 text-sm text-neutral-300">{p.month || '—'}</td>
-                  <td className="px-5 py-3 text-sm text-neutral-300">{p.year || '—'}</td>
-                  <td className="px-5 py-3 text-sm text-neutral-300">₹{Number(p.basic_salary || 0).toLocaleString()}</td>
-                  <td className="px-5 py-3 text-sm text-neutral-300">₹{Number(p.allowances || 0).toLocaleString()}</td>
-                  <td className="px-5 py-3 text-sm text-neutral-300">₹{Number(p.deductions || 0).toLocaleString()}</td>
+                <tr key={p.id} className="border-t t-divider transition-colors hover:bg-neutral-800/30">
+                  <td className="px-5 py-3 text-sm t-text-subtle">{idx + 1}</td>
+                  <td className="px-5 py-3 text-sm font-semibold t-text-primary">{p.employee?.name || '—'}</td>
+                  <td className="px-5 py-3 text-sm t-text-secondary">{p.employee?.department || '—'}</td>
+                  <td className="px-5 py-3 text-sm t-text-secondary">{p.month || '—'}</td>
+                  <td className="px-5 py-3 text-sm t-text-secondary">{p.year || '—'}</td>
+                  <td className="px-5 py-3 text-sm t-text-secondary">₹{Number(p.basic_salary || 0).toLocaleString()}</td>
+                  <td className="px-5 py-3 text-sm t-text-secondary">₹{Number(p.allowances || 0).toLocaleString()}</td>
+                  <td className="px-5 py-3 text-sm t-text-secondary">₹{Number(p.deductions || 0).toLocaleString()}</td>
                   <td className="px-5 py-3 text-sm font-semibold text-emerald-400">₹{Number(p.net_salary || 0).toLocaleString()}</td>
                   <td className="px-5 py-3">
-                    <span className={`rounded-full px-3 py-1 text-xs font-semibold ${statusCls[p.status] || 'bg-neutral-700/60 text-neutral-400'}`}>
+                    <span className={`rounded-full px-3 py-1 text-xs font-semibold ${statusCls[p.status] || 'bg-neutral-700/60 t-text-muted'}`}>
                       {p.status}
                     </span>
                   </td>
@@ -133,7 +133,7 @@ export default function ReportPayroll() {
               ))}
               {filtered.length === 0 && (
                 <tr>
-                  <td colSpan={10} className="px-5 py-16 text-center text-neutral-500">
+                  <td colSpan={10} className="px-5 py-16 text-center t-text-subtle">
                     No payroll records found.
                   </td>
                 </tr>

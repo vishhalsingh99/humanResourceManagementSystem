@@ -14,8 +14,8 @@ const emptyForm = {
   notes: '',
 };
 
-const inputClassName = 'w-full rounded-xl border border-neutral-700/90 bg-neutral-950/65 px-4 py-3 text-sm text-neutral-100 outline-none transition focus:border-red-500/70 focus:shadow-[0_0_0_4px_rgba(239,68,68,0.12)]';
-const labelClassName = 'mb-2 block text-sm font-semibold text-neutral-200';
+const inputClassName = 'w-full rounded-xl border t-border-in bg-[var(--bg-input)] px-4 py-3 text-sm t-text-primary outline-none transition focus:border-red-500/70 focus:shadow-[0_0_0_4px_rgba(239,68,68,0.12)]';
+const labelClassName = 'mb-2 block text-sm font-semibold t-text-secondary';
 
 function TimePicker({ value, onChange }) {
   const [open, setOpen] = useState(false);
@@ -70,14 +70,14 @@ function TimePicker({ value, onChange }) {
       <button
         type="button"
         onClick={() => setOpen((current) => !current)}
-        className="flex w-full items-center justify-between rounded-xl border border-neutral-700 bg-neutral-950/65 px-4 py-3 text-sm text-neutral-50 cursor-pointer"
+        className="flex w-full items-center justify-between rounded-xl border t-border bg-[var(--bg-input)] px-4 py-3 text-sm t-text-heading cursor-pointer"
       >
         <span>{display}</span>
         <span className="text-xs text-slate-400">▼</span>
       </button>
 
       {open && (
-        <div className="absolute left-0 top-[calc(100%+6px)] z-50 min-w-60 border border-neutral-800 bg-neutral-950/65 p-3 shadow-[0_12px_22px_rgba(15,23,42,0.18)]">
+        <div className="absolute left-0 top-[calc(100%+6px)] z-50 min-w-60 border t-divider bg-[var(--bg-input)] p-3 shadow-[0_12px_22px_rgba(15,23,42,0.18)]">
           <div className="flex gap-2">
             {[{ label: 'Hour', items: hours, key: 'hour' }, { label: 'Min', items: minutes, key: 'minute' }].map(({ label, items, key }) => (
               <div key={key} className="flex-1">
@@ -89,7 +89,7 @@ function TimePicker({ value, onChange }) {
                       type="button"
                       onClick={() => setPick((current) => ({ ...current, [key]: item }))}
                       className={`px-2 py-1.5 text-center text-sm cursor-pointer ${
-                        pick[key] === item ? 'bg-red-500/20 font-semibold text-red-300' : 'text-neutral-300 hover:bg-neutral-800'
+                        pick[key] === item ? 'bg-red-500/20 font-semibold text-red-300' : 't-text-secondary hover:bg-neutral-800'
                       }`}
                     >
                       {item}
@@ -108,7 +108,7 @@ function TimePicker({ value, onChange }) {
                     type="button"
                     onClick={() => setPick((current) => ({ ...current, ampm }))}
                     className={`px-2 py-1.5 text-center text-sm cursor-pointer ${
-                      pick.ampm === ampm ? 'bg-red-500/20 font-semibold text-red-300' : 'text-neutral-300 hover:bg-neutral-800'
+                      pick.ampm === ampm ? 'bg-red-500/20 font-semibold text-red-300' : 't-text-secondary hover:bg-neutral-800'
                     }`}
                   >
                     {ampm}
@@ -255,8 +255,8 @@ export default function Meetings() {
   if (showForm) {
     return (
       <div className="p-4 sm:p-6 mt-18 lg:p-10">
-        <form onSubmit={handleSubmit} className="rounded-2xl border border-neutral-800/80 bg-neutral-900/40 p-5 shadow-[0_0_28px_rgba(239,68,68,0.08)] backdrop-blur-md sm:p-7">
-          <div className="flex flex-col gap-4 border-b border-neutral-800 pb-6 lg:flex-row lg:items-center lg:justify-between">
+        <form onSubmit={handleSubmit} className="rounded-2xl border t-border bg-[var(--bg-surface)] p-5 shadow-[0_0_28px_rgba(239,68,68,0.08)] backdrop-blur-md sm:p-7">
+          <div className="flex flex-col gap-4 border-b t-divider pb-6 lg:flex-row lg:items-center lg:justify-between">
             <button
               type="button"
               onClick={closeForm}
@@ -268,15 +268,15 @@ export default function Meetings() {
             </button>
 
             <div className="text-left lg:text-right">
-              <h2 className="m-0 text-3xl font-semibold text-neutral-50">
+              <h2 className="m-0 text-3xl font-semibold t-text-heading">
                 {editingMeeting ? 'Update Meeting' : 'Add New Meeting'}
               </h2>
-              <p className="mt-2 text-sm text-neutral-400">Use the form below to save meeting details in the HRMS system.</p>
+              <p className="mt-2 text-sm t-text-muted">Use the form below to save meeting details in the HRMS system.</p>
             </div>
           </div>
 
           <div className="pt-8">
-            <h3 className="m-0 text-2xl font-semibold text-neutral-50">Meeting Details</h3>
+            <h3 className="m-0 text-2xl font-semibold t-text-heading">Meeting Details</h3>
             <div className="mt-6 grid gap-6 md:grid-cols-2 xl:grid-cols-3">
               <div>
                 <label className={labelClassName}>Employee</label>
@@ -351,12 +351,12 @@ export default function Meetings() {
             </div>
           </div>
 
-          <div className="mt-8 flex flex-col-reverse gap-3 border-t border-neutral-800 pt-6 sm:flex-row sm:justify-end">
+          <div className="mt-8 flex flex-col-reverse gap-3 border-t t-divider pt-6 sm:flex-row sm:justify-end">
             <button
               type="button"
               onClick={closeForm}
               disabled={isSaving}
-              className="rounded-xl border border-neutral-700 px-5 py-3 text-sm font-semibold text-neutral-300 transition hover:bg-neutral-800 cursor-pointer disabled:opacity-60"
+              className="rounded-xl border t-border px-5 py-3 text-sm font-semibold t-text-secondary transition hover:bg-neutral-800 cursor-pointer disabled:opacity-60"
             >
               Back
             </button>
@@ -375,11 +375,11 @@ export default function Meetings() {
 
   return (
     <div className="p-4 sm:p-6 mt-18 lg:p-10">
-      <section className="rounded-2xl border border-neutral-800/80 bg-neutral-900/40 p-5 shadow-[0_0_28px_rgba(239,68,68,0.08)] backdrop-blur-md sm:p-7">
+      <section className="rounded-2xl border t-border bg-[var(--bg-surface)] p-5 shadow-[0_0_28px_rgba(239,68,68,0.08)] backdrop-blur-md sm:p-7">
         <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
           <div>
-            <h2 className="m-0 text-3xl font-semibold text-neutral-50">Meeting Master</h2>
-            <p className="mt-2 text-sm text-neutral-400">
+            <h2 className="m-0 text-3xl font-semibold t-text-heading">Meeting Master</h2>
+            <p className="mt-2 text-sm t-text-muted">
               {meetings.length} meeting{meetings.length !== 1 ? 's' : ''} available in the HRMS system
             </p>
           </div>
@@ -391,7 +391,7 @@ export default function Meetings() {
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
                 placeholder="Search meeting"
-                className="w-full rounded-xl border border-neutral-700 bg-neutral-950/65 py-3 pl-11 pr-4 text-sm text-neutral-50 outline-none transition focus:border-blue-500 sm:w-96"
+                className="w-full rounded-xl border t-border bg-[var(--bg-input)] py-3 pl-11 pr-4 text-sm t-text-heading outline-none transition focus:border-blue-500 sm:w-96"
               />
             </div>
             {canCreateMeeting && (
@@ -406,13 +406,13 @@ export default function Meetings() {
           </div>
         </div>
 
-        <div className="mt-6 overflow-hidden rounded-xl border border-neutral-800">
+        <div className="mt-6 overflow-hidden rounded-xl border t-divider">
           <div className="overflow-x-auto">
             <table className="min-w-full border-collapse">
               <thead>
-                <tr className="bg-neutral-950/80 text-left">
+                <tr className="t-thead text-left">
                   {['S.No.', 'Employee', 'Organizer', 'Department', 'Date', 'Time', 'Status', 'Actions'].map((heading) => (
-                    <th key={heading} className="px-5 py-4 text-xs font-semibold uppercase tracking-wide text-neutral-400">
+                    <th key={heading} className="px-5 py-4 text-xs font-semibold uppercase tracking-wide t-text-muted">
                       {heading}
                     </th>
                   ))}
@@ -420,13 +420,13 @@ export default function Meetings() {
               </thead>
               <tbody>
                 {filtered.map((meeting, index) => (
-                  <tr key={meeting._id} className="border-t border-neutral-800 bg-neutral-950/65">
-                    <td className="px-5 py-4 text-sm text-neutral-500">{index + 1}</td>
-                    <td className="px-5 py-4 text-sm font-semibold text-neutral-50">{meeting.employee?.name}</td>
-                    <td className="px-5 py-4 text-sm text-neutral-300">{meeting.organizer?.name}</td>
-                    <td className="px-5 py-4 text-sm text-neutral-300">{meeting.organizer?.department || '-'}</td>
-                    <td className="px-5 py-4 text-sm text-neutral-300">{meeting.date}</td>
-                    <td className="px-5 py-4 text-sm text-neutral-300">{meeting.time}</td>
+                  <tr key={meeting._id} className="border-t t-divider bg-[var(--bg-input)]">
+                    <td className="px-5 py-4 text-sm t-text-subtle">{index + 1}</td>
+                    <td className="px-5 py-4 text-sm font-semibold t-text-heading">{meeting.employee?.name}</td>
+                    <td className="px-5 py-4 text-sm t-text-secondary">{meeting.organizer?.name}</td>
+                    <td className="px-5 py-4 text-sm t-text-secondary">{meeting.organizer?.department || '-'}</td>
+                    <td className="px-5 py-4 text-sm t-text-secondary">{meeting.date}</td>
+                    <td className="px-5 py-4 text-sm t-text-secondary">{meeting.time}</td>
                     <td className="px-5 py-4">
                       <span className={`px-3 py-1 text-xs font-semibold ${statusClassNames[meeting.status] || ''}`}>
                         {meeting.status}
@@ -437,7 +437,7 @@ export default function Meetings() {
                         {canEditMeeting && (
                           <button
                             onClick={() => openEditMeeting(meeting)}
-                            className="flex h-10 w-10 items-center justify-center rounded-xl border border-neutral-700 bg-neutral-900/60 text-emerald-400 transition hover:border-emerald-500/40 hover:bg-emerald-500/10 cursor-pointer"
+                            className="flex h-10 w-10 items-center justify-center rounded-xl border t-border bg-[var(--bg-input)] text-emerald-400 transition hover:border-emerald-500/40 hover:bg-emerald-500/10 cursor-pointer"
                             title="Edit meeting"
                           >
                             <PencilLine size={16} />
@@ -446,7 +446,7 @@ export default function Meetings() {
                         {canDeleteMeeting && (
                           <button
                             onClick={() => setDeleteMeetingId(meeting._id)}
-                            className="flex h-10 w-10 items-center justify-center rounded-xl border border-neutral-700 bg-neutral-900/60 text-rose-400 transition hover:border-rose-500/40 hover:bg-rose-500/10 cursor-pointer"
+                            className="flex h-10 w-10 items-center justify-center rounded-xl border t-border bg-[var(--bg-input)] text-rose-400 transition hover:border-rose-500/40 hover:bg-rose-500/10 cursor-pointer"
                             title="Delete meeting"
                           >
                             <Trash2 size={16} />

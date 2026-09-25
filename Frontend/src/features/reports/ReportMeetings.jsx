@@ -24,7 +24,7 @@ export default function ReportMeetings() {
     { label: 'Total Meetings', value: safeMeetings.length, icon: CalendarDays, box: 'border-red-500/25 bg-red-500/10', text: 'text-red-400', value_cls: 'text-red-300' },
     { label: 'Scheduled', value: scheduled, icon: Clock, box: 'border-amber-500/25 bg-amber-500/10', text: 'text-amber-400', value_cls: 'text-amber-300' },
     { label: 'Completed', value: completed, icon: CheckCircle2, box: 'border-emerald-500/25 bg-emerald-500/10', text: 'text-emerald-400', value_cls: 'text-emerald-300' },
-    { label: 'Cancelled', value: cancelled, icon: XCircle, box: 'border-neutral-700 bg-neutral-800/60', text: 'text-neutral-400', value_cls: 'text-neutral-200' },
+    { label: 'Cancelled', value: cancelled, icon: XCircle, box: 't-border bg-neutral-800/60', text: 't-text-muted', value_cls: 't-text-secondary' },
   ];
 
   const filtered = useMemo(() => {
@@ -45,8 +45,8 @@ export default function ReportMeetings() {
       {/* Header */}
       <div className="mb-6">
         <p className="mb-1 font-mono text-xs font-semibold uppercase tracking-[0.18em] text-red-400">Reports</p>
-        <h1 className="text-3xl font-semibold text-neutral-50">Meeting Report</h1>
-        <p className="mt-1 text-sm text-neutral-400">Overview of all scheduled and past meetings.</p>
+        <h1 className="text-3xl font-semibold t-text-heading">Meeting Report</h1>
+        <p className="mt-1 text-sm t-text-muted">Overview of all scheduled and past meetings.</p>
       </div>
 
       {/* Stat Cards */}
@@ -73,7 +73,7 @@ export default function ReportMeetings() {
         <select
           value={statusFilter}
           onChange={(e) => setStatusFilter(e.target.value)}
-          className="rounded-xl border border-neutral-700 bg-neutral-950/65 px-4 py-2.5 text-sm text-neutral-100 outline-none transition focus:border-red-500/70"
+          className="rounded-xl border t-border bg-[var(--bg-input)] px-4 py-2.5 text-sm t-text-primary outline-none transition focus:border-red-500/70"
         >
           <option value="all">All Status</option>
           <option value="Scheduled">Scheduled</option>
@@ -83,13 +83,13 @@ export default function ReportMeetings() {
       </div>
 
       {/* Table */}
-      <div className="overflow-hidden rounded-2xl border border-neutral-800/80 bg-neutral-900/40 backdrop-blur-md">
+      <div className="overflow-hidden rounded-2xl border t-border bg-[var(--bg-surface)] backdrop-blur-md">
         <div className="overflow-x-auto">
           <table className="min-w-full border-collapse">
             <thead>
-              <tr className="bg-neutral-950/80">
+              <tr className="t-thead">
                 {['#', 'Employee', 'Organizer', 'Department', 'Date', 'Time', 'Status'].map((h) => (
-                  <th key={h} className="px-5 py-4 text-left text-xs font-semibold uppercase tracking-wide text-neutral-400">
+                  <th key={h} className="px-5 py-4 text-left text-xs font-semibold uppercase tracking-wide t-text-muted">
                     {h}
                   </th>
                 ))}
@@ -97,15 +97,15 @@ export default function ReportMeetings() {
             </thead>
             <tbody>
               {filtered.map((meeting, idx) => (
-                <tr key={meeting._id} className="border-t border-neutral-800 transition-colors hover:bg-neutral-800/30">
-                  <td className="px-5 py-3 text-sm text-neutral-500">{idx + 1}</td>
-                  <td className="px-5 py-3 text-sm font-semibold text-neutral-100">{meeting.employee?.name || '—'}</td>
-                  <td className="px-5 py-3 text-sm text-neutral-300">{meeting.organizer?.name || '—'}</td>
-                  <td className="px-5 py-3 text-sm text-neutral-300">{meeting.organizer?.department || '—'}</td>
-                  <td className="px-5 py-3 text-sm text-neutral-300">{meeting.date || '—'}</td>
-                  <td className="px-5 py-3 text-sm text-neutral-300">{meeting.time || '—'}</td>
+                <tr key={meeting._id} className="border-t t-divider transition-colors hover:bg-neutral-800/30">
+                  <td className="px-5 py-3 text-sm t-text-subtle">{idx + 1}</td>
+                  <td className="px-5 py-3 text-sm font-semibold t-text-primary">{meeting.employee?.name || '—'}</td>
+                  <td className="px-5 py-3 text-sm t-text-secondary">{meeting.organizer?.name || '—'}</td>
+                  <td className="px-5 py-3 text-sm t-text-secondary">{meeting.organizer?.department || '—'}</td>
+                  <td className="px-5 py-3 text-sm t-text-secondary">{meeting.date || '—'}</td>
+                  <td className="px-5 py-3 text-sm t-text-secondary">{meeting.time || '—'}</td>
                   <td className="px-5 py-3">
-                    <span className={`rounded-full px-3 py-1 text-xs font-semibold ${statusCls[meeting.status] || 'bg-neutral-700/60 text-neutral-400'}`}>
+                    <span className={`rounded-full px-3 py-1 text-xs font-semibold ${statusCls[meeting.status] || 'bg-neutral-700/60 t-text-muted'}`}>
                       {meeting.status}
                     </span>
                   </td>
@@ -113,7 +113,7 @@ export default function ReportMeetings() {
               ))}
               {filtered.length === 0 && (
                 <tr>
-                  <td colSpan={7} className="px-5 py-16 text-center text-neutral-500">
+                  <td colSpan={7} className="px-5 py-16 text-center t-text-subtle">
                     No meetings found.
                   </td>
                 </tr>

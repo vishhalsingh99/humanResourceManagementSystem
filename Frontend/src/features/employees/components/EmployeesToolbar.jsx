@@ -1,43 +1,35 @@
 import { Download, Plus, Search } from 'lucide-react';
 
 const statusFilterOptions = [
-  { value: 'all', label: 'All' },
-  { value: 'active', label: 'Active' },
+  { value: 'all',      label: 'All' },
+  { value: 'active',   label: 'Active' },
   { value: 'inactive', label: 'Inactive' },
 ];
 
 export default function EmployeesToolbar({
-  employeeCount,
-  search,
-  onAdd,
-  canCreate = false,
-  onDownloadPdf,
-  onSearchChange,
-  statusFilter = 'all',
-  onStatusFilterChange,
+  employeeCount, search, onAdd, canCreate = false, onDownloadPdf,
+  onSearchChange, statusFilter = 'all', onStatusFilterChange,
 }) {
   return (
     <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
       <div>
-        <h2 className="text-xl font-medium text-neutral-50">Employee Details</h2>
-
-        <p className="mt-2 font-mono text-sm text-neutral-500">
+        <h2 className="text-xl font-medium t-text-heading">Employee Details</h2>
+        <p className="mt-2 font-mono text-sm t-text-subtle">
           {employeeCount} employee{employeeCount !== 1 ? 's' : ''} available
         </p>
-
-        <div className="mt-3 inline-flex flex-wrap gap-1 rounded-xl border border-neutral-800 bg-neutral-950/60 p-1">
-          {statusFilterOptions.map((option) => (
+        <div className="mt-3 inline-flex flex-wrap gap-1 rounded-xl border t-border bg-[var(--bg-input)] p-1">
+          {statusFilterOptions.map((opt) => (
             <button
-              key={option.value}
+              key={opt.value}
               type="button"
-              onClick={() => onStatusFilterChange(option.value)}
+              onClick={() => onStatusFilterChange(opt.value)}
               className={`rounded-lg px-3 py-1.5 text-xs font-semibold transition duration-200 ${
-                statusFilter === option.value
+                statusFilter === opt.value
                   ? 'bg-red-500 text-white shadow-[0_0_16px_rgba(239,68,68,0.3)]'
-                  : 'text-neutral-400 hover:bg-neutral-800 hover:text-neutral-100'
+                  : 't-text-muted hover:bg-[var(--bg-row-hover)] hover:t-text-primary'
               }`}
             >
-              {option.label}
+              {opt.label}
             </button>
           ))}
         </div>
@@ -45,16 +37,12 @@ export default function EmployeesToolbar({
 
       <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
         <div className="relative">
-          <Search
-            size={18}
-            className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-neutral-500"
-          />
-
+          <Search size={18} className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 t-text-subtle" />
           <input
             value={search}
-            onChange={(event) => onSearchChange(event.target.value)}
+            onChange={(e) => onSearchChange(e.target.value)}
             placeholder="Search employee"
-            className="w-full rounded-xl border border-neutral-700/90 bg-neutral-950/65 py-3 pl-11 pr-4 text-sm text-neutral-100 outline-none transition focus:border-red-500/70 focus:shadow-[0_0_0_4px_rgba(239,68,68,0.12)] sm:w-80"
+            className="ui-input w-full rounded-xl py-3 pl-11 pr-4 text-sm outline-none sm:w-80"
           />
         </div>
 
@@ -70,7 +58,7 @@ export default function EmployeesToolbar({
 
         <button
           onClick={onDownloadPdf}
-          className="flex cursor-pointer items-center justify-center gap-2 rounded-xl border border-neutral-700 bg-neutral-900/60 px-5 py-3 text-sm font-semibold text-neutral-200 transition hover:scale-[1.02] hover:border-emerald-500/40 hover:bg-emerald-500/10 hover:text-emerald-300"
+          className="flex cursor-pointer items-center justify-center gap-2 rounded-xl border t-border bg-[var(--bg-input)] px-5 py-3 text-sm font-semibold t-text-secondary transition hover:scale-[1.02] hover:border-emerald-500/40 hover:bg-emerald-500/10 hover:text-emerald-500"
         >
           <Download size={18} />
           Print

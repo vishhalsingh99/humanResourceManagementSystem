@@ -70,9 +70,11 @@ export default function Attendance() {
     <div className="p-4 sm:p-6 mt-4 lg:p-10">
       <div className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-neutral-50">Attendance Management</h1>
-          <p className="text-neutral-400">Track employee attendance records</p>
-          </div>{canMarkAttendance && <Button onClick={data.openAdd} icon={Plus} variant="primary" className="px-4 py-2">Mark Attendance</Button>}</div>
+          <h1 className="text-2xl font-bold t-text-heading">Attendance Management</h1>
+          <p className="t-text-muted">Track employee attendance records</p>
+        </div>
+        {canMarkAttendance && <Button onClick={data.openAdd} icon={Plus} variant="primary" className="px-4 py-2">Mark Attendance</Button>}
+      </div>
       <AttendanceStats stats={{ ...data.stats, totalWorkingDays }} />
       <AttendanceFilters search={filters.search} status={filters.status} date={filters.date} onSearchChange={filters.setSearch} onStatusChange={filters.setStatus} onDateChange={filters.setDate} />
       <AttendanceTable records={filters.paginatedRecords} employeeById={filters.employeeById} canEdit={canEditAttendance} canDelete={canDeleteAttendance} onEdit={data.openEdit} onDelete={data.setDeleteAttendanceId} onOpenCalendar={data.openCalendar} onViewSummary={handleViewSummary} />

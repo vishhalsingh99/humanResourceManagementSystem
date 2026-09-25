@@ -101,11 +101,11 @@ export default function CompanyRule() {
   if (loading) {
     return (
       <div className="mt-18 flex min-h-[60vh] items-center justify-center p-6">
-        <div className="flex flex-col items-center gap-4 rounded-2xl border border-neutral-800/80 bg-neutral-900/40 px-8 py-7 text-center shadow-[0_0_28px_rgba(239,68,68,0.08)] backdrop-blur-md">
+        <div className="flex flex-col items-center gap-4 rounded-2xl border t-border bg-[var(--bg-surface)] px-8 py-7 text-center shadow-[0_0_28px_rgba(239,68,68,0.08)] backdrop-blur-md">
           <Loader2 className="h-9 w-9 animate-spin text-red-400" />
           <div>
-            <p className="text-base font-semibold text-neutral-50">Loading company information</p>
-            <p className="mt-1 text-sm text-neutral-400">Fetching your office schedule, policies, and rules.</p>
+            <p className="text-base font-semibold t-text-heading">Loading company information</p>
+            <p className="mt-1 text-sm t-text-muted">Fetching your office schedule, policies, and rules.</p>
           </div>
         </div>
       </div>
@@ -119,8 +119,8 @@ export default function CompanyRule() {
           <div className="mb-3 inline-flex h-11 w-11 items-center justify-center rounded-xl bg-red-500 text-white shadow-[0_0_20px_rgba(239,68,68,0.25)]">
             <Building2 className="h-5 w-5" />
           </div>
-          <h1 className="text-2xl font-bold text-neutral-50 sm:text-3xl">Company Information</h1>
-          <p className="mt-2 max-w-2xl text-sm text-neutral-400">
+          <h1 className="text-2xl font-bold t-text-heading sm:text-3xl">Company Information</h1>
+          <p className="mt-2 max-w-2xl text-sm t-text-muted">
             View your office schedule, published company policies, and active workplace rules.
           </p>
         </div>
@@ -134,14 +134,14 @@ export default function CompanyRule() {
       )}
 
       <div className="grid gap-6 xl:grid-cols-[1.1fr_0.95fr]">
-        <section className="rounded-2xl border border-neutral-800/80 bg-neutral-900/40 p-5 shadow-[0_0_28px_rgba(239,68,68,0.08)] backdrop-blur-md sm:p-6">
+        <section className="rounded-2xl border t-border bg-[var(--bg-surface)] p-5 shadow-[0_0_28px_rgba(239,68,68,0.08)] backdrop-blur-md sm:p-6">
           <div className="mb-5 flex items-center gap-3">
             <div className="flex h-10 w-10 items-center justify-center rounded-xl border border-red-500/20 bg-red-500/10 text-red-400">
               <Clock3 className="h-5 w-5" />
             </div>
             <div>
-              <h2 className="text-lg font-bold text-neutral-50">Office Schedule</h2>
-              <p className="text-sm text-neutral-400">Current attendance and timing settings.</p>
+              <h2 className="text-lg font-bold t-text-heading">Office Schedule</h2>
+              <p className="text-sm t-text-muted">Current attendance and timing settings.</p>
             </div>
           </div>
 
@@ -149,79 +149,79 @@ export default function CompanyRule() {
             {scheduleItems.map((item) => {
               const Icon = item.icon;
               return (
-                <div key={item.label} className="rounded-xl border border-neutral-800 bg-neutral-950/40 px-4 py-3">
-                  <div className="flex items-center gap-2 text-xs font-semibold uppercase text-neutral-400">
+                <div key={item.label} className="rounded-xl border t-divider bg-[var(--bg-input)] px-4 py-3">
+                  <div className="flex items-center gap-2 text-xs font-semibold uppercase t-text-muted">
                     <Icon className="h-4 w-4 text-red-400" />
                     <span>{item.label}</span>
                   </div>
-                  <p className="mt-2 text-base font-bold text-neutral-50">{item.value}</p>
+                  <p className="mt-2 text-base font-bold t-text-heading">{item.value}</p>
                 </div>
               );
             })}
           </div>
         </section>
 
-        <section className="rounded-2xl border border-neutral-800/80 bg-neutral-900/40 p-5 shadow-[0_0_28px_rgba(239,68,68,0.08)] backdrop-blur-md sm:p-6">
+        <section className="rounded-2xl border t-border bg-[var(--bg-surface)] p-5 shadow-[0_0_28px_rgba(239,68,68,0.08)] backdrop-blur-md sm:p-6">
           <div className="mb-5 flex items-center gap-3">
             <div className="flex h-10 w-10 items-center justify-center rounded-xl border border-emerald-500/20 bg-emerald-500/10 text-emerald-400">
               <BookOpen className="h-5 w-5" />
             </div>
             <div>
-              <h2 className="text-lg font-bold text-neutral-50">Company Policies</h2>
-              <p className="text-sm text-neutral-400">Published policies for employees.</p>
+              <h2 className="text-lg font-bold t-text-heading">Company Policies</h2>
+              <p className="text-sm t-text-muted">Published policies for employees.</p>
             </div>
           </div>
 
           <div className="grid gap-3">
             {companyInformation.policies.map((policy) => (
-              <article key={policy.id} className="rounded-xl border border-neutral-800 bg-neutral-950/40 p-4">
+              <article key={policy.id} className="rounded-xl border t-divider bg-[var(--bg-input)] p-4">
                 <div className="flex items-start gap-3">
                   <FileText className="mt-1 h-5 w-5 shrink-0 text-emerald-400" />
                   <div className="min-w-0">
-                    <h3 className=" wrap-break-word text-base font-bold text-neutral-50">{policy.title}</h3>
-                    <p className="mt-2 whitespace-pre-wrap  wrap-break-word text-sm leading-6 text-neutral-400">{policy.details}</p>
+                    <h3 className=" wrap-break-word text-base font-bold t-text-heading">{policy.title}</h3>
+                    <p className="mt-2 whitespace-pre-wrap  wrap-break-word text-sm leading-6 t-text-muted">{policy.details}</p>
                   </div>
                 </div>
               </article>
             ))}
 
             {!companyInformation.policies.length && (
-              <div className="rounded-xl border border-dashed border-neutral-700 bg-neutral-950/40 p-6 text-center">
+              <div className="rounded-xl border border-dashed t-border bg-[var(--bg-input)] p-6 text-center">
                 <BookOpen className="mx-auto h-8 w-8 text-neutral-600" />
-                <p className="mt-3 text-sm font-semibold text-neutral-300">No policies available.</p>
+                <p className="mt-3 text-sm font-semibold t-text-secondary">No policies available.</p>
               </div>
             )}
           </div>
         </section>
 
-        <section className="rounded-2xl border border-neutral-800/80 bg-neutral-900/40 p-5 shadow-[0_0_28px_rgba(239,68,68,0.08)] backdrop-blur-md sm:p-6 xl:col-span-2">
+        <section className="rounded-2xl border t-border bg-[var(--bg-surface)] p-5 shadow-[0_0_28px_rgba(239,68,68,0.08)] backdrop-blur-md sm:p-6 xl:col-span-2">
           <div className="mb-5 flex items-center gap-3">
             <div className="flex h-10 w-10 items-center justify-center rounded-xl border border-amber-500/20 bg-amber-500/10 text-amber-400">
               <ShieldCheck className="h-5 w-5" />
             </div>
             <div>
-              <h2 className="text-lg font-bold text-neutral-50">Company Rules</h2>
-              <p className="text-sm text-neutral-400">Active workplace rules and expectations.</p>
+              <h2 className="text-lg font-bold t-text-heading">Company Rules</h2>
+              <p className="text-sm t-text-muted">Active workplace rules and expectations.</p>
             </div>
           </div>
 
           <div className="grid gap-3 lg:grid-cols-2">
             {companyInformation.rules.map((rule) => (
-              <article key={rule.id} className="rounded-xl border border-neutral-800 bg-neutral-950/40 p-4">
+              <article key={rule.id} className="rounded-xl border t-divider bg-[var(--bg-input)] p-4">
                 <div className="flex items-start gap-3">
                   <CheckCircle2 className="mt-1 h-5 w-5 shrink-0 text-amber-400" />
                   <div className="min-w-0">
-                    <h3 className=" wrap-break-word text-base font-bold text-neutral-50">{rule.title}</h3>
-                    <p className="mt-2 whitespace-pre-wrap  wrap-break-word text-sm leading-6 text-neutral-400">{rule.details}</p>
+                    <h3 className=" wrap-break-word text-base font-bold t-text-heading">{rule.title}</h3>
+                    <p className="mt-2 whitespace-pre-wrap  wrap-break-word text-sm leading-6 t-text-muted">{rule.details}</p>
                   </div>
                 </div>
               </article>
             ))}
 
             {!companyInformation.rules.length && (
-              <div className="rounded-xl border border-dashed border-neutral-700 bg-neutral-950/40 p-6 text-center lg:col-span-2">
+              <div className="rounded-xl border border-dashed t-border bg-[var(--bg-input)] p-6 text-center lg:col-span-2">
                 <ShieldCheck className="mx-auto h-8 w-8 text-neutral-600" />
-                <p className="mt-3 text-sm font-semibold text-neutral-300">No rules available.</p>
+                <p className="mt-3 text-sm font-semibold t-text-secondary">No rules available.</p>
               </div>
             )}
           </div>
