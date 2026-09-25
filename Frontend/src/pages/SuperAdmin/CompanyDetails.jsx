@@ -30,7 +30,7 @@ export default function SuperAdminCompanyDetails() {
   };
 
   if (!company) {
-    return <div className="p-10 mt-18 text-sm text-slate-500">Loading company...</div>;
+    return <div className="p-10 mt-18 text-sm t-text-subtle">Loading company...</div>;
   }
 
   return (
@@ -45,8 +45,8 @@ export default function SuperAdminCompanyDetails() {
             </div>
           )}
           <div>
-            <h2 className="m-0 text-2xl font-semibold text-slate-900">{company.companyName}</h2>
-            <p className="mt-1 text-sm text-slate-500">{company.databaseName}</p>
+            <h2 className="m-0 text-2xl font-semibold t-text-heading">{company.companyName}</h2>
+            <p className="mt-1 text-sm t-text-subtle">{company.databaseName}</p>
           </div>
         </div>
         <div className="flex gap-2">
@@ -74,9 +74,9 @@ export default function SuperAdminCompanyDetails() {
           ['Subscription Status', company.subscriptionStatus || '-'],
           ['Created Date', company.createdAt ? new Date(company.createdAt).toLocaleString() : '-'],
         ].map(([label, value]) => (
-          <div key={label} className="bg-white p-5 shadow-sm">
-            <p className="m-0 text-xs font-semibold uppercase text-slate-500">{label}</p>
-            <div className="mt-2 text-base font-semibold text-slate-900">
+          <div key={label} className="bg-[var(--bg-surface)] p-5 shadow-sm">
+            <p className="m-0 text-xs font-semibold uppercase t-text-subtle">{label}</p>
+            <div className="mt-2 text-base font-semibold t-text-heading">
               {label === 'Subscription Status' ? (
                 <StatusBadge tone={value === 'active' ? 'green' : 'red'}>{value}</StatusBadge>
               ) : value}

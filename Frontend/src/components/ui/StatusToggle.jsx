@@ -15,7 +15,7 @@ export default function StatusToggle({ isActive, disabled = false, onToggle }) {
         aria-checked={isActive}
         disabled={disabled}
         onClick={onToggle}
-        className={`relative inline-flex h-5 w-10 shrink-0 items-center rounded-full transition-colors duration-300 ease-in-out focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-1 focus-visible:ring-offset-neutral-950 ${
+        className={`relative inline-flex h-5 w-10 shrink-0 items-center rounded-full transition-colors duration-300 ease-in-out focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-1 focus-visible:ring-offset-[var(--bg-page)] ${
           isActive
             ? 'bg-emerald-500 shadow-[0_0_12px_rgba(16,185,129,0.35)] focus-visible:ring-emerald-400'
             : 'bg-red-500 shadow-[0_0_12px_rgba(239,68,68,0.35)] focus-visible:ring-red-400'

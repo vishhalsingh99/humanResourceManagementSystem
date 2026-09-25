@@ -29,5 +29,4 @@ function InputField(
   );
 }
 
-export { baseInputClass as baseInputClass };
 export default forwardRef(InputField);

@@ -10,7 +10,7 @@ const statCards = (employees) => {
   return [
     { label: 'Total Employees', value: employees.length, icon: Users, box: 'border-red-500/25 bg-red-500/10', text: 'text-red-400', value_cls: 'text-red-300' },
     { label: 'Active', value: active, icon: UserCheck, box: 'border-emerald-500/25 bg-emerald-500/10', text: 'text-emerald-400', value_cls: 'text-emerald-300' },
-    { label: 'Inactive', value: inactive, icon: UserX, box: 't-border bg-neutral-800/60', text: 't-text-muted', value_cls: 't-text-secondary' },
+    { label: 'Inactive', value: inactive, icon: UserX, box: 't-border bg-[var(--bg-badge-neutral)]', text: 't-text-muted', value_cls: 't-text-secondary' },
     { label: 'Departments', value: departments, icon: Building2, box: 'border-blue-500/25 bg-blue-500/10', text: 'text-blue-400', value_cls: 'text-blue-300' },
   ];
 };
@@ -112,7 +112,7 @@ export default function ReportEmployees() {
             </thead>
             <tbody>
               {filtered.map((emp, idx) => (
-                <tr key={emp.id} className="border-t t-divider transition-colors hover:bg-neutral-800/30">
+                <tr key={emp.id} className="border-t t-divider t-row-hover transition-colors">
                   <td className="px-5 py-3 text-sm t-text-subtle">{idx + 1}</td>
                   <td className="px-5 py-3 text-sm font-semibold t-text-primary">{emp.name}</td>
                   <td className="px-5 py-3 text-sm t-text-secondary">{emp.employee_id || emp.employeeId || '—'}</td>
@@ -123,7 +123,7 @@ export default function ReportEmployees() {
                     <span
                       className={`rounded-full px-3 py-1 text-xs font-semibold ${
                         emp.status === 'inactive'
-                          ? 'bg-neutral-700/60 t-text-muted'
+                          ? 'bg-[var(--bg-badge-neutral)] t-text-muted'
                           : 'bg-emerald-500/15 text-emerald-300'
                       }`}
                     >

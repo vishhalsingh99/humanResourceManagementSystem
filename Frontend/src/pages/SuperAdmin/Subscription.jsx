@@ -31,20 +31,20 @@ export default function SuperAdminSubscription() {
   return (
     <div className="p-10 mt-18">
       <div className="mb-7">
-        <h2 className="m-0 text-2xl font-semibold text-slate-900">Subscription Management</h2>
-        <p className="mt-1 text-sm text-slate-500">Update company plans and subscription status.</p>
+        <h2 className="m-0 text-2xl font-semibold t-text-heading">Subscription Management</h2>
+        <p className="mt-1 text-sm t-text-subtle">Update company plans and subscription status.</p>
       </div>
 
       <DataTable headers={['Company', 'Plan', 'Subscription Status', 'Employees', 'Database Name', 'Updated Date']}>
         {companies.map((company) => (
-          <tr key={company.id} className="border-t border-slate-100">
-            <td className="px-5 py-4 text-sm font-semibold text-slate-900">{company.companyName}</td>
+          <tr key={company.id} className="border-t t-divider">
+            <td className="px-5 py-4 text-sm font-semibold t-text-heading">{company.companyName}</td>
             <td className="px-5 py-4">
               <select
                 value={company.plan || 'basic'}
                 disabled={savingId === company.id}
                 onChange={(event) => handleUpdate(company, 'plan', event.target.value)}
-                className="border border-slate-300 bg-white px-3 py-2 text-sm"
+                className="border t-border-in bg-[var(--bg-input)] px-3 py-2 text-sm"
               >
                 <option value="trial">trial</option>
                 <option value="basic">basic</option>
@@ -57,7 +57,7 @@ export default function SuperAdminSubscription() {
                 value={company.subscriptionStatus || 'active'}
                 disabled={savingId === company.id}
                 onChange={(event) => handleUpdate(company, 'status', event.target.value)}
-                className="border border-slate-300 bg-white px-3 py-2 text-sm"
+                className="border t-border-in bg-[var(--bg-input)] px-3 py-2 text-sm"
               >
                 <option value="active">active</option>
                 <option value="inactive">inactive</option>
@@ -69,9 +69,9 @@ export default function SuperAdminSubscription() {
                 </StatusBadge>
               </span>
             </td>
-            <td className="px-5 py-4 text-sm text-slate-700">{company.employees}</td>
-            <td className="px-5 py-4 text-sm text-slate-700">{company.databaseName}</td>
-            <td className="px-5 py-4 text-sm text-slate-700">{company.updatedAt ? new Date(company.updatedAt).toLocaleDateString() : '-'}</td>
+            <td className="px-5 py-4 text-sm t-text-secondary">{company.employees}</td>
+            <td className="px-5 py-4 text-sm t-text-secondary">{company.databaseName}</td>
+            <td className="px-5 py-4 text-sm t-text-secondary">{company.updatedAt ? new Date(company.updatedAt).toLocaleDateString() : '-'}</td>
           </tr>
         ))}
       </DataTable>

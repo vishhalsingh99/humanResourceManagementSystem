@@ -7,7 +7,7 @@ export default function EmployeeFormSection({ section, form, onFieldChange, onAd
 
   return (
     <div className={section.sectionClassName || 'mt-10'}>
-      <h3 className="mb-6 border-b border-neutral-800 pb-3 text-2xl font-medium text-neutral-50">
+      <h3 className="mb-6 border-b t-divider pb-3 text-2xl font-medium t-text-heading">
         {section.title}
       </h3>
 

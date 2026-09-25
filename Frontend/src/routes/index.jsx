@@ -84,7 +84,7 @@ function OnboardingLayout({ children }) {
   const [profileOpen, setProfileOpen] = useState(false);
 
   return (
-    <div className="min-h-screen bg-white" style={{ fontFamily: "'Outfit', 'Segoe UI', Arial, sans-serif" }}>
+    <div className="min-h-screen bg-[var(--bg-page)]" style={{ fontFamily: "'Outfit', 'Segoe UI', Arial, sans-serif" }}>
       <Header
         profileOpen={profileOpen}
         setProfileOpen={setProfileOpen}

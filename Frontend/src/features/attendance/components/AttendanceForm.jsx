@@ -12,19 +12,19 @@ function AttendanceForm({ form, employees, onChange, onSubmit, onClose, isSaving
     <div className="mt-4 p-4 sm:p-6 lg:p-10">
       <form
         onSubmit={onSubmit}
-        className="rounded-2xl border border-neutral-800/80 bg-neutral-900/40 p-5 shadow-[0_0_28px_rgba(239,68,68,0.08)] backdrop-blur-md sm:p-7"
+        className="ui-card rounded-2xl p-5 shadow-[0_0_28px_rgba(239,68,68,0.08)] sm:p-7"
       >
-        <div className="flex flex-col gap-4 border-b border-neutral-800 pb-6 lg:flex-row lg:items-center lg:justify-between">
+        <div className="flex flex-col gap-4 border-b t-divider pb-6 lg:flex-row lg:items-center lg:justify-between">
           <Button type="button" onClick={onClose} variant="primary" icon={ArrowLeft} className="self-start" disabled={isSaving}>
             Back
           </Button>
           <div className="text-left lg:text-right">
-            <h2 className="m-0 text-3xl font-semibold text-neutral-50">Update Attendance</h2>
-            <p className="mt-2 text-sm text-neutral-400">Update the attendance details below.</p>
+            <h2 className="m-0 text-3xl font-semibold t-text-heading">Update Attendance</h2>
+            <p className="mt-2 text-sm t-text-muted">Update the attendance details below.</p>
           </div>
         </div>
         <div className="pt-8">
-          <h3 className="m-0 text-2xl font-semibold text-neutral-50">Attendance Details</h3>
+          <h3 className="m-0 text-2xl font-semibold t-text-heading">Attendance Details</h3>
           <div className="mt-6 grid gap-6 md:grid-cols-2 xl:grid-cols-3">
             <SelectField label="Employee" value={form.employee_id} onChange={(event) => onChange('employee_id', event.target.value)} required>
               <option value="">Select Employee</option>
@@ -41,7 +41,7 @@ function AttendanceForm({ form, employees, onChange, onSubmit, onClose, isSaving
             <TextareaField className="md:col-span-2 xl:col-span-3" label="Notes" value={form.notes} onChange={(event) => onChange('notes', event.target.value)} placeholder="Any additional notes..." />
           </div>
         </div>
-        <div className="mt-8 flex flex-col-reverse gap-3 border-t border-neutral-800 pt-6 sm:flex-row sm:justify-end">
+        <div className="mt-8 flex flex-col-reverse gap-3 border-t t-divider pt-6 sm:flex-row sm:justify-end">
           <Button type="button" onClick={onClose} variant="secondary" disabled={isSaving}>
             Back
           </Button>

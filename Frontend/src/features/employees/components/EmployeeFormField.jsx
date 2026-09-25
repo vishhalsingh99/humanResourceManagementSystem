@@ -41,7 +41,7 @@ export default function EmployeeFormField({ field, value, onChange, onAddOption,
           onChange={handleFileChange}
           className={`${inputClassName} ${error ? 'border-red-500' : ''}`}
         />
-        {field.fileName && <p className="mt-1 break-all text-xs text-neutral-500">Current file: {field.fileName}</p>}
+        {field.fileName && <p className="mt-1 break-all text-xs t-text-subtle">Current file: {field.fileName}</p>}
         {error && <p className="mt-1 text-xs text-red-400">{error}</p>}
       </div>
     );

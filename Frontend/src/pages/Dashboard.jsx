@@ -18,8 +18,8 @@ const cards = (stats) => [
     value: stats.meetings,
     icon: CalendarDays,
     color: 't-text-secondary',
-    bg: 'bg-neutral-800/80 border t-border',
-    bar: 'bg-neutral-400',
+    bg: 'bg-[var(--bg-badge-neutral)] border t-border',
+    bar: 'bg-[var(--text-subtle)]',
     to: ROUTES.MEETINGS,
   },
   {

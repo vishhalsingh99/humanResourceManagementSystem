@@ -82,10 +82,10 @@ export default function EmployeeAttendanceCard() {
 
   if (loading) {
     return (
-      <div className="rounded-lg border border-slate-200 bg-white p-6 shadow-sm">
+      <div className="ui-card p-6">
         <div className="flex items-center justify-between">
-          <h2 className="text-lg font-semibold text-slate-900">Today's Attendance</h2>
-          <div className="h-5 w-5 animate-spin rounded-full border-2 border-slate-300 border-t-blue-600" />
+          <h2 className="text-lg font-semibold t-text-heading">Today's Attendance</h2>
+          <div className="h-5 w-5 animate-spin rounded-full border-2 border-[var(--border-base)] border-t-red-500" />
         </div>
       </div>
     );
@@ -104,65 +104,65 @@ export default function EmployeeAttendanceCard() {
   };
 
   return (
-    <div className="rounded-lg border border-slate-200 bg-white p-6 shadow-sm">
+    <div className="ui-card p-6">
       <div className="mb-6">
-        <h2 className="text-lg font-semibold text-slate-900">Today's Attendance</h2>
-        <p className="mt-1 text-sm text-slate-600">Check in and out to mark your attendance</p>
+        <h2 className="text-lg font-semibold t-text-heading">Today's Attendance</h2>
+        <p className="mt-1 text-sm t-text-muted">Check in and out to mark your attendance</p>
       </div>
 
       {loading ? (
         <div className="flex items-center justify-center py-8">
-          <div className="h-6 w-6 animate-spin rounded-full border-2 border-slate-300 border-t-blue-600" />
+          <div className="h-6 w-6 animate-spin rounded-full border-2 border-[var(--border-base)] border-t-red-500" />
         </div>
       ) : (
         <>
           <div className="mb-6 space-y-4">
             <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
-              <div className="rounded-lg bg-slate-50 p-3">
-                <p className="text-xs font-medium text-slate-600">Status</p>
-                <p className="mt-2 text-sm font-bold text-slate-900">
+              <div className="rounded-lg bg-[var(--bg-input)] p-3">
+                <p className="text-xs font-medium t-text-muted">Status</p>
+                <p className="mt-2 text-sm font-bold t-text-heading">
                   {hasCheckedOut ? 'Completed' : hasCheckedIn ? 'Present' : 'Not Marked'}
                 </p>
               </div>
-              <div className="rounded-lg bg-slate-50 p-3">
-                <p className="text-xs font-medium text-slate-600">Check In</p>
-                <p className="mt-2 text-sm font-bold text-slate-900">
+              <div className="rounded-lg bg-[var(--bg-input)] p-3">
+                <p className="text-xs font-medium t-text-muted">Check In</p>
+                <p className="mt-2 text-sm font-bold t-text-heading">
                   {hasCheckedIn ? formatTime(attendance.check_in) : '--'}
                 </p>
               </div>
-              <div className="rounded-lg bg-slate-50 p-3">
-                <p className="text-xs font-medium text-slate-600">Check Out</p>
-                <p className="mt-2 text-sm font-bold text-slate-900">
+              <div className="rounded-lg bg-[var(--bg-input)] p-3">
+                <p className="text-xs font-medium t-text-muted">Check Out</p>
+                <p className="mt-2 text-sm font-bold t-text-heading">
                   {hasCheckedOut ? formatTime(attendance.check_out) : '--'}
                 </p>
               </div>
-              <div className="rounded-lg bg-slate-50 p-3">
-                <p className="text-xs font-medium text-slate-600">Working Hours</p>
-                <p className="mt-2 text-sm font-bold text-slate-900">
+              <div className="rounded-lg bg-[var(--bg-input)] p-3">
+                <p className="text-xs font-medium t-text-muted">Working Hours</p>
+                <p className="mt-2 text-sm font-bold t-text-heading">
                   {hasCheckedOut && attendance.totalWorkHours ? attendance.totalWorkHours : '--'}
                 </p>
               </div>
             </div>
 
             <div className="grid grid-cols-2 gap-3">
-              <div className="rounded-lg bg-slate-50 p-3">
-                <p className="text-xs font-medium text-slate-600">Method</p>
-                <p className="mt-2 text-sm font-bold text-slate-900">
+              <div className="rounded-lg bg-[var(--bg-input)] p-3">
+                <p className="text-xs font-medium t-text-muted">Method</p>
+                <p className="mt-2 text-sm font-bold t-text-heading">
                   {attendance?.source === 'wifi' ? 'Wi-Fi' : attendance?.source || 'N/A'}
                 </p>
               </div>
-              <div className="rounded-lg bg-slate-50 p-3">
-                <p className="text-xs font-medium text-slate-600">Network</p>
+              <div className="rounded-lg bg-[var(--bg-input)] p-3">
+                <p className="text-xs font-medium t-text-muted">Network</p>
                 <div className="mt-2 flex items-center gap-1">
                   {networkStatus?.connected ? (
                     <>
-                      <Wifi size={16} className="text-green-600" />
-                      <span className="text-sm font-bold text-green-600">Office Network</span>
+                      <Wifi size={16} className="text-emerald-500" />
+                      <span className="text-sm font-bold text-emerald-500">Office Network</span>
                     </>
                   ) : (
                     <>
-                      <WifiOff size={16} className="text-red-600" />
-                      <span className="text-sm font-bold text-red-600">Outside</span>
+                      <WifiOff size={16} className="text-red-400" />
+                      <span className="text-sm font-bold text-red-400">Outside</span>
                     </>
                   )}
                 </div>
@@ -171,8 +171,8 @@ export default function EmployeeAttendanceCard() {
           </div>
 
           {status && (
-            <div className="mb-4 rounded-lg bg-blue-50 p-3">
-              <p className="text-xs font-medium text-blue-700">{status}</p>
+            <div className="mb-4 rounded-lg bg-red-500/10 p-3">
+              <p className="text-xs font-medium text-red-400">{status}</p>
             </div>
           )}
 
@@ -181,7 +181,7 @@ export default function EmployeeAttendanceCard() {
               <button
                 onClick={handleCheckIn}
                 disabled={isChecking || !networkStatus?.connected}
-                className="flex-1 flex items-center justify-center gap-2 rounded-lg bg-green-600 px-4 py-3 text-sm font-semibold text-white transition hover:bg-green-700 disabled:cursor-not-allowed disabled:bg-slate-300"
+                className="flex-1 flex items-center justify-center gap-2 rounded-lg bg-emerald-600 px-4 py-3 text-sm font-semibold text-white transition hover:bg-emerald-500 disabled:cursor-not-allowed disabled:opacity-50"
               >
                 <LogIn size={18} />
                 {isChecking ? 'Checking...' : 'Check In'}
@@ -192,7 +192,7 @@ export default function EmployeeAttendanceCard() {
               <button
                 onClick={handleCheckOut}
                 disabled={isChecking || !networkStatus?.connected}
-                className="flex-1 flex items-center justify-center gap-2 rounded-lg bg-orange-600 px-4 py-3 text-sm font-semibold text-white transition hover:bg-orange-700 disabled:cursor-not-allowed disabled:bg-slate-300"
+                className="flex-1 flex items-center justify-center gap-2 rounded-lg bg-orange-600 px-4 py-3 text-sm font-semibold text-white transition hover:bg-orange-500 disabled:cursor-not-allowed disabled:opacity-50"
               >
                 <LogOut size={18} />
                 {isChecking ? 'Checking...' : 'Check Out'}
@@ -200,15 +200,15 @@ export default function EmployeeAttendanceCard() {
             )}
 
             {hasCheckedOut && (
-              <div className="flex-1 rounded-lg bg-green-50 py-3 text-center">
-                <p className="text-sm font-semibold text-green-700">✓ Attendance Completed</p>
+              <div className="flex-1 rounded-lg bg-emerald-500/10 py-3 text-center">
+                <p className="text-sm font-semibold text-emerald-500">✓ Attendance Completed</p>
               </div>
             )}
           </div>
 
           {!networkStatus?.connected && (
-            <div className="mt-4 rounded-lg border border-red-200 bg-red-50 p-3">
-              <p className="text-xs text-red-700">
+            <div className="mt-4 rounded-lg border border-red-500/30 bg-red-500/10 p-3">
+              <p className="text-xs text-red-400">
                 <span className="font-semibold">⚠ Outside Office Network:</span> You are currently outside the office network. Attendance can only be marked from the approved office IP addresses.
               </p>
             </div>

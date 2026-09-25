@@ -12,7 +12,7 @@ import api from '../../services/api';
 function Field({ label, required, className = '', children }) {
   return (
     <label className={`block ${className}`}>
-      <span className="mb-2 block text-sm font-semibold text-neutral-200">
+      <span className="mb-2 block text-sm font-semibold t-text-heading">
         {label} {required && <span className="text-red-400">*</span>}
       </span>
       {children}
@@ -20,7 +20,7 @@ function Field({ label, required, className = '', children }) {
   );
 }
 
-const inputClass = 'h-11 w-full rounded-xl border border-neutral-700/90 bg-neutral-950/65 px-3 text-sm text-neutral-100 outline-none transition placeholder:text-neutral-500 focus:border-red-500/70 focus:shadow-[0_0_0_4px_rgba(239,68,68,0.12)]';
+const inputClass = 'h-11 w-full rounded-xl border border-[var(--border-input)] bg-[var(--bg-input)] px-3 text-sm text-[var(--text-primary)] outline-none transition placeholder:text-[var(--text-subtle)] focus:border-red-500/70 focus:shadow-[0_0_0_4px_rgba(239,68,68,0.12)]';
 
 function Compny({ mode = 'settings' }) {
   const navigate = useNavigate();
@@ -161,26 +161,26 @@ function Compny({ mode = 'settings' }) {
   };
 
   return (
-    <div className={isOnboarding ? 'min-h-screen bg-neutral-950 p-5 sm:p-8' : 'mt-18 p-4 sm:p-6 lg:p-8'}>
-      <div className="mx-auto max-w-6xl rounded-2xl border border-neutral-800/80 bg-neutral-900/40 p-6 shadow-[0_0_28px_rgba(239,68,68,0.08)] backdrop-blur-md">
+    <div className={isOnboarding ? 'min-h-screen bg-[var(--bg-panel)] p-5 sm:p-8' : 'mt-18 p-4 sm:p-6 lg:p-8'}>
+      <div className="mx-auto max-w-6xl rounded-2xl border t-border bg-[var(--bg-surface)] p-6 shadow-[0_0_28px_rgba(239,68,68,0.08)] backdrop-blur-md">
         {isOnboarding && (
           <button
             type="button"
             onClick={handleBack}
-            className="mb-6 cursor-pointer rounded-xl border border-neutral-700 bg-neutral-900/60 px-4 py-2.5 text-sm font-semibold text-neutral-300 transition hover:border-red-500/40 hover:bg-red-500/10"
+            className="mb-6 cursor-pointer rounded-xl border border-[var(--border-base)] bg-[var(--bg-input)] px-4 py-2.5 text-sm font-semibold t-text-secondary transition hover:border-red-500/40 hover:bg-red-500/10"
           >
             ← Back
           </button>
         )}
         <form onSubmit={handleSubmit}>
           <div>
-            <h1 className="text-2xl font-bold text-neutral-50">Company Master</h1>
-            <p className="mt-3 text-sm text-neutral-400">Manage company details that will be used in invoices, reports, and branding.</p>
+            <h1 className="text-2xl font-bold t-text-heading">Company Master</h1>
+            <p className="mt-3 text-sm t-text-muted">Manage company details that will be used in invoices, reports, and branding.</p>
           </div>
 
           <div className="mt-7">
-            <h2 className="text-lg font-bold text-neutral-50">Company Details</h2>
-            <div className="mt-6 grid gap-5 border-t border-neutral-800 pt-5 md:grid-cols-2">
+            <h2 className="text-lg font-bold t-text-heading">Company Details</h2>
+            <div className="mt-6 grid gap-5 border-t t-divider pt-5 md:grid-cols-2">
               <Field label="Company Name" required className="md:col-span-2">
                 <input name="companyName" value={form.companyName} onChange={handleChange} required className={inputClass} />
               </Field>
@@ -230,33 +230,33 @@ function Compny({ mode = 'settings' }) {
                   onChange={handleChange}
                   placeholder="Enter company address"
                   rows={4}
-                  className="w-full rounded-xl border border-neutral-700/90 bg-neutral-950/65 px-3 py-3 text-sm text-neutral-100 outline-none transition placeholder:text-neutral-500 focus:border-red-500/70 focus:shadow-[0_0_0_4px_rgba(239,68,68,0.12)]"
+                  className="w-full rounded-xl border border-[var(--border-input)] bg-[var(--bg-input)] px-3 py-3 text-sm text-[var(--text-primary)] outline-none transition placeholder:text-[var(--text-subtle)] focus:border-red-500/70 focus:shadow-[0_0_0_4px_rgba(239,68,68,0.12)]"
                 />
               </Field>
 
               <div className="md:col-span-2">
-                <p className="mb-3 text-sm font-semibold text-neutral-200">Company Logo</p>
-                <div className="max-w-md rounded-xl border border-neutral-800 bg-neutral-950/40 p-5">
+                <p className="mb-3 text-sm font-semibold t-text-heading">Company Logo</p>
+                <div className="max-w-md rounded-xl border t-border bg-[var(--bg-input)] p-5">
                   {logoPreviewUrl && (
-                    <div className="relative mb-3 overflow-hidden rounded-xl bg-neutral-900">
+                    <div className="relative mb-3 overflow-hidden rounded-xl bg-[var(--bg-input)]">
                       <img src={logoPreviewUrl} alt="Company logo preview" className="h-32 w-full object-cover" />
                       <button
                         type="button"
                         onClick={clearLogoSelection}
-                        className="absolute cursor-pointer right-2 top-2 flex h-9 w-9 items-center justify-center rounded-full border border-neutral-700 bg-neutral-900/80 text-neutral-100 shadow"
+                        className="absolute cursor-pointer right-2 top-2 flex h-9 w-9 items-center justify-center rounded-full border t-border bg-[var(--bg-input)] t-text-primary shadow"
                       >
                         <X size={18} />
                       </button>
                     </div>
                   )}
-                  <input type="file" accept="image/*" onChange={handleLogoChange} className="text-sm cursor-pointer text-neutral-300" />
-                  {logoPreviewUrl && <p className="mt-2 cursor-pointer text-xs text-neutral-500">{logoFile ? 'New logo selected' : 'Current logo saved'}</p>}
+                  <input type="file" accept="image/*" onChange={handleLogoChange} className="text-sm cursor-pointer t-text-secondary" />
+                  {logoPreviewUrl && <p className="mt-2 cursor-pointer text-xs t-text-subtle">{logoFile ? 'New logo selected' : 'Current logo saved'}</p>}
                 </div>
               </div>
             </div>
           </div>
 
-          <div className="mt-8 flex justify-end border-t border-neutral-800 pt-5">
+          <div className="mt-8 flex justify-end border-t t-divider pt-5">
             <button type="submit" className="cursor-pointer rounded-xl bg-red-500 px-5 py-2.5 text-sm font-semibold text-white shadow-[0_0_20px_rgba(239,68,68,0.25)] transition hover:scale-[1.02] hover:bg-red-400">
               {isOnboarding ? 'Save & Continue' : 'Save Company'}
             </button>

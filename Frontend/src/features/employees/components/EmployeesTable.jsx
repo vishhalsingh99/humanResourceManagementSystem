@@ -21,12 +21,12 @@ export default function EmployeesTable({
         className="rounded-2xl"
         tableClassName="min-w-full border-collapse"
         headClassName=""
-        headerRowClassName="bg-neutral-950/80 text-left text-xs"
-        headerCellClassName="px-5 py-4 text-xs font-semibold uppercase tracking-wide text-neutral-400"
+        headerRowClassName="text-left text-xs"
+        headerCellClassName="px-5 py-4 text-xs font-semibold uppercase tracking-wide t-text-muted"
       >
         {employees.length === 0 ? (
           <tr>
-            <td colSpan={10} className="px-5 py-16 text-center text-neutral-500">
+            <td colSpan={10} className="px-5 py-16 text-center t-text-subtle">
               <BookXIcon size={48} className="mx-auto mb-4 text-red-400/50" />
               No employees found
             </td>

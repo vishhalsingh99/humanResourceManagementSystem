@@ -114,7 +114,7 @@ export default function ReportPayroll() {
             </thead>
             <tbody>
               {filtered.map((p, idx) => (
-                <tr key={p.id} className="border-t t-divider transition-colors hover:bg-neutral-800/30">
+                <tr key={p.id} className="border-t t-divider t-row-hover transition-colors">
                   <td className="px-5 py-3 text-sm t-text-subtle">{idx + 1}</td>
                   <td className="px-5 py-3 text-sm font-semibold t-text-primary">{p.employee?.name || '—'}</td>
                   <td className="px-5 py-3 text-sm t-text-secondary">{p.employee?.department || '—'}</td>
@@ -125,7 +125,7 @@ export default function ReportPayroll() {
                   <td className="px-5 py-3 text-sm t-text-secondary">₹{Number(p.deductions || 0).toLocaleString()}</td>
                   <td className="px-5 py-3 text-sm font-semibold text-emerald-400">₹{Number(p.net_salary || 0).toLocaleString()}</td>
                   <td className="px-5 py-3">
-                    <span className={`rounded-full px-3 py-1 text-xs font-semibold ${statusCls[p.status] || 'bg-neutral-700/60 t-text-muted'}`}>
+                    <span className={`rounded-full px-3 py-1 text-xs font-semibold ${statusCls[p.status] || 'bg-[var(--bg-badge-neutral)] t-text-muted'}`}>
                       {p.status}
                     </span>
                   </td>

@@ -308,12 +308,12 @@ export default function Designations() {
         headerCellClassName="px-5 py-4 text-left text-sm font-semibold t-text-primary"
       >
         {paginatedDesignations.map((designation) => (
-          <tr key={designation.id} className="border-b t-divider transition hover:bg-neutral-800/30">
+          <tr key={designation.id} className="border-b t-divider t-row-hover transition">
             <td className="p-4">
               <h3 className="font-semibold t-text-primary">{designation.name}</h3>
               <p className="text-sm t-text-muted">{designation.description}</p>
             </td>
-            <td className="p-4 text-sm text-slate-700">
+            <td className="p-4 text-sm t-text-secondary">
               {designation.department_name || designation.departmentName || '-'}
             </td>
             <td className="p-4">

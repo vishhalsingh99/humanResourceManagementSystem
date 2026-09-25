@@ -69,8 +69,8 @@ export default function LegalModal({ type, onClose }) {
       <div className="flex flex-col gap-5">
         {sections.map((s) => (
           <div key={s.heading}>
-            <h4 className="text-sm font-medium text-slate-800 mb-1">{s.heading}</h4>
-            <p className="text-sm text-slate-500 leading-relaxed">{s.body}</p>
+            <h4 className="text-sm font-medium t-text-heading mb-1">{s.heading}</h4>
+            <p className="text-sm t-text-muted leading-relaxed">{s.body}</p>
           </div>
         ))}
       </div>

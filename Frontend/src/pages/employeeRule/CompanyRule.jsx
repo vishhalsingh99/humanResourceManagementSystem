@@ -113,7 +113,7 @@ export default function CompanyRule() {
   }
 
   return (
-    <div className="mt-18 min-h-screen bg-neutral-950 p-4 sm:p-6 lg:p-10">
+    <div className="mt-18 min-h-screen bg-[var(--bg-panel)] p-4 sm:p-6 lg:p-10">
       <div className="mb-6 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
         <div>
           <div className="mb-3 inline-flex h-11 w-11 items-center justify-center rounded-xl bg-red-500 text-white shadow-[0_0_20px_rgba(239,68,68,0.25)]">
@@ -187,7 +187,7 @@ export default function CompanyRule() {
 
             {!companyInformation.policies.length && (
               <div className="rounded-xl border border-dashed t-border bg-[var(--bg-input)] p-6 text-center">
-                <BookOpen className="mx-auto h-8 w-8 text-neutral-600" />
+                <BookOpen className="mx-auto h-8 w-8 t-text-subtle" />
                 <p className="mt-3 text-sm font-semibold t-text-secondary">No policies available.</p>
               </div>
             )}
@@ -220,7 +220,7 @@ export default function CompanyRule() {
 
             {!companyInformation.rules.length && (
               <div className="rounded-xl border border-dashed t-border bg-[var(--bg-input)] p-6 text-center lg:col-span-2">
-                <ShieldCheck className="mx-auto h-8 w-8 text-neutral-600" />
+                <ShieldCheck className="mx-auto h-8 w-8 t-text-subtle" />
                 <p className="mt-3 text-sm font-semibold t-text-secondary">No rules available.</p>
               </div>
             )}

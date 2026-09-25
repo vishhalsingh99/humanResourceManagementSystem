@@ -195,7 +195,7 @@ export default function Departments() {
         headerCellClassName="px-5 py-4 text-left text-sm font-semibold t-text-muted"
       >
         {paginatedDepartments.map((dept) => (
-          <tr key={dept.id} className="border-b t-border transition hover:bg-neutral-800/30">
+          <tr key={dept.id} className="border-b t-border t-row-hover transition">
             <td className="p-4">
               <h3 className="font-semibold t-text-primary">{dept.name || dept.department_name}</h3>
               <p className="text-sm t-text-subtle">{dept.description}</p>

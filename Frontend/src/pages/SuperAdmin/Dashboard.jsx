@@ -33,27 +33,27 @@ export default function SuperAdminDashboard() {
   return (
     <div className="p-10 mt-18">
       <div className="mb-7">
-        <h2 className="text-2xl font-semibold text-slate-900 m-0">Dashboard</h2>
-        <p className="text-slate-500 text-sm mt-1">Welcome back - here's your HRMS overview</p>
+        <h2 className="text-2xl font-semibold t-text-heading m-0">Dashboard</h2>
+        <p className="t-text-subtle text-sm mt-1">Welcome back - here's your HRMS overview</p>
       </div>
 
       <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
         {cards(stats).map((card) => (
-          <div key={card.label} className="relative overflow-hidden rounded-2xl bg-white px-6 pt-7 pb-5 shadow-sm">
+          <div key={card.label} className="relative overflow-hidden rounded-2xl bg-[var(--bg-surface)] px-6 pt-7 pb-5 shadow-sm">
             <div className={`mb-4 flex h-12 w-12 items-center justify-center rounded-xl ${card.bg}`}>
               <card.icon size={24} className={card.color} />
             </div>
-            <div className="text-4xl font-semibold leading-none text-slate-900">{loading ? '...' : card.value}</div>
-            <div className="mt-2 text-xs font-medium text-slate-500">{card.label}</div>
+            <div className="text-4xl font-semibold leading-none t-text-heading">{loading ? '...' : card.value}</div>
+            <div className="mt-2 text-xs font-medium t-text-subtle">{card.label}</div>
           </div>
         ))}
       </div>
 
       <div className="mt-8">
-        <h3 className="mb-4 text-lg font-semibold text-slate-900">Recent Company Registrations</h3>
+        <h3 className="mb-4 text-lg font-semibold t-text-heading">Recent Company Registrations</h3>
         <DataTable headers={['Logo', 'Company Name', 'Company Admin', 'Email', 'Plan', 'Employees', 'Status', 'Created Date']}>
           {recentCompanies.map((company) => (
-            <tr key={company.id} className="border-t border-slate-100">
+            <tr key={company.id} className="border-t t-divider">
               <td className="px-5 py-4">
                 {company.logo ? (
                   <img src={buildUploadedFileUrl(company.logo)} alt="" className="h-9 w-9 object-contain" />
@@ -63,15 +63,15 @@ export default function SuperAdminDashboard() {
                   </div>
                 )}
               </td>
-              <td className="px-5 py-4 text-sm font-semibold text-slate-900">{company.companyName}</td>
-              <td className="px-5 py-4 text-sm text-slate-700">{company.companyAdmin || '-'}</td>
-              <td className="px-5 py-4 text-sm text-slate-700">{company.email || '-'}</td>
-              <td className="px-5 py-4 text-sm text-slate-700">{company.plan}</td>
-              <td className="px-5 py-4 text-sm text-slate-700">{company.employees}</td>
+              <td className="px-5 py-4 text-sm font-semibold t-text-heading">{company.companyName}</td>
+              <td className="px-5 py-4 text-sm t-text-secondary">{company.companyAdmin || '-'}</td>
+              <td className="px-5 py-4 text-sm t-text-secondary">{company.email || '-'}</td>
+              <td className="px-5 py-4 text-sm t-text-secondary">{company.plan}</td>
+              <td className="px-5 py-4 text-sm t-text-secondary">{company.employees}</td>
               <td className="px-5 py-4">
                 <StatusBadge tone={company.status === 'active' ? 'green' : 'red'}>{company.status}</StatusBadge>
               </td>
-              <td className="px-5 py-4 text-sm text-slate-700">{company.createdAt ? new Date(company.createdAt).toLocaleDateString() : '-'}</td>
+              <td className="px-5 py-4 text-sm t-text-secondary">{company.createdAt ? new Date(company.createdAt).toLocaleDateString() : '-'}</td>
             </tr>
           ))}
         </DataTable>

@@ -16,8 +16,23 @@ const toApiRole = (role = {}) => ({
   permissions: role.permissions || [],
 });
 
+let ensureDefaultsPromise = null;
+
 class Role {
+  // Reseeds the full default permission set (dozens of sequential upserts) which only
+  // ever needs to run once per process — without caching, every call site (findById,
+  // findAll, findEmployeeRole) re-runs it on every request and adds seconds of latency.
   static async ensureDefaults() {
+    if (!ensureDefaultsPromise) {
+      ensureDefaultsPromise = this._ensureDefaults().catch((error) => {
+        ensureDefaultsPromise = null;
+        throw error;
+      });
+    }
+    return ensureDefaultsPromise;
+  }
+
+  static async _ensureDefaults() {
     const connection = await pool.getConnection();
 
     try {

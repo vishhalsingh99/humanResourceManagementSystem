@@ -166,6 +166,8 @@ const toRule = (row = {}) => ({
   updatedAt: row.updated_at,
 });
 
+let ensureDefaultPromise = null;
+
 class CompanySettings {
   static async addColumnIfMissing(tableName, columnName, definition) {
     const [rows] = await pool.execute(
@@ -182,7 +184,20 @@ class CompanySettings {
     }
   }
 
+  // ensureDefault() does ~36 sequential round-trips (schema checks + seed insert) and only
+  // ever needs to run once per process. Every getRaw()/get()/update()/list*() call used to
+  // re-run the whole thing, adding seconds of latency to nearly every request.
   static async ensureDefault() {
+    if (!ensureDefaultPromise) {
+      ensureDefaultPromise = this._ensureDefault().catch((error) => {
+        ensureDefaultPromise = null;
+        throw error;
+      });
+    }
+    return ensureDefaultPromise;
+  }
+
+  static async _ensureDefault() {
     await pool.execute(
       `CREATE TABLE IF NOT EXISTS company_settings (
         id INT PRIMARY KEY DEFAULT 1,

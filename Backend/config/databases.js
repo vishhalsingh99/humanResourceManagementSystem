@@ -13,7 +13,13 @@ const dbConfig = {
   waitForConnections: true,
   connectionLimit: 10,
   queueLimit: 0,
-  dateStrings: true // Ensures that DATE and DATETIME values are returned as strings
+  dateStrings: true, // Ensures that DATE and DATETIME values are returned as strings
+  // Cloud-hosted MySQL (Aiven) sits behind a network path that silently drops idle
+  // TCP connections well before MySQL's own wait_timeout. Without keepalive, mysql2
+  // hands out these half-dead pooled connections and the query hangs forever instead
+  // of erroring, taking down every DB-backed route until the process is restarted.
+  enableKeepAlive: true,
+  keepAliveInitialDelay: 10000,
 };
 
 const masterPool = mysql.createPool(dbConfig);

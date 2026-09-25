@@ -24,7 +24,7 @@ export default function ReportMeetings() {
     { label: 'Total Meetings', value: safeMeetings.length, icon: CalendarDays, box: 'border-red-500/25 bg-red-500/10', text: 'text-red-400', value_cls: 'text-red-300' },
     { label: 'Scheduled', value: scheduled, icon: Clock, box: 'border-amber-500/25 bg-amber-500/10', text: 'text-amber-400', value_cls: 'text-amber-300' },
     { label: 'Completed', value: completed, icon: CheckCircle2, box: 'border-emerald-500/25 bg-emerald-500/10', text: 'text-emerald-400', value_cls: 'text-emerald-300' },
-    { label: 'Cancelled', value: cancelled, icon: XCircle, box: 't-border bg-neutral-800/60', text: 't-text-muted', value_cls: 't-text-secondary' },
+    { label: 'Cancelled', value: cancelled, icon: XCircle, box: 't-border bg-[var(--bg-badge-neutral)]', text: 't-text-muted', value_cls: 't-text-secondary' },
   ];
 
   const filtered = useMemo(() => {
@@ -97,7 +97,7 @@ export default function ReportMeetings() {
             </thead>
             <tbody>
               {filtered.map((meeting, idx) => (
-                <tr key={meeting._id} className="border-t t-divider transition-colors hover:bg-neutral-800/30">
+                <tr key={meeting._id} className="border-t t-divider t-row-hover transition-colors">
                   <td className="px-5 py-3 text-sm t-text-subtle">{idx + 1}</td>
                   <td className="px-5 py-3 text-sm font-semibold t-text-primary">{meeting.employee?.name || '—'}</td>
                   <td className="px-5 py-3 text-sm t-text-secondary">{meeting.organizer?.name || '—'}</td>
@@ -105,7 +105,7 @@ export default function ReportMeetings() {
                   <td className="px-5 py-3 text-sm t-text-secondary">{meeting.date || '—'}</td>
                   <td className="px-5 py-3 text-sm t-text-secondary">{meeting.time || '—'}</td>
                   <td className="px-5 py-3">
-                    <span className={`rounded-full px-3 py-1 text-xs font-semibold ${statusCls[meeting.status] || 'bg-neutral-700/60 t-text-muted'}`}>
+                    <span className={`rounded-full px-3 py-1 text-xs font-semibold ${statusCls[meeting.status] || 'bg-[var(--bg-badge-neutral)] t-text-muted'}`}>
                       {meeting.status}
                     </span>
                   </td>

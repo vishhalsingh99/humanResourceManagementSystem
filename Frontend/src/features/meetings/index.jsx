@@ -73,7 +73,7 @@ function TimePicker({ value, onChange }) {
         className="flex w-full items-center justify-between rounded-xl border t-border bg-[var(--bg-input)] px-4 py-3 text-sm t-text-heading cursor-pointer"
       >
         <span>{display}</span>
-        <span className="text-xs text-slate-400">▼</span>
+        <span className="text-xs t-text-muted">▼</span>
       </button>
 
       {open && (
@@ -81,7 +81,7 @@ function TimePicker({ value, onChange }) {
           <div className="flex gap-2">
             {[{ label: 'Hour', items: hours, key: 'hour' }, { label: 'Min', items: minutes, key: 'minute' }].map(({ label, items, key }) => (
               <div key={key} className="flex-1">
-                <div className="mb-1 text-center text-xs font-medium uppercase text-slate-400">{label}</div>
+                <div className="mb-1 text-center text-xs font-medium uppercase t-text-muted">{label}</div>
                 <div className="flex max-h-36 flex-col gap-0.5 overflow-y-auto">
                   {items.map((item) => (
                     <button 
@@ -89,7 +89,7 @@ function TimePicker({ value, onChange }) {
                       type="button"
                       onClick={() => setPick((current) => ({ ...current, [key]: item }))}
                       className={`px-2 py-1.5 text-center text-sm cursor-pointer ${
-                        pick[key] === item ? 'bg-red-500/20 font-semibold text-red-300' : 't-text-secondary hover:bg-neutral-800'
+                        pick[key] === item ? 'bg-red-500/20 font-semibold text-red-300' : 't-text-secondary hover:bg-[var(--bg-row-hover)]'
                       }`}
                     >
                       {item}
@@ -100,7 +100,7 @@ function TimePicker({ value, onChange }) {
             ))}
 
             <div className="flex-1">
-              <div className="mb-1 text-center text-xs font-medium uppercase text-slate-400">AM/PM</div>
+              <div className="mb-1 text-center text-xs font-medium uppercase t-text-muted">AM/PM</div>
               <div className="flex flex-col gap-1.5 pt-1">
                 {['AM', 'PM'].map((ampm) => (
                   <button
@@ -108,7 +108,7 @@ function TimePicker({ value, onChange }) {
                     type="button"
                     onClick={() => setPick((current) => ({ ...current, ampm }))}
                     className={`px-2 py-1.5 text-center text-sm cursor-pointer ${
-                      pick.ampm === ampm ? 'bg-red-500/20 font-semibold text-red-300' : 't-text-secondary hover:bg-neutral-800'
+                      pick.ampm === ampm ? 'bg-red-500/20 font-semibold text-red-300' : 't-text-secondary hover:bg-[var(--bg-row-hover)]'
                     }`}
                   >
                     {ampm}
@@ -356,7 +356,7 @@ export default function Meetings() {
               type="button"
               onClick={closeForm}
               disabled={isSaving}
-              className="rounded-xl border t-border px-5 py-3 text-sm font-semibold t-text-secondary transition hover:bg-neutral-800 cursor-pointer disabled:opacity-60"
+              className="rounded-xl border t-border px-5 py-3 text-sm font-semibold t-text-secondary transition hover:bg-[var(--bg-row-hover)] cursor-pointer disabled:opacity-60"
             >
               Back
             </button>
@@ -386,12 +386,12 @@ export default function Meetings() {
 
           <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
             <div className="relative">
-              <Search size={18} className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" />
+              <Search size={18} className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 t-text-muted" />
               <input
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
                 placeholder="Search meeting"
-                className="w-full rounded-xl border t-border bg-[var(--bg-input)] py-3 pl-11 pr-4 text-sm t-text-heading outline-none transition focus:border-blue-500 sm:w-96"
+                className="w-full rounded-xl border t-border bg-[var(--bg-input)] py-3 pl-11 pr-4 text-sm t-text-heading outline-none transition focus:border-red-500/70 sm:w-96"
               />
             </div>
             {canCreateMeeting && (
@@ -459,7 +459,7 @@ export default function Meetings() {
 
                 {filtered.length === 0 && (
                   <tr>
-                    <td colSpan={8} className="px-5 py-16 text-center text-slate-400">
+                    <td colSpan={8} className="px-5 py-16 text-center t-text-subtle">
                       No meetings found.
                     </td>
                   </tr>

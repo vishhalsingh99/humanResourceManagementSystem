@@ -246,7 +246,7 @@ export default function EmployeeSummaryPage() {
         <div className="overflow-x-auto">
           <table className="min-w-full text-left">
             <thead>
-              <tr className="bg-neutral-950/80">
+              <tr className="t-thead">
                 {['Date', 'Day', 'Check In', 'Check Out', 'Working Hours', 'Late By', 'Status', 'Remarks'].map((h) => (
                   <th key={h} className="px-4 py-3 text-xs font-semibold uppercase tracking-wide t-text-muted">{h}</th>
                 ))}
@@ -254,7 +254,7 @@ export default function EmployeeSummaryPage() {
             </thead>
             <tbody>
               {(summary?.dailyAttendance || []).map((day) => (
-                <tr key={day.date} className="border-t t-divider transition-colors hover:bg-neutral-800/30">
+                <tr key={day.date} className="border-t t-divider t-row-hover transition-colors">
                   <td className="px-4 py-3 text-sm t-text-secondary">{day.date}</td>
                   <td className="px-4 py-3 text-sm t-text-secondary">{day.day}</td>
                   <td className="px-4 py-3 text-sm t-text-secondary">{day.checkIn === '--' ? '--' : day.checkIn}</td>

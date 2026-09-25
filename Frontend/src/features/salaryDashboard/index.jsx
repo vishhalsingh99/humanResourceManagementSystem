@@ -68,7 +68,7 @@ function MiniBar({ label, value, max, color }) {
         <span>{label}</span>
         <span>{value}</span>
       </div>
-      <div className="h-2 rounded-full bg-neutral-800">
+      <div className="h-2 rounded-full bg-[var(--bg-input)]">
         <div className={`h-2 rounded-full ${color}`} style={{ width: `${width}%` }} />
       </div>
     </div>
@@ -366,7 +366,7 @@ export default function SalaryDashboard() {
               <span>Salary progress</span>
               <span>{salary.salaryProgress || 0}%</span>
             </div>
-            <div className="h-4 overflow-hidden rounded-full bg-neutral-800">
+            <div className="h-4 overflow-hidden rounded-full bg-[var(--bg-input)]">
               <div className="h-full rounded-full bg-red-500 transition-all" style={{ width: `${salary.salaryProgress || 0}%` }} />
             </div>
           </div>
@@ -485,7 +485,7 @@ export default function SalaryDashboard() {
                       {formatCurrency(row.salary.finalEstimatedSalary)}
                     </td>
                     <td className="px-4 py-3">
-                      <span className="rounded-full bg-neutral-800 px-2 py-1 text-xs font-bold t-text-secondary">
+                      <span className="rounded-full bg-[var(--bg-badge-neutral)] px-2 py-1 text-xs font-bold t-text-secondary">
                         {row.payrollStatus}
                       </span>
                     </td>

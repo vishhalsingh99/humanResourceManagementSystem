@@ -511,7 +511,7 @@ function PolicyPanel({ canEdit, policies, form, setForm, onSubmit, onDelete }) {
           <article key={policy.id} className="rounded-xl border t-divider bg-[var(--bg-input)] p-4">
             <div className="flex items-start justify-between gap-3">
               <h4 className="font-semibold t-text-heading">{policy.title}</h4>
-              <span className={`rounded-full px-2 py-1 text-xs font-semibold ${policy.isPublished ? 'bg-emerald-500/15 text-emerald-300' : 'bg-neutral-800 t-text-muted'}`}>{policy.isPublished ? 'Published' : 'Draft'}</span>
+              <span className={`rounded-full px-2 py-1 text-xs font-semibold ${policy.isPublished ? 'bg-emerald-500/15 text-emerald-300' : 'bg-[var(--bg-badge-neutral)] t-text-muted'}`}>{policy.isPublished ? 'Published' : 'Draft'}</span>
             </div>
             <p className="mt-2 whitespace-pre-wrap text-sm t-text-muted">{policy.content}</p>
             {canEdit && (
@@ -551,7 +551,7 @@ function RulePanel({ canEdit, rules, form, setForm, onSubmit, onDelete }) {
           <article key={rule.id} className="rounded-xl border t-divider bg-[var(--bg-input)] p-4">
             <div className="flex items-start justify-between gap-3">
               <h4 className="font-semibold t-text-heading">{rule.title}</h4>
-              <span className={`rounded-full px-2 py-1 text-xs font-semibold ${rule.isActive ? 'bg-emerald-500/15 text-emerald-300' : 'bg-neutral-800 t-text-muted'}`}>{rule.isActive ? 'Active' : 'Inactive'}</span>
+              <span className={`rounded-full px-2 py-1 text-xs font-semibold ${rule.isActive ? 'bg-emerald-500/15 text-emerald-300' : 'bg-[var(--bg-badge-neutral)] t-text-muted'}`}>{rule.isActive ? 'Active' : 'Inactive'}</span>
             </div>
             <p className="mt-2 whitespace-pre-wrap text-sm t-text-muted">{rule.description}</p>
             {canEdit && (

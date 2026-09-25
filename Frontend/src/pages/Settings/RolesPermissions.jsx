@@ -170,10 +170,10 @@ export default function RolesPermissions() {
 
       {formOpen && (
         <div className="fixed inset-0 z-80 flex items-center justify-center bg-black/60 p-4">
-          <form onSubmit={handleSubmit} className="max-h-[90vh] w-full max-w-4xl overflow-y-auto rounded-2xl border t-divider bg-neutral-900 p-6 shadow-[0_0_28px_rgba(239,68,68,0.15)]">
+          <form onSubmit={handleSubmit} className="max-h-[90vh] w-full max-w-4xl overflow-y-auto rounded-2xl border t-divider bg-[var(--bg-panel)] p-6 shadow-[0_0_28px_rgba(239,68,68,0.15)]">
             <div className="flex items-center justify-between gap-4">
               <h2 className="text-xl font-semibold t-text-heading">{form.id ? 'Edit Role' : 'Create Role'}</h2>
-              <button type="button" onClick={() => setFormOpen(false)} className="cursor-pointer rounded-xl border t-border bg-[var(--bg-input)] p-2 t-text-secondary hover:bg-neutral-800">
+              <button type="button" onClick={() => setFormOpen(false)} className="cursor-pointer rounded-xl border t-border bg-[var(--bg-input)] p-2 t-text-secondary hover:bg-[var(--bg-row-hover)]">
                 <X size={18} />
               </button>
             </div>
@@ -216,7 +216,7 @@ export default function RolesPermissions() {
             </div>
 
             <div className="mt-6 flex justify-end gap-3 border-t t-divider pt-5">
-              <button type="button" onClick={() => setFormOpen(false)} className="cursor-pointer rounded-xl border t-border px-5 py-3 text-sm font-semibold t-text-secondary hover:bg-neutral-800">Cancel</button>
+              <button type="button" onClick={() => setFormOpen(false)} className="cursor-pointer rounded-xl border t-border px-5 py-3 text-sm font-semibold t-text-secondary hover:bg-[var(--bg-row-hover)]">Cancel</button>
               <button type="submit" disabled={saving} className="cursor-pointer rounded-xl bg-red-500 px-5 py-3 text-sm font-semibold text-white shadow-[0_0_20px_rgba(239,68,68,0.25)] transition hover:scale-[1.02] hover:bg-red-400 disabled:cursor-not-allowed disabled:opacity-60">
                 {saving ? 'Saving...' : form.id ? 'Save Role' : 'Create Role'}
               </button>

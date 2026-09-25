@@ -36,9 +36,9 @@ export default function AppShell() {
         renderProtectedLayout={({ content }) => (
           <div className="app-ambient flex min-h-screen font-sans t-text-primary">
             {isImpersonating && (
-              <div className="fixed inset-x-0 top-0 z-70 flex min-h-10 items-center justify-center gap-4 border-b border-red-500/30 bg-neutral-950/95 px-4 py-2 text-center text-sm font-semibold text-white backdrop-blur-md">
+              <div className="fixed inset-x-0 top-0 z-70 flex min-h-10 items-center justify-center gap-4 border-b border-red-500/30 bg-[var(--bg-panel)] px-4 py-2 text-center text-sm font-semibold t-text-heading backdrop-blur-md">
                 <span>You are logged in as Company Admin</span>
-                <span className="hidden font-mono text-xs text-neutral-400 sm:inline">Impersonated by Super Admin</span>
+                <span className="hidden font-mono text-xs t-text-muted sm:inline">Impersonated by Super Admin</span>
                 <button
                   type="button"
                   onClick={exitImpersonation}
@@ -78,8 +78,8 @@ export default function AppShell() {
               <main className="flex-1">
                 {isInitialDataLoading ? (
                   <div className="flex min-h-[calc(100vh-10rem)] items-center justify-center">
-                    <div className="flex flex-col items-center gap-4 text-neutral-400">
-                      <div className="h-10 w-10 animate-spin rounded-full border-4 border-neutral-800 border-t-red-500 shadow-[0_0_20px_rgba(239,68,68,0.25)]" />
+                    <div className="flex flex-col items-center gap-4 t-text-muted">
+                      <div className="h-10 w-10 animate-spin rounded-full border-4 border-[var(--border-base)] border-t-red-500 shadow-[0_0_20px_rgba(239,68,68,0.25)]" />
                       <span className="font-mono text-sm font-medium">Loading workspace data...</span>
                     </div>
                   </div>

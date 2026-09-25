@@ -29,7 +29,7 @@ export default function Header({
           {!hideMenu && (
             <button
               onClick={onMenuToggle}
-              className="flex h-9 w-9 cursor-pointer items-center justify-center rounded-xl t-text-muted transition hover:scale-[1.02] hover:bg-neutral-800/80 hover:text-white hover:shadow-[0_0_16px_rgba(239,68,68,0.15)]"
+              className="flex h-9 w-9 cursor-pointer items-center justify-center rounded-xl t-text-muted transition hover:scale-[1.02] hover:bg-[var(--bg-input)] hover:text-[var(--text-heading)] hover:shadow-[0_0_16px_rgba(239,68,68,0.15)]"
             >
               <Menu size={22} className="stroke-[2.5]" />
             </button>
@@ -62,7 +62,7 @@ export default function Header({
           <div className="relative">
             <button
               onClick={() => setProfileOpen((open) => !open)}
-              className="flex cursor-pointer items-center gap-3 rounded-xl px-1 py-1 t-text-secondary transition hover:bg-neutral-800/70 sm:px-3"
+              className="flex cursor-pointer items-center gap-3 rounded-xl px-1 py-1 t-text-secondary transition hover:bg-[var(--bg-input)] sm:px-3"
             >
               <div className="flex h-10 w-10 cursor-pointer items-center justify-center rounded-xl bg-red-500 text-sm font-bold uppercase text-white shadow-[0_0_16px_rgba(239,68,68,0.35)]">
                 {(user?.name || 'User').charAt(0)}
@@ -95,7 +95,7 @@ export default function Header({
                   <button
                     type="button"
                     onClick={() => { navigate(ROUTES.PROFILE); setProfileOpen(false); }}
-                    className="w-full rounded-xl px-4 py-3 text-left text-sm font-medium t-text-muted transition hover:bg-neutral-800/60 hover:text-red-300"
+                    className="w-full rounded-xl px-4 py-3 text-left text-sm font-medium t-text-muted transition hover:bg-[var(--bg-input)] hover:text-red-300"
                   >
                     Profile
                   </button>
