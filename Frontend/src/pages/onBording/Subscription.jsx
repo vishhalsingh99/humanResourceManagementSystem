@@ -79,58 +79,57 @@ function Subscription({ mode = 'settings' }) {
   };
 
   return (
-    <div className={isOnboarding ? 'min-h-screen bg-white p-5 sm:p-8' : ' mt-18 p-4 sm:p-6 lg:p-8'}>
-      <div className="mx-auto max-w-7xl bg-white p-6">
+    <div className={isOnboarding ? 'min-h-screen bg-neutral-950 p-5 sm:p-8' : 'mt-18 p-4 sm:p-6 lg:p-8'}>
+      <div className="mx-auto max-w-7xl rounded-2xl border border-neutral-800/80 bg-neutral-900/40 p-6 shadow-[0_0_28px_rgba(239,68,68,0.08)] backdrop-blur-md">
         {isOnboarding && (
           <button
             type="button"
             onClick={handleBack}
-            className="mb-6 rounded border border-slate-300 px-4 py-2.5 text-sm font-semibold text-slate-700 transition hover:border-slate-400 hover:bg-slate-50"
+            className="mb-6 cursor-pointer rounded-xl border border-neutral-700 bg-neutral-900/60 px-4 py-2.5 text-sm font-semibold text-neutral-300 transition hover:border-red-500/40 hover:bg-red-500/10"
           >
             ← Back
           </button>
         )}
         <form onSubmit={handleSubmit}>
           <div>
-            <h1 className="text-2xl font-bold text-slate-950">Choose Subscription Plan</h1>
-            <p className="mt-3 text-sm text-slate-700">Admin must read and check the selected plan rules before activating the plan.</p>
+            <h1 className="text-2xl font-bold text-neutral-50">Choose Subscription Plan</h1>
+            <p className="mt-3 text-sm text-neutral-400">Admin must read and check the selected plan rules before activating the plan.</p>
           </div>
 
           <div className="mt-7">
-            <h2 className="text-lg font-bold text-slate-950">Available Plans</h2>
-            <p className="mt-3 text-sm text-slate-700">Pick the subscription that fits your billing and reporting needs.</p>
+            <h2 className="text-lg font-bold text-neutral-50">Available Plans</h2>
+            <p className="mt-3 text-sm text-neutral-400">Pick the subscription that fits your billing and reporting needs.</p>
 
-            <div className="mt-7 grid gap-6 border-t border-slate-200 pt-5 lg:grid-cols-4">
+            <div className="mt-7 grid gap-6 border-t border-neutral-800 pt-5 lg:grid-cols-4">
               {SUBSCRIPTION_PLANS.map((plan) => {
                 const selected = selectedPlan === plan.id;
-                const checked = true;
 
                 return (
                   <article
                     key={plan.id}
-                    className={`flex min-h-103.75 flex-col rounded border p-6 text-left transition ${selected ? 'border-blue-600 bg-blue-50 shadow-[0_0_0_1px_rgba(37,99,235,0.5)]' : 'border-slate-200 bg-white hover:border-blue-300'
+                    className={`flex min-h-103.75 flex-col rounded-xl border p-6 text-left transition ${selected ? 'border-red-500/60 bg-red-500/5 shadow-[0_0_20px_rgba(239,68,68,0.15)]' : 'border-neutral-800 bg-neutral-950/40 hover:border-red-500/30'
                       }`}
                   >
                     <div className="flex items-start justify-between gap-4">
-                      <h3 className="text-2xl font-bold text-slate-950">{plan.name}</h3>
+                      <h3 className="text-2xl font-bold text-neutral-50">{plan.name}</h3>
                       <span
-                        className={`rounded px-3 py-1.5 text-xs font-bold ${selected
-                          ? 'bg-blue-600 text-white'
-                          : 'bg-slate-100 text-slate-700'
+                        className={`rounded-full px-3 py-1.5 text-xs font-bold ${selected
+                          ? 'bg-red-500 text-white'
+                          : 'bg-neutral-800 text-neutral-300'
                           }`}
                       >
                         {selected ? 'SELECTED' : 'AVAILABLE'}
                       </span>
                     </div>
 
-                    <p className="mt-5 min-h-18 text-sm leading-6 text-slate-700">{plan.desc}</p>
-                    <p className="mt-6 text-3xl font-extrabold text-slate-950">{plan.price}</p>
+                    <p className="mt-5 min-h-18 text-sm leading-6 text-neutral-400">{plan.desc}</p>
+                    <p className="mt-6 text-3xl font-extrabold text-neutral-50">{plan.price}</p>
 
-                    <div className="mt-6 rounded border border-slate-200 bg-white px-4 py-3 text-sm font-semibold text-slate-900">
+                    <div className="mt-6 rounded-xl border border-neutral-800 bg-neutral-900/60 px-4 py-3 text-sm font-semibold text-neutral-200">
                       Employee limit: {plan.employeeLimit ? `${plan.employeeLimit} employees` : 'Unlimited employees'}
                     </div>
 
-                    <ol className="mt-5 flex flex-1 list-decimal flex-col gap-2 pl-5 text-sm leading-5 text-slate-700">
+                    <ol className="mt-5 flex flex-1 list-decimal flex-col gap-2 pl-5 text-sm leading-5 text-neutral-400">
                       {plan.rules.slice(0, 2).map((rule) => (
                         <li key={rule}>{rule}</li>
                       ))}
@@ -140,7 +139,7 @@ function Subscription({ mode = 'settings' }) {
                       <button
                         type="button"
                         onClick={() => openRulesPopup(plan)}
-                        className="rounded border border-slate-300 px-4 py-2.5 text-sm font-semibold text-slate-700 transition hover:border-blue-300 hover:text-blue-700"
+                        className="cursor-pointer rounded-xl border border-neutral-700 bg-neutral-900/60 px-4 py-2.5 text-sm font-semibold text-neutral-300 transition hover:border-red-500/40 hover:text-red-300"
                       >
                         Read more...
                       </button>
@@ -148,9 +147,9 @@ function Subscription({ mode = 'settings' }) {
                       <button
                         type="button"
                         onClick={() => handleSelectPlan(plan)}
-                        className={`rounded border px-4 py-2.5 text-sm font-semibold cursor-pointer transition ${selected
-                          ? 'border-blue-600 bg-blue-50 cursor-pointer text-blue-700'
-                          : 'border-slate-300 bg-white text-slate-700 cursor-pointer hover:border-blue-300 hover:text-blue-700'
+                        className={`cursor-pointer rounded-xl border px-4 py-2.5 text-sm font-semibold transition ${selected
+                          ? 'border-red-500/60 bg-red-500/10 text-red-300'
+                          : 'border-neutral-700 bg-neutral-900/60 text-neutral-300 hover:border-red-500/40 hover:text-red-300'
                           }`}
                       >
                         {selected ? 'Selected Plan' : 'Select Plan'}
@@ -162,11 +161,11 @@ function Subscription({ mode = 'settings' }) {
             </div>
           </div>
 
-          <div className="mt-8 flex justify-end border-t border-slate-200 pt-5">
+          <div className="mt-8 flex justify-end border-t border-neutral-800 pt-5">
             <button
               type="submit"
               disabled={isSaving}
-              className="rounded-lg bg-blue-600 px-6 py-3 text-sm font-semibold text-white shadow hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 cursor-pointer disabled:bg-slate-300"
+              className="cursor-pointer rounded-xl bg-red-500 px-6 py-3 text-sm font-semibold text-white shadow-[0_0_20px_rgba(239,68,68,0.25)] transition hover:scale-[1.02] hover:bg-red-400 focus:outline-none focus:ring-2 focus:ring-red-500/50 disabled:cursor-not-allowed disabled:opacity-60"
             >
               {isSaving ? 'Creating Database...' : isOnboarding ? 'Save & Continue' : 'Save Plan'}
             </button>
@@ -175,28 +174,28 @@ function Subscription({ mode = 'settings' }) {
       </div>
 
       {rulesPlan && (
-        <div className="fixed inset-0 z-50 mt-18 flex items-center justify-center bg-slate-950/50 p-4">
-          <div className="max-h-[85vh] w-full max-w-2xl overflow-hidden rounded bg-white shadow-xl">
-            <div className="flex items-start justify-between gap-4 border-b border-slate-200 px-6 py-5">
+        <div className="fixed inset-0 z-50 mt-18 flex items-center justify-center bg-black/60 p-4">
+          <div className="max-h-[85vh] w-full max-w-2xl overflow-hidden rounded-2xl border border-neutral-800 bg-neutral-900 shadow-[0_0_28px_rgba(239,68,68,0.15)]">
+            <div className="flex items-start justify-between gap-4 border-b border-neutral-800 px-6 py-5">
               <div>
-                <h2 className="text-xl font-bold text-slate-950">{rulesPlan.name} Plan Rules</h2>
-                <p className="mt-2 text-sm text-slate-600">Read all rules, then check them to unlock this plan.</p>
+                <h2 className="text-xl font-bold text-neutral-50">{rulesPlan.name} Plan Rules</h2>
+                <p className="mt-2 text-sm text-neutral-400">Read all rules, then check them to unlock this plan.</p>
               </div>
               <button
                 type="button"
                 onClick={closeRulesPopup}
-                className="rounded border border-slate-300 px-3 py-1.5 text-sm font-semibold text-slate-700 hover:border-slate-400"
+                className="cursor-pointer rounded-xl border border-neutral-700 bg-neutral-900/60 px-3 py-1.5 text-sm font-semibold text-neutral-300 hover:border-neutral-600"
               >
                 Close
               </button>
             </div>
 
             <div className="max-h-[55vh] overflow-y-auto px-6 py-5">
-              <div className="rounded border border-slate-200 bg-slate-50 px-4 py-3 text-sm font-semibold text-slate-900">
+              <div className="rounded-xl border border-neutral-800 bg-neutral-950/40 px-4 py-3 text-sm font-semibold text-neutral-200">
                 Employee limit: {rulesPlan.employeeLimit ? `${rulesPlan.employeeLimit} employees` : 'Unlimited employees'}
               </div>
 
-              <ol className="mt-5 list-decimal space-y-3 pl-5 text-sm leading-6 text-slate-700">
+              <ol className="mt-5 list-decimal space-y-3 pl-5 text-sm leading-6 text-neutral-400">
                 {rulesPlan.rules.map((rule) => (
                   <li key={rule}>{rule}</li>
                 ))}
@@ -205,11 +204,11 @@ function Subscription({ mode = 'settings' }) {
 
             </div>
 
-            <div className="flex justify-end gap-3 border-t border-slate-200 px-6 py-5">
+            <div className="flex justify-end gap-3 border-t border-neutral-800 px-6 py-5">
               <button
                 type="button"
                 onClick={closeRulesPopup}
-                className="rounded border border-slate-300 px-4 py-2.5 text-sm font-semibold text-slate-700 hover:border-slate-400"
+                className="cursor-pointer rounded-xl border border-neutral-700 bg-neutral-900/60 px-4 py-2.5 text-sm font-semibold text-neutral-300 hover:border-neutral-600"
               >
                 Cancel
               </button>
