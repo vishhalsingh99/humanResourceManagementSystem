@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useApp } from '../../../context/AppContext';
 import { createDepartment } from '../../../api/departmentApi';
 import { createDesignation } from '../../../api/designationApi';
@@ -49,24 +49,23 @@ export function useEmployeesFeature() {
   const [localEmployees, setLocalEmployees] = useState([]);
   const [isLoadingEmployees, setIsLoadingEmployees] = useState(false);
 
-  async function reloadEmployees() {
+  const reloadEmployees = useCallback(async () => {
     setIsLoadingEmployees(true);
     try {
       const res = await fetchAllEmployees();
-      setLocalEmployees(res.data || []);
+      setLocalEmployees(Array.isArray(res.data) ? res.data : []);
     } catch (err) {
       showToast(err.response?.data?.error || 'Unable to load employees', 'error');
     } finally {
       setIsLoadingEmployees(false);
     }
-  }
+  }, [showToast]);
 
   useEffect(() => {
     reloadEmployees();
     loadDepartments();
     loadDesignations();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [reloadEmployees, loadDepartments, loadDesignations]);
 
   useEffect(() => {
     let active = true;

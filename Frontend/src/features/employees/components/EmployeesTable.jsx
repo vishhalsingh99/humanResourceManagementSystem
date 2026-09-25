@@ -24,28 +24,28 @@ export default function EmployeesTable({
         headerRowClassName="bg-neutral-950/80 text-left text-xs"
         headerCellClassName="px-5 py-4 text-xs font-semibold uppercase tracking-wide text-neutral-400"
       >
-        {employees.map((employee, index) => (
-          <EmployeeTableRow
-            key={employee.id}
-            employee={employee}
-            index={startIndex + index}
-            onDelete={onDelete}
-            onEdit={onEdit}
-            canEdit={canEdit}
-            canDelete={canDelete}
-            onView={onView}
-            onToggleStatus={onToggleStatus}
-            isStatusUpdating={statusUpdatingId === employee.id}
-          />
-        ))}
-
-        {employees.length === 0 && (
+        {employees.length === 0 ? (
           <tr>
             <td colSpan={10} className="px-5 py-16 text-center text-neutral-500">
               <BookXIcon size={48} className="mx-auto mb-4 text-red-400/50" />
               No employees found
             </td>
           </tr>
+        ) : (
+          employees.map((employee, index) => (
+            <EmployeeTableRow
+              key={employee.id}
+              employee={employee}
+              index={startIndex + index}
+              onDelete={onDelete}
+              onEdit={onEdit}
+              canEdit={canEdit}
+              canDelete={canDelete}
+              onView={onView}
+              onToggleStatus={onToggleStatus}
+              isStatusUpdating={statusUpdatingId === employee.id}
+            />
+          ))
         )}
       </DataTable>
     </div>

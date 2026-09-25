@@ -410,9 +410,9 @@ export default function Meetings() {
           <div className="overflow-x-auto">
             <table className="min-w-full border-collapse">
               <thead>
-                <tr className="bg-[#e8f2ff] text-left">
+                <tr className="bg-neutral-950/80 text-left">
                   {['S.No.', 'Employee', 'Organizer', 'Department', 'Date', 'Time', 'Status', 'Actions'].map((heading) => (
-                    <th key={heading} className="px-5 py-4 text-sm font-semibold text-neutral-200">
+                    <th key={heading} className="px-5 py-4 text-xs font-semibold uppercase tracking-wide text-neutral-400">
                       {heading}
                     </th>
                   ))}
@@ -421,7 +421,7 @@ export default function Meetings() {
               <tbody>
                 {filtered.map((meeting, index) => (
                   <tr key={meeting._id} className="border-t border-neutral-800 bg-neutral-950/65">
-                    <td className="px-5 py-4 text-sm text-slate-600">{index + 1}</td>
+                    <td className="px-5 py-4 text-sm text-neutral-500">{index + 1}</td>
                     <td className="px-5 py-4 text-sm font-semibold text-neutral-50">{meeting.employee?.name}</td>
                     <td className="px-5 py-4 text-sm text-neutral-300">{meeting.organizer?.name}</td>
                     <td className="px-5 py-4 text-sm text-neutral-300">{meeting.organizer?.department || '-'}</td>

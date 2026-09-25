@@ -1,11 +1,11 @@
 import { memo } from 'react';
 
 const statStyles = [
-  { key: 'present', label: 'Present', box: 'border-green-200 bg-green-50', text: 'text-green-600', value: 'text-green-700' },
-  { key: 'absent', label: 'Absent', box: 'border-red-200 bg-red-50', text: 'text-red-600', value: 'text-red-700' },
-  { key: 'late', label: 'Late', box: 'border-yellow-200 bg-yellow-50', text: 'text-yellow-600', value: 'text-yellow-700' },
-  { key: 'halfDay', label: 'Half Day', box: 'border-blue-200 bg-blue-50', text: 'text-blue-600', value: 'text-blue-700' },
-  { key: 'totalWorkingDays', label: 'Total Working Days', box: 'border-slate-200 bg-slate-50', text: 'text-slate-600', value: 'text-slate-800' },
+  { key: 'present', label: 'Present', box: 'border-emerald-500/25 bg-emerald-500/10', text: 'text-emerald-400', value: 'text-emerald-300' },
+  { key: 'absent', label: 'Absent', box: 'border-red-500/25 bg-red-500/10', text: 'text-red-400', value: 'text-red-300' },
+  { key: 'late', label: 'Late', box: 'border-amber-500/25 bg-amber-500/10', text: 'text-amber-400', value: 'text-amber-300' },
+  { key: 'halfDay', label: 'Half Day', box: 'border-blue-500/25 bg-blue-500/10', text: 'text-blue-400', value: 'text-blue-300' },
+  { key: 'totalWorkingDays', label: 'Total Working Days', box: 'border-neutral-700 bg-neutral-800/60', text: 'text-neutral-400', value: 'text-neutral-200' },
 ];
 
 function AttendanceStats({ stats }) {
