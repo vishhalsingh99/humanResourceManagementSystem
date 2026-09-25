@@ -3,7 +3,7 @@ import { useApp } from '../../../context/AppContext';
 import { createDepartment } from '../../../api/departmentApi';
 import { createDesignation } from '../../../api/designationApi';
 import { emptyEmployeeForm } from '../constants/employee.constants';
-import { createEmployee, deleteEmployee, updateEmployee, updateEmployeeStatus } from '../services/employees.api';
+import { createEmployee, deleteEmployee, fetchAllEmployees, updateEmployee, updateEmployeeStatus } from '../services/employees.api';
 import { openEmployeePrintPage, openEmployeesListPrintPage } from '../services/employeesPdf.service';
 import { filterEmployees, normalizeEmployeeForEdit } from '../utils/employee.utils';
 import { getEmployeeLimitMessage, getSubscriptionPlan } from '../../../constants/subscription.constants';
@@ -22,8 +22,6 @@ const normalizeText = (value) => String(value || '').trim().toLowerCase();
 
 export function useEmployeesFeature() {
   const {
-    employees,
-    loadEmployees,
     departments,
     loadDepartments,
     designations,
@@ -45,22 +43,30 @@ export function useEmployeesFeature() {
   const [roles, setRoles] = useState([]);
   const [statusFilter, setStatusFilter] = useState('all');
   const [statusUpdatingId, setStatusUpdatingId] = useState(null);
-  // Mirrors the shared `employees` list locally so a status toggle can update a single
-  // row immediately without refetching or affecting other pages that rely on `employees`
-  // being filtered to active-only (attendance/leave/payroll employee pickers).
-  const [localEmployees, setLocalEmployees] = useState(employees);
+  // The employees management page keeps its own independent list (active + inactive) so
+  // it never gets clobbered by the shared AppContext.employees, which is intentionally
+  // filtered to active-only for use in attendance / leave / payroll pickers.
+  const [localEmployees, setLocalEmployees] = useState([]);
+  const [isLoadingEmployees, setIsLoadingEmployees] = useState(false);
+
+  async function reloadEmployees() {
+    setIsLoadingEmployees(true);
+    try {
+      const res = await fetchAllEmployees();
+      setLocalEmployees(res.data || []);
+    } catch (err) {
+      showToast(err.response?.data?.error || 'Unable to load employees', 'error');
+    } finally {
+      setIsLoadingEmployees(false);
+    }
+  }
 
   useEffect(() => {
-    setLocalEmployees(employees);
-  }, [employees]);
-
-  useEffect(() => {
-    // The employee management page needs every employee (not just active ones) so the
-    // Active/Inactive toggle and filter tabs work for the whole list.
-    loadEmployees('all');
+    reloadEmployees();
     loadDepartments();
     loadDesignations();
-  }, [loadEmployees, loadDepartments, loadDesignations]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   useEffect(() => {
     let active = true;
@@ -339,7 +345,7 @@ if (form.dob) {
         showToast('Employee added');
       }
 
-      await loadEmployees('all');
+      await reloadEmployees();
       setIsSaving(false);
       setShowForm(false);
       setEditingEmployee(null);
@@ -355,7 +361,7 @@ if (form.dob) {
     try {
       await deleteEmployee(id);
       showToast('Employee deleted', 'error');
-      loadEmployees('all');
+      reloadEmployees();
     } catch (err) {
       showToast(err.response?.data?.error || 'Unable to delete employee', 'error');
     }
@@ -399,6 +405,7 @@ if (form.dob) {
 
   return {
     employees: localEmployees,
+    isLoadingEmployees,
     filteredEmployees,
     statusFilter,
     setStatusFilter,

@@ -1,5 +1,9 @@
 import api from '../../../api/axios';
 
+export function fetchAllEmployees() {
+  return api.get('/employees', { params: { status: 'all' } });
+}
+
 export function createEmployee(payload) {
   return api.post('/employees', payload);
 }
