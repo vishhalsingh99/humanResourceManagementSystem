@@ -35,7 +35,7 @@ export const uploadResume = (req, res) => {
 };
 
 export const getEmployees = asyncHandler(async (req, res) => {
-  const statusFilter = ['active', 'inactive'].includes(req.query?.status) ? req.query.status : undefined;
+  const statusFilter = ['active', 'inactive'].includes(req.query?.status) ? req.query.status : req.query?.status === 'all' ? undefined : undefined;
   const result = await getEmployeesService(statusFilter, await getAuthenticatedCompanyId(req));
   res.json(result);
 });
